@@ -1,5 +1,7 @@
 # Syllabuzz
 
+**🔗 Launch Syllabuzz App: [https://debugging03.github.io/syllabuzz/](https://debugging03.github.io/syllabuzz/)**
+
 Syllabuzz is your ultimate study companion for current semester. It takes the stress out of exam preparation by organizing your entire syllabus into an easy-to-follow, interactive dashboard.
 
 ## ✨ Why Syllabuzz?
