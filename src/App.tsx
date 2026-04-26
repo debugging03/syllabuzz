@@ -20,10 +20,14 @@ import {
   Moon,
   Palette,
   ExternalLink,
-  Youtube
+  Youtube,
+  LogIn,
+  LogOut,
+  User as UserIcon
 } from 'lucide-react';
 import { syllabusData, Subject, Topic, Unit } from './syllabusData';
 import { getNoteForTopic, NoteStyle } from './notesData';
+import { signInWithGoogle, logout, onAuthStateChanged, User, auth } from './lib/firebase';
 
 interface SearchResult {
   subject: Subject;
@@ -47,6 +51,8 @@ export default function App() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSemesterOpen, setIsSemesterOpen] = useState(false);
   const [selectedSemester, setSelectedSemester] = useState('IV');
+  const [user, setUser] = useState<User | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,7 +116,15 @@ export default function App() {
       setShowScrollTop(window.scrollY > 400);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+      setUser(newUser);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -327,6 +341,63 @@ export default function App() {
               />
             </div>
             <span className="text-primary">{calculateTotalProgress()}%</span>
+          </div>
+
+          {/* User Auth Section */}
+          <div className="relative">
+            {user ? (
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary/20 hover:border-primary transition-all shadow-sm"
+                >
+                  {user.photoURL ? (
+                    <img referrerPolicy="no-referrer" src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                      {user.displayName?.[0] || 'U'}
+                    </div>
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {isUserMenuOpen && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
+                      <motion.div 
+                        initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                        className="absolute right-0 mt-12 w-56 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 p-2 overflow-hidden"
+                      >
+                        <div className="px-4 py-3 border-b border-slate-50 dark:border-dark-border mb-1">
+                          <p className="text-[11px] font-black text-slate-900 dark:text-white truncate uppercase tracking-wider">{user.displayName || 'Anonymous User'}</p>
+                          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate tracking-tight">{user.email}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setIsUserMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-[11px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Sign Out
+                        </button>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <button 
+                onClick={signInWithGoogle}
+                className="flex items-center gap-2.5 px-6 py-2.5 bg-primary hover:bg-primary-hover text-white rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all shadow-lg shadow-primary/20 active:scale-95"
+              >
+                <LogIn className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign In</span>
+              </button>
+            )}
           </div>
         </div>
       </header>

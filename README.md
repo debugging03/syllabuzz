@@ -1,5 +1,28 @@
 # Syllabuzz
 
+## 🚀 Getting Started
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/debugging03/syllabuzz
+   cd syllabuzz
+   npm install
+   ```
+2. **Environment Setup**:
+   Create a `.env` file in the root and add your Firebase configuration (see `.env.example`).
+   ```env
+   VITE_FIREBASE_API_KEY=your_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   VITE_FIREBASE_APP_ID=your_app_id
+   VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+   ```
+3. **Run Locally**:
+   ```bash
+   npm run dev
+   ```
+
 **🔗 Launch Syllabuzz App: [https://debugging03.github.io/syllabuzz/](https://debugging03.github.io/syllabuzz/)**
 
 Syllabuzz is your ultimate study companion for current semester. It takes the stress out of exam preparation by organizing your entire syllabus into an easy-to-follow, interactive dashboard.
