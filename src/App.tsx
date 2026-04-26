@@ -101,7 +101,13 @@ export default function App() {
 
   useEffect(() => {
     const saved = localStorage.getItem('sem4-progress');
-    if (saved) setProgress(JSON.parse(saved));
+    if (saved) {
+      try {
+        setProgress(JSON.parse(saved));
+      } catch (e) {
+        console.warn("Failed to parse progress", e);
+      }
+    }
 
     const savedStyle = localStorage.getItem('sem4-note-style') as NoteStyle;
     if (savedStyle) setNoteStyle(savedStyle);
@@ -123,11 +129,10 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
 
     let unsubscribe = () => {};
+    let isInitialLoad = true;
 
     if (auth) {
       unsubscribe = onAuthStateChanged(auth, async (newUser) => {
-        const isReturning = !!user; // Check if we already had a state
-        
         if (!newUser) {
           try {
             const anonUser = await signInAnonymous();
@@ -137,13 +142,13 @@ export default function App() {
           }
         } else {
           setUser(newUser);
-          // Only show cute sync message if it's not the very first load for an anonymous user
-          // Or if they are switching from no-user to authenticated
-          if (isReturning || !newUser.isAnonymous) {
+          // Show sync message only if it's not the initial load for an anonymous user
+          if (!isInitialLoad || !newUser.isAnonymous) {
             setShowSyncMessage(true);
             setTimeout(() => setShowSyncMessage(false), 3000);
           }
         }
+        isInitialLoad = false;
         setIsAuthLoading(false);
       });
     } else {
@@ -217,8 +222,12 @@ export default function App() {
   };
 
   const handleExplain = (topic: string) => {
-    const noteContent = getNoteForTopic(topic, noteStyle);
-    setSelectedNote({ topic, content: noteContent });
+    try {
+      const noteContent = getNoteForTopic(topic, noteStyle);
+      setSelectedNote({ topic, content: noteContent });
+    } catch (e) {
+      console.error("Error explaining topic:", e);
+    }
   };
 
   const handleYouTube = (topic: string, subjectCode?: string) => {
@@ -235,6 +244,14 @@ export default function App() {
     const prompt = `Explain the topic "${topic}" from the BCA Semester 4 syllabus of "${subjectTitle || activeSubject.title}" ${stylePrompt} in Hinglish. Make it easy to understand for exams.`;
     window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, '_blank');
   };
+
+  if (!activeSubject) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-dark-bg flex items-center justify-center p-6">
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Error loading syllabus data...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen bg-bg dark:bg-dark-bg text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300 ${getFilterClass()}`}>
@@ -446,7 +463,7 @@ export default function App() {
                                 {user.displayName || (user.isAnonymous ? 'Guest Explorer' : 'Explorer')}
                               </p>
                               <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate tracking-tight">
-                                {user.isAnonymous ? 'Guest Account' : user.email}
+                                {user.isAnonymous ? 'Guest Account' : (user.email || 'No email')}
                               </p>
                             </div>
                           </div>

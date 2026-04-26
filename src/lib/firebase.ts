@@ -18,10 +18,17 @@ if (!import.meta.env.VITE_FIREBASE_API_KEY) {
   console.warn("Syllabuzz: Firebase API Key is missing. Anonymous and Google Auth will not work on this domain unless you add VITE_ secrets to your GitHub build env.");
 }
 
-// Initialize Firebase only if API key is present to prevent startup crash
-const app = (import.meta.env.VITE_FIREBASE_API_KEY && !getApps().length) 
-  ? initializeApp(firebaseConfig) 
-  : (getApps().length ? getApp() : null);
+// Initialize Firebase
+let app;
+try {
+  if (getApps().length > 0) {
+    app = getApp();
+  } else if (import.meta.env.VITE_FIREBASE_API_KEY) {
+    app = initializeApp(firebaseConfig);
+  }
+} catch (error) {
+  console.error("Firebase initialization failed:", error);
+}
 
 export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;
@@ -45,7 +52,6 @@ export const signInWithGoogle = async () => {
     } else {
       alert("Sign-in failed: " + error.message);
     }
-    throw error;
   }
 };
 
