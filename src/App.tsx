@@ -16,6 +16,9 @@ import {
   Settings2,
   LayoutGrid,
   ListOrdered,
+  Map as MapIcon,
+  Trophy,
+  ArrowRight,
   Sun,
   Moon,
   Palette,
@@ -44,7 +47,7 @@ export default function App() {
   const [selectedNote, setSelectedNote] = useState<{ topic: string; content: string | string[] } | null>(null);
   const [noteStyle, setNoteStyle] = useState<NoteStyle>('detailed');
   const [showSettings, setShowSettings] = useState(false);
-  const [layoutMode, setLayoutMode] = useState<'grid' | 'list'>('grid');
+  const [layoutMode, setLayoutMode] = useState<'grid' | 'list' | 'roadmap'>('grid');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isThemeOpen, setIsThemeOpen] = useState(false);
   const [filter, setFilter] = useState<'none' | 'reading' | 'grayscale'>('none');
@@ -123,8 +126,9 @@ export default function App() {
 
     if (auth) {
       unsubscribe = onAuthStateChanged(auth, async (newUser) => {
+        const isReturning = !!user; // Check if we already had a state
+        
         if (!newUser) {
-          // If no user, trigger anonymous sign in
           try {
             const anonUser = await signInAnonymous();
             setUser(anonUser);
@@ -133,9 +137,12 @@ export default function App() {
           }
         } else {
           setUser(newUser);
-          // Show cute sync message for existing users
-          setShowSyncMessage(true);
-          setTimeout(() => setShowSyncMessage(false), 3000);
+          // Only show cute sync message if it's not the very first load for an anonymous user
+          // Or if they are switching from no-user to authenticated
+          if (isReturning || !newUser.isAnonymous) {
+            setShowSyncMessage(true);
+            setTimeout(() => setShowSyncMessage(false), 3000);
+          }
         }
         setIsAuthLoading(false);
       });
@@ -289,13 +296,13 @@ export default function App() {
               <AnimatePresence>
                 {isSemesterOpen && (
                   <>
-                    <div className="fixed inset-0 z-40" onClick={() => setIsSemesterOpen(false)} />
-                    <motion.div 
-                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                      className="absolute left-0 mt-2 w-32 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-xl shadow-xl z-50 p-1.5 overflow-hidden"
-                    >
+                    <div className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[1px] sm:bg-transparent" onClick={() => setIsSemesterOpen(false)} />
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        className="fixed sm:absolute left-4 right-4 sm:left-0 sm:right-auto sm:w-32 top-24 sm:top-10 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl sm:shadow-xl z-50 p-2 overflow-hidden"
+                      >
                       {['I', 'II', 'III', 'IV', 'V', 'VI'].map(sem => (
                         <button
                           key={sem}
@@ -321,27 +328,28 @@ export default function App() {
               </AnimatePresence>
             </div>
             
-            <div className="relative hidden md:block">
+            <div className="relative">
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-100/50 dark:bg-dark-bg hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-xl text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border"
+                className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 bg-slate-100/50 dark:bg-dark-bg hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-lg sm:rounded-xl text-[9px] sm:text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border"
               >
-                Subject
-                <ChevronDown className={`w-3 h-3 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <span className="hidden xs:inline">Subject</span>
+                <span className="xs:hidden">{activeSubject.code}</span>
+                <ChevronDown className={`w-2.5 h-2.5 sm:w-3 sm:h-3 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
               <AnimatePresence>
                 {isDropdownOpen && (
                   <>
                     <div 
-                      className="fixed inset-0 z-40" 
+                      className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[1px]" 
                       onClick={() => setIsDropdownOpen(false)}
                     />
                     <motion.div 
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute left-0 mt-2 w-72 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-xl shadow-xl z-50 overflow-hidden"
+                      className="fixed sm:absolute left-4 right-4 sm:left-0 sm:right-auto sm:w-72 top-24 sm:top-10 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 overflow-hidden"
                     >
                       {syllabusData.map(s => (
                         <button
@@ -351,13 +359,13 @@ export default function App() {
                             setIsDropdownOpen(false);
                             setSearchQuery('');
                           }}
-                          className={`w-full px-5 py-3.5 text-left text-[11px] font-bold uppercase tracking-wider transition-colors border-b border-slate-50 dark:border-slate-800 last:border-none ${
+                          className={`w-full px-5 py-4 sm:py-3.5 text-left text-[11px] font-bold uppercase tracking-wider transition-colors border-b border-slate-50 dark:border-slate-800 last:border-none ${
                             activeSubject.id === s.id 
                             ? 'bg-primary text-white' 
-                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                           }`}
                         >
-                          {s.code}: {s.title}
+                          <span className="opacity-60 mr-2">{s.code}</span> {s.title}
                         </button>
                       ))}
                     </motion.div>
@@ -421,12 +429,12 @@ export default function App() {
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <>
-                      <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
+                      <div className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[2px] sm:backdrop-blur-none" onClick={() => setIsUserMenuOpen(false)} />
                       <motion.div 
-                        initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                        className="absolute right-0 mt-12 w-64 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 p-3 overflow-hidden"
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 top-20 sm:top-12 w-auto sm:w-64 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 p-3 overflow-hidden transition-colors"
                       >
                         <div className="px-4 py-4 border-b border-slate-50 dark:border-dark-border mb-2 bg-slate-50/50 dark:bg-dark-bg/30 rounded-xl">
                           <div className="flex items-center gap-3 mb-3">
@@ -438,15 +446,15 @@ export default function App() {
                                 {user.displayName || (user.isAnonymous ? 'Guest Explorer' : 'Explorer')}
                               </p>
                               <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate tracking-tight">
-                                {user.email || 'Temporary Account'}
+                                {user.isAnonymous ? 'Guest Account' : user.email}
                               </p>
                             </div>
                           </div>
                           
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-slate-400">
-                              <span>Semester Progress</span>
-                              <span className="text-primary">{calculateTotalProgress()}%</span>
+                              <span>Syllabus Progress</span>
+                              <span className="text-primary font-bold">{calculateTotalProgress()}%</span>
                             </div>
                             <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                               <motion.div 
@@ -459,28 +467,36 @@ export default function App() {
                         </div>
 
                         {user.isAnonymous && (
-                          <button
-                            onClick={() => {
-                              signInWithGoogle();
-                              setIsUserMenuOpen(false);
-                            }}
-                            className="w-full flex items-center gap-2.5 px-4 py-3 text-left text-[11px] font-black uppercase tracking-widest text-primary hover:bg-primary/5 rounded-xl transition-all border border-primary/10 mb-2"
-                          >
-                            <LogIn className="w-4 h-4" />
-                            Secure Progress
-                          </button>
+                          <div className="px-1 pb-2">
+                            <button
+                              onClick={() => {
+                                signInWithGoogle();
+                                setIsUserMenuOpen(false);
+                              }}
+                              className="w-full flex items-center justify-between gap-2.5 px-4 py-3 text-left text-[11px] font-black uppercase tracking-widest bg-primary text-white rounded-xl transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95"
+                            >
+                              <div className="flex items-center gap-2">
+                                <LogIn className="w-4 h-4" />
+                                Save Data
+                              </div>
+                              <ChevronRight className="w-3 h-3 text-white/50" />
+                            </button>
+                            <p className="mt-2 text-center text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Connect Google to sync progress</p>
+                          </div>
                         )}
 
-                        <button
-                          onClick={() => {
-                            logout();
-                            setIsUserMenuOpen(false);
-                          }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-[11px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Sign Out
-                        </button>
+                        <div className="mt-1 border-t border-slate-50 dark:border-dark-border pt-1">
+                          <button
+                            onClick={() => {
+                              logout();
+                              setIsUserMenuOpen(false);
+                            }}
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-[11px] font-bold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-all"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            {user.isAnonymous ? 'Reset Account' : 'Sign Out'}
+                          </button>
+                        </div>
                       </motion.div>
                     </>
                   )}
@@ -641,12 +657,12 @@ export default function App() {
                     <AnimatePresence>
                       {isThemeOpen && (
                         <>
-                          <div className="fixed inset-0 z-40" onClick={() => setIsThemeOpen(false)} />
+                          <div className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[1px] sm:bg-transparent" onClick={() => setIsThemeOpen(false)} />
                           <motion.div 
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-36 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-xl shadow-xl z-50 p-1.5 overflow-hidden"
+                            className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 sm:w-36 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl sm:rounded-xl shadow-2xl z-50 p-2 overflow-hidden"
                           >
                             <button
                               onClick={() => { setTheme('light'); setIsThemeOpen(false); }}
@@ -697,12 +713,12 @@ export default function App() {
                     <AnimatePresence>
                       {isFilterOpen && (
                         <>
-                          <div className="fixed inset-0 z-40" onClick={() => setIsFilterOpen(false)} />
+                          <div className="fixed inset-0 z-40 bg-black/5 dark:bg-black/20 backdrop-blur-[1px] sm:bg-transparent" onClick={() => setIsFilterOpen(false)} />
                           <motion.div 
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-44 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-xl shadow-xl z-50 p-1.5 overflow-hidden"
+                            className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 sm:w-44 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl sm:rounded-xl shadow-2xl z-50 p-2 overflow-hidden"
                           >
                             <button
                               onClick={() => { setFilter('none'); setIsFilterOpen(false); }}
@@ -741,19 +757,97 @@ export default function App() {
                     >
                       <ListOrdered className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">List</span>
                     </button>
+                    <button 
+                      onClick={() => setLayoutMode('roadmap')}
+                      className={`flex items-center gap-1 xs:gap-2 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all ${layoutMode === 'roadmap' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    >
+                      <MapIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">Map</span>
+                    </button>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-20 sm:space-y-32">
-                {activeSubject.units.map((unit, uIdx) => (
-                  <section key={unit.id} className="relative">
-                    <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 border-b border-slate-100 dark:border-dark-border pb-4">
-                      <span className="text-xs sm:text-sm font-black text-white bg-slate-900 dark:bg-slate-700 px-2 sm:px-3 py-1 rounded">0{uIdx + 1}</span>
-                      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{unit.title}</h2>
-                    </div>
+                {layoutMode === 'roadmap' ? (
+                  <div className="relative pb-24">
+                    {/* Visual Roadmap Path */}
+                    <div className="absolute left-6 sm:left-1/2 top-10 bottom-24 w-1 sm:-ml-0.5 bg-gradient-to-b from-primary via-blue-400/50 to-primary/5 rounded-full hidden sm:block" />
+                    
+                    {activeSubject.units.map((unit, uIdx) => (
+                      <motion.div 
+                        key={unit.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className={`relative mb-24 flex flex-col sm:flex-row items-start sm:items-center gap-12 sm:gap-24 ${uIdx % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'}`}
+                      >
+                        {/* Circular Progress Node */}
+                        <div className="absolute left-6 sm:left-1/2 top-4 sm:top-auto w-10 h-10 bg-white dark:bg-dark-surface border-4 border-primary rounded-2xl z-10 sm:-ml-5 flex items-center justify-center shadow-xl rotate-45 group">
+                          <span className="text-[11px] font-black -rotate-45 text-primary">0{uIdx + 1}</span>
+                        </div>
 
-                    {layoutMode === 'grid' ? (
+                        {/* Roadmap Info Card */}
+                        <div className={`flex-1 w-full pl-16 sm:pl-0 ${uIdx % 2 === 0 ? 'sm:text-right' : 'sm:text-left'}`}>
+                          <div className={`p-8 bg-white dark:bg-dark-surface border border-slate-100 dark:border-dark-border rounded-[2.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-none transition-all hover:scale-[1.02] active:scale-[0.98]`}>
+                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-primary mb-3 block">Module 0{uIdx + 1}</span>
+                            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-6">
+                              {unit.title}
+                            </h3>
+                            
+                            <div className={`flex flex-wrap gap-2 mb-8 ${uIdx % 2 === 0 ? 'sm:justify-end' : 'sm:justify-start'}`}>
+                              {unit.topics.slice(0, 4).map(t => (
+                                <span key={t.id} className="text-[9px] font-bold px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-lg uppercase tracking-wider">
+                                  {t.title}
+                                </span>
+                              ))}
+                              {unit.topics.length > 4 && (
+                                <span className="text-[9px] font-black px-3 py-1.5 bg-primary/10 text-primary rounded-lg uppercase">
+                                  +{unit.topics.length - 4} Mastery Topics
+                                </span>
+                              )}
+                            </div>
+
+                            <button 
+                              onClick={() => {
+                                setLayoutMode('grid');
+                                setTimeout(() => {
+                                  const el = document.getElementById(unit.id);
+                                  if (el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+                                }, 100);
+                              }}
+                              className={`flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-all ${uIdx % 2 === 0 ? 'sm:flex-row-reverse sm:ml-auto' : ''}`}
+                            >
+                              Explore syllabus <ArrowRight className={`w-4 h-4 ${uIdx % 2 === 0 ? 'rotate-180' : ''}`} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Mirror Spacer */}
+                        <div className="flex-1 hidden sm:block" />
+                      </motion.div>
+                    ))}
+
+                    {/* Roadmap Completion Trophy */}
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      className="absolute bottom-0 left-6 sm:left-1/2 sm:-ml-12 flex flex-col items-center"
+                    >
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-[2.5rem] flex items-center justify-center shadow-2xl ring-8 ring-amber-500/10 rotate-12 hover:rotate-0 transition-transform">
+                        <Trophy className="w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-lg" />
+                      </div>
+                      <p className="mt-6 text-[10px] font-black uppercase tracking-[0.5em] text-amber-600 whitespace-nowrap animate-pulse">Subject Complete</p>
+                    </motion.div>
+                  </div>
+                ) : (
+                  activeSubject.units.map((unit, uIdx) => (
+                    <section key={unit.id} id={unit.id} className="relative scroll-mt-20">
+                      <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 border-b border-slate-100 dark:border-dark-border pb-4">
+                        <span className="text-xs sm:text-sm font-black text-white bg-slate-900 dark:bg-slate-700 px-2 sm:px-3 py-1 rounded">0{uIdx + 1}</span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{unit.title}</h2>
+                      </div>
+
+                      {layoutMode === 'grid' ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {unit.topics.map(topic => {
                           const topicId = getTopicId(activeSubject, unit, topic);
@@ -894,12 +988,13 @@ export default function App() {
                       </div>
                     )}
                   </section>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+                ))
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
 
       <footer className="border-t border-slate-100 dark:border-dark-border py-20 bg-white dark:bg-dark-surface transition-colors">
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center text-center gap-6">

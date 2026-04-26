@@ -13,6 +13,11 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
+// Log warning if config is missing (helps debug GitHub Secrets)
+if (!import.meta.env.VITE_FIREBASE_API_KEY) {
+  console.warn("Syllabuzz: Firebase API Key is missing. Anonymous and Google Auth will not work on this domain unless you add VITE_ secrets to your GitHub build env.");
+}
+
 // Initialize Firebase only if API key is present to prevent startup crash
 const app = (import.meta.env.VITE_FIREBASE_API_KEY && !getApps().length) 
   ? initializeApp(firebaseConfig) 
@@ -27,14 +32,19 @@ const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
   if (!auth) {
-    console.error("Firebase not initialized. Check your environment variables.");
+    alert("Firebase is not configured on this domain. Please check your GitHub Secrets and ensure they are prefixed with VITE_ and passed to the build step.");
     return null;
   }
   try {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error signing in with Google:", error);
+    if (error.code === 'auth/unauthorized-domain') {
+      alert("This domain is not authorized in your Firebase Console. Add 'debugging03.github.io' to the Authorized Domains in Firebase Auth settings.");
+    } else {
+      alert("Sign-in failed: " + error.message);
+    }
     throw error;
   }
 };
