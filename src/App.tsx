@@ -155,10 +155,24 @@ export default function App() {
             // Set up real-time progress sync for authenticated users
             if (db && !newUser.isAnonymous) {
               if (unsubscribeProgress) unsubscribeProgress();
-              unsubscribeProgress = onSnapshot(doc(db, 'userProgress', newUser.uid), (docSnap) => {
-                if (docSnap.exists()) {
-                  const cloudProgress = docSnap.data().progress || {};
-                  setProgress(prev => ({ ...prev, ...cloudProgress }));
+              
+              // Check if cloud exists, if not, push local progress
+              const { getDoc } = await import('firebase/firestore');
+              const docRef = doc(db, 'userProgress', newUser.uid);
+              const docSnap = await getDoc(docRef);
+              
+              if (!docSnap.exists()) {
+                const localProgress = JSON.parse(localStorage.getItem('sem4-progress') || '{}');
+                if (Object.keys(localProgress).length > 0) {
+                  await syncProgress(newUser.uid, localProgress);
+                }
+              }
+
+              unsubscribeProgress = onSnapshot(docRef, (snap) => {
+                if (snap.exists()) {
+                  const cloudProgress = snap.data().progress || {};
+                  setProgress(cloudProgress);
+                  localStorage.setItem('sem4-progress', JSON.stringify(cloudProgress));
                 }
               });
             }

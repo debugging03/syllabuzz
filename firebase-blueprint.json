@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "UserProgress": {
+      "title": "User Progress",
+      "description": "Tracks completed syllabus topics for a user",
+      "type": "object",
+      "properties": {
+        "progress": {
+          "type": "object",
+          "description": "Map of topic IDs to completion boolean"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["progress", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/userProgress/{userId}": {
+      "schema": "UserProgress",
+      "description": "Stores progress for a specific user"
+    }
+  }
+}

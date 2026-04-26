@@ -77,15 +77,22 @@ export const logout = async () => {
 };
 
 export const syncProgress = async (userId: string, progress: Record<string, boolean>) => {
-  if (!db) return;
+  if (!db) {
+    console.error("Sync failed: Database not initialized. Check your Firebase config.");
+    return;
+  }
   try {
     const { doc, setDoc, serverTimestamp } = await import('firebase/firestore');
     await setDoc(doc(db, 'userProgress', userId), {
       progress,
       updatedAt: serverTimestamp()
     }, { merge: true });
-  } catch (error) {
+    console.log("Cloud sync successful");
+  } catch (error: any) {
     console.error("Error syncing progress:", error);
+    if (error.code === 'permission-denied') {
+      console.warn("Sync failed: Permission denied. Please ensure your Firestore Rules allow writes to 'userProgress' collection.");
+    }
   }
 };
 
