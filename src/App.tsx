@@ -204,10 +204,19 @@ export default function App() {
     localStorage.setItem('sem4-filter', filter);
   }, [filter]);
 
-  const getFilterClass = () => {
-    if (filter === 'reading') return 'sepia-[0.4] brightness-[0.96] contrast-[0.95]';
-    if (filter === 'grayscale') return 'grayscale contrast-[1.1]';
-    return '';
+  const getFilterOverlay = () => {
+    switch (filter) {
+      case 'reading': 
+        return (
+          <div className="fixed inset-0 z-[99] pointer-events-none bg-orange-400/10 mix-blend-multiply transition-opacity duration-500" />
+        );
+      case 'grayscale':
+        return (
+          <div className="fixed inset-0 z-[99] pointer-events-none backdrop-grayscale backdrop-contrast-[1.1] transition-opacity duration-500" />
+        );
+      default:
+        return null;
+    }
   };
 
   const toggleProgress = (topicId: string) => {
@@ -266,7 +275,8 @@ export default function App() {
   }
 
   return (
-    <div className={`min-h-screen bg-bg dark:bg-dark-bg text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300 ${getFilterClass()}`}>
+    <div className={`min-h-screen bg-bg dark:bg-dark-bg text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300`}>
+      {getFilterOverlay()}
       {/* Loading Overlay */}
       <AnimatePresence>
         {isAuthLoading && (
@@ -694,14 +704,22 @@ export default function App() {
                             className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 sm:w-36 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl sm:rounded-xl shadow-2xl z-50 p-2 overflow-hidden"
                           >
                             <button
-                              onClick={() => { setTheme('light'); setIsThemeOpen(false); }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${theme === 'light' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                              onClick={(e) => { 
+                                e.stopPropagation();
+                                setTheme('light'); 
+                                setIsThemeOpen(false); 
+                              }}
+                              className={`w-full px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${theme === 'light' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                             >
                               <Sun className="w-3.5 h-3.5" /> Light
                             </button>
                             <button
-                              onClick={() => { setTheme('dark'); setIsThemeOpen(false); }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${theme === 'dark' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                              onClick={(e) => { 
+                                e.stopPropagation();
+                                setTheme('dark'); 
+                                setIsThemeOpen(false); 
+                              }}
+                              className={`w-full px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${theme === 'dark' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                             >
                               <Moon className="w-3.5 h-3.5" /> Dark
                             </button>
@@ -750,20 +768,32 @@ export default function App() {
                             className="fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 sm:w-44 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl sm:rounded-xl shadow-2xl z-50 p-2 overflow-hidden"
                           >
                             <button
-                              onClick={() => { setFilter('none'); setIsFilterOpen(false); }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'none' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                              onClick={(e) => { 
+                                e.stopPropagation();
+                                setFilter('none'); 
+                                setIsFilterOpen(false); 
+                              }}
+                              className={`w-full px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'none' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                             >
                               Standard
                             </button>
                             <button
-                              onClick={() => { setFilter('reading'); setIsFilterOpen(false); }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'reading' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                              onClick={(e) => { 
+                                e.stopPropagation();
+                                setFilter('reading'); 
+                                setIsFilterOpen(false); 
+                              }}
+                              className={`w-full px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'reading' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                             >
                               Reading Mode
                             </button>
                             <button
-                              onClick={() => { setFilter('grayscale'); setIsFilterOpen(false); }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'grayscale' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                              onClick={(e) => { 
+                                e.stopPropagation();
+                                setFilter('grayscale'); 
+                                setIsFilterOpen(false); 
+                              }}
+                              className={`w-full px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors flex items-center gap-2 ${filter === 'grayscale' ? 'bg-primary/10 text-primary' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                             >
                               Grayscale
                             </button>
