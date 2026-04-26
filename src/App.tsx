@@ -13,6 +13,7 @@ import {
   X,
   ArrowUp,
   ChevronDown,
+  ChevronRight,
   Settings2,
   LayoutGrid,
   ListOrdered,
