@@ -31,7 +31,8 @@ import {
 } from 'lucide-react';
 import { syllabusData, Subject, Topic, Unit } from './syllabusData';
 import { getNoteForTopic, NoteStyle } from './notesData';
-import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous } from './lib/firebase';
+import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous, db, syncProgress } from './lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 interface SearchResult {
   subject: Subject;
@@ -129,7 +130,8 @@ export default function App() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    let unsubscribe = () => {};
+    let unsubscribeAuth = () => {};
+    let unsubscribeProgress = () => {};
     let isInitialLoad = true;
 
     // Safety timeout to ensure loading screen disappears
@@ -138,7 +140,7 @@ export default function App() {
     }, 10000); // 10s max loading
 
     if (auth) {
-      unsubscribe = onAuthStateChanged(auth, async (newUser) => {
+      unsubscribeAuth = onAuthStateChanged(auth, async (newUser) => {
         try {
           if (!newUser) {
             // Only try guest sign-in once
@@ -146,8 +148,21 @@ export default function App() {
               const anonUser = await signInAnonymous();
               if (anonUser) setUser(anonUser);
             }
+            if (unsubscribeProgress) unsubscribeProgress();
           } else {
             setUser(newUser);
+            
+            // Set up real-time progress sync for authenticated users
+            if (db && !newUser.isAnonymous) {
+              if (unsubscribeProgress) unsubscribeProgress();
+              unsubscribeProgress = onSnapshot(doc(db, 'userProgress', newUser.uid), (docSnap) => {
+                if (docSnap.exists()) {
+                  const cloudProgress = docSnap.data().progress || {};
+                  setProgress(prev => ({ ...prev, ...cloudProgress }));
+                }
+              });
+            }
+
             // Show sync message only if it's not the initial load for an anonymous user
             if (!isInitialLoad || !newUser.isAnonymous) {
               setShowSyncMessage(true);
@@ -169,7 +184,8 @@ export default function App() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      unsubscribe();
+      unsubscribeAuth();
+      if (unsubscribeProgress) unsubscribeProgress();
     };
   }, []);
 
@@ -223,6 +239,11 @@ export default function App() {
     const newProgress = { ...progress, [topicId]: !progress[topicId] };
     setProgress(newProgress);
     localStorage.setItem('sem4-progress', JSON.stringify(newProgress));
+    
+    // Cloud sync
+    if (user && !user.isAnonymous) {
+      syncProgress(user.uid, newProgress);
+    }
   };
 
   const getTopicId = (s: Subject, u: Unit, t: Topic) => `${s.id}-${u.id}-${t.title}`;

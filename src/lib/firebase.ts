@@ -68,9 +68,24 @@ export const logout = async () => {
   if (!auth) return;
   try {
     await signOut(auth);
+    // Hard refresh ensures all internal states and listeners are completely destroyed
+    window.location.reload();
   } catch (error) {
     console.error("Error signing out:", error);
     throw error;
+  }
+};
+
+export const syncProgress = async (userId: string, progress: Record<string, boolean>) => {
+  if (!db) return;
+  try {
+    const { doc, setDoc, serverTimestamp } = await import('firebase/firestore');
+    await setDoc(doc(db, 'userProgress', userId), {
+      progress,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error syncing progress:", error);
   }
 };
 
