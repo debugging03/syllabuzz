@@ -417,7 +417,7 @@ export default function App() {
                             onClick={() => handleChatGPT(result.topic.title, result.subject.title)}
                             className="text-[10px] font-black uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 transition-colors group/gpt"
                           >
-                            <ExternalLink className="w-3.5 h-3.5" /> AI
+                            <ExternalLink className="w-3.5 h-3.5" /> Tutor
                           </button>
                         </div>
                       </motion.div>
@@ -628,7 +628,7 @@ export default function App() {
                                   onClick={() => handleChatGPT(topic.title)}
                                   className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-2 transition-colors group/gpt"
                                 >
-                                  <ExternalLink className="w-3.5 h-3.5 rotate-45 group-hover/gpt:translate-x-0.5 group-hover/gpt:-translate-y-0.5 transition-transform" /> AI
+                                  <ExternalLink className="w-3.5 h-3.5 rotate-45 group-hover/gpt:translate-x-0.5 group-hover/gpt:-translate-y-0.5 transition-transform" /> Tutor
                                 </button>
                               </div>
                             </motion.div>
