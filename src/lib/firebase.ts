@@ -39,19 +39,28 @@ const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
   if (!auth) {
-    alert("Firebase is not configured on this domain. Please check your GitHub Secrets and ensure they are prefixed with VITE_ and passed to the build step.");
+    const msg = "Firebase is not configured. Please check your GitHub Secrets (VITE_ secrets in the build environment).";
+    console.error(msg);
+    alert(msg);
     return null;
   }
   try {
+    console.log("Attempting Google Sign-In via popup...");
     const result = await signInWithPopup(auth, googleProvider);
+    console.log("Sign-in successful for:", result.user?.email);
     return result.user;
   } catch (error: any) {
-    console.error("Error signing in with Google:", error);
+    console.error("Google sign-in error details:", error);
     if (error.code === 'auth/unauthorized-domain') {
-      alert("This domain is not authorized in your Firebase Console. Add 'debugging03.github.io' to the Authorized Domains in Firebase Auth settings.");
+      alert("Unauthorized Domain: Please add 'debugging03.github.io' to Authorized Domains in your Firebase console settings.");
+    } else if (error.code === 'auth/popup-blocked') {
+      alert("Popup blocked! Please allow popups for this site or try a different browser.");
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      console.log("User closed the popup.");
     } else {
-      alert("Sign-in failed: " + error.message);
+      alert("Sign-in error: " + (error.message || "Unknown error"));
     }
+    return null;
   }
 };
 

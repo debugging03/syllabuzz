@@ -132,28 +132,39 @@ export default function App() {
     let unsubscribe = () => {};
     let isInitialLoad = true;
 
+    // Safety timeout to ensure loading screen disappears
+    const loadingTimeout = setTimeout(() => {
+      setIsAuthLoading(false);
+    }, 10000); // 10s max loading
+
     if (auth) {
       unsubscribe = onAuthStateChanged(auth, async (newUser) => {
-        if (!newUser) {
-          try {
-            const anonUser = await signInAnonymous();
-            setUser(anonUser);
-          } catch (error) {
-            console.error("Anonymous auth failed:", error);
+        try {
+          if (!newUser) {
+            // Only try guest sign-in once
+            if (isInitialLoad) {
+              const anonUser = await signInAnonymous();
+              if (anonUser) setUser(anonUser);
+            }
+          } else {
+            setUser(newUser);
+            // Show sync message only if it's not the initial load for an anonymous user
+            if (!isInitialLoad || !newUser.isAnonymous) {
+              setShowSyncMessage(true);
+              setTimeout(() => setShowSyncMessage(false), 3000);
+            }
           }
-        } else {
-          setUser(newUser);
-          // Show sync message only if it's not the initial load for an anonymous user
-          if (!isInitialLoad || !newUser.isAnonymous) {
-            setShowSyncMessage(true);
-            setTimeout(() => setShowSyncMessage(false), 3000);
-          }
+        } catch (error) {
+          console.error("Auth state processing error:", error);
+        } finally {
+          isInitialLoad = false;
+          setIsAuthLoading(false);
+          clearTimeout(loadingTimeout);
         }
-        isInitialLoad = false;
-        setIsAuthLoading(false);
       });
     } else {
       setIsAuthLoading(false);
+      clearTimeout(loadingTimeout);
     }
 
     return () => {
@@ -369,7 +380,7 @@ export default function App() {
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       className="fixed sm:absolute left-4 right-4 sm:left-0 sm:right-auto sm:w-72 top-24 sm:top-10 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 overflow-hidden"
                     >
-                      {syllabusData.map(s => (
+                      {(syllabusData || []).map(s => (
                         <button
                           key={s.id}
                           onClick={() => {
@@ -378,7 +389,7 @@ export default function App() {
                             setSearchQuery('');
                           }}
                           className={`w-full px-5 py-4 sm:py-3.5 text-left text-[11px] font-bold uppercase tracking-wider transition-colors border-b border-slate-50 dark:border-slate-800 last:border-none ${
-                            activeSubject.id === s.id 
+                            activeSubject?.id === s.id 
                             ? 'bg-primary text-white' 
                             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                           }`}
@@ -575,7 +586,7 @@ export default function App() {
                                 {result.subject.code}
                               </span>
                               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                                Unit {result.unit.id.split('-').pop()}
+                                Unit {result.unit?.id?.toString().split('-').pop() || '?'}
                               </span>
                             </div>
                             <h3 className={`text-[16px] font-bold leading-snug ${isDone ? 'text-slate-400 dark:text-slate-600 line-through' : 'text-slate-800 dark:text-slate-200'}`}>
