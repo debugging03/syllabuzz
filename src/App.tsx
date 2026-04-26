@@ -117,9 +117,13 @@ export default function App() {
     };
     window.addEventListener('scroll', handleScroll);
 
-    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
-      setUser(newUser);
-    });
+    let unsubscribe = () => {};
+
+    if (auth) {
+      unsubscribe = onAuthStateChanged(auth, (newUser) => {
+        setUser(newUser);
+      });
+    }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);

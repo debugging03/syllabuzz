@@ -1,7 +1,7 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,16 +13,23 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+// Initialize Firebase only if API key is present to prevent startup crash
+const app = (import.meta.env.VITE_FIREBASE_API_KEY && !getApps().length) 
+  ? initializeApp(firebaseConfig) 
+  : (getApps().length ? getApp() : null);
+
+export const auth = app ? getAuth(app) : null;
+export const db = app ? getFirestore(app) : null;
+export const analytics = (app && typeof window !== 'undefined') ? isSupported().then(yes => yes ? getAnalytics(app) : null) : Promise.resolve(null);
 
 // Auth logic
 const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
+  if (!auth) {
+    console.error("Firebase not initialized. Check your environment variables.");
+    return null;
+  }
   try {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
@@ -33,6 +40,7 @@ export const signInWithGoogle = async () => {
 };
 
 export const logout = async () => {
+  if (!auth) return;
   try {
     await signOut(auth);
   } catch (error) {
