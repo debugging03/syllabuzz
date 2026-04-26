@@ -1,5 +1,5 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInAnonymously, signOut, onAuthStateChanged, User } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
@@ -45,6 +45,17 @@ export const logout = async () => {
     await signOut(auth);
   } catch (error) {
     console.error("Error signing out:", error);
+    throw error;
+  }
+};
+
+export const signInAnonymous = async () => {
+  if (!auth) return null;
+  try {
+    const result = await signInAnonymously(auth);
+    return result.user;
+  } catch (error) {
+    console.error("Error signing in anonymously:", error);
     throw error;
   }
 };

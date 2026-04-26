@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { syllabusData, Subject, Topic, Unit } from './syllabusData';
 import { getNoteForTopic, NoteStyle } from './notesData';
-import { signInWithGoogle, logout, onAuthStateChanged, User, auth } from './lib/firebase';
+import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous } from './lib/firebase';
 
 interface SearchResult {
   subject: Subject;
@@ -53,6 +53,8 @@ export default function App() {
   const [selectedSemester, setSelectedSemester] = useState('IV');
   const [user, setUser] = useState<User | null>(null);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [showSyncMessage, setShowSyncMessage] = useState(false);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -120,9 +122,25 @@ export default function App() {
     let unsubscribe = () => {};
 
     if (auth) {
-      unsubscribe = onAuthStateChanged(auth, (newUser) => {
-        setUser(newUser);
+      unsubscribe = onAuthStateChanged(auth, async (newUser) => {
+        if (!newUser) {
+          // If no user, trigger anonymous sign in
+          try {
+            const anonUser = await signInAnonymous();
+            setUser(anonUser);
+          } catch (error) {
+            console.error("Anonymous auth failed:", error);
+          }
+        } else {
+          setUser(newUser);
+          // Show cute sync message for existing users
+          setShowSyncMessage(true);
+          setTimeout(() => setShowSyncMessage(false), 3000);
+        }
+        setIsAuthLoading(false);
       });
+    } else {
+      setIsAuthLoading(false);
     }
 
     return () => {
@@ -213,23 +231,58 @@ export default function App() {
 
   return (
     <div className={`min-h-screen bg-bg dark:bg-dark-bg text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300 ${getFilterClass()}`}>
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {isAuthLoading && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-white dark:bg-dark-bg flex flex-col items-center justify-center"
+          >
+            <div className="relative">
+              <motion.div 
+                animate={{ 
+                  rotate: 360,
+                  borderRadius: ["20%", "50%", "20%"]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                className="w-16 h-16 bg-primary/20 border-4 border-primary rounded-2xl"
+              />
+              <BookOpen className="w-8 h-8 text-primary absolute inset-0 m-auto animate-pulse" />
+            </div>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-8 text-xs font-black uppercase tracking-[0.4em] text-slate-400 dark:text-slate-600 animate-pulse"
+            >
+              Preparing Syllabuzz...
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md border-b border-border dark:border-dark-border transition-colors">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-5 shrink-0">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-5 shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
-              <span className="hidden sm:inline font-black text-slate-900 dark:text-white text-xl tracking-tighter">Syllabuzz</span>
+              <span className="hidden lg:inline font-black text-slate-900 dark:text-white text-xl tracking-tighter">Syllabuzz</span>
             </div>
 
             <div className="relative">
               <button 
                 onClick={() => setIsSemesterOpen(!isSemesterOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100/50 dark:bg-dark-bg hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 transition-all border border-slate-200/50 dark:border-dark-border"
+                className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-100/50 dark:bg-dark-bg hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 transition-all border border-slate-200/50 dark:border-dark-border"
               >
-                Sem {selectedSemester}
+                <span className="hidden xs:inline">Sem</span> {selectedSemester}
                 <ChevronDown className={`w-3 h-3 transition-transform ${isSemesterOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -315,23 +368,23 @@ export default function App() {
           </div>
 
           {/* Predictive Search Bar */}
-          <div className="flex-1 max-w-md relative group">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <SearchIcon className="w-3.5 h-3.5" />
+          <div className="flex-1 max-w-md relative group mx-2">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <SearchIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </div>
             <input 
               type="text" 
-              placeholder="Fuzzy search topics (predictive)..." 
+              placeholder="Search..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-100/50 dark:bg-dark-bg border border-slate-200 dark:border-dark-border rounded-full py-2 pl-9 pr-10 text-[11px] font-bold uppercase tracking-wider focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
+              className="w-full bg-slate-100/50 dark:bg-dark-bg border border-slate-200 dark:border-dark-border rounded-full py-1.5 sm:py-2 pl-8 sm:pl-9 pr-8 sm:pr-10 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600"
             />
             {searchQuery && (
               <button 
                 onClick={() => setSearchQuery('')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                className="absolute inset-y-0 right-0 pr-2 sm:pr-3 flex items-center text-slate-400 hover:text-slate-600 outline-none"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </button>
             )}
           </div>
@@ -353,15 +406,16 @@ export default function App() {
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary/20 hover:border-primary transition-all shadow-sm"
+                  className="w-10 h-10 rounded-xl overflow-hidden border-2 border-primary/20 hover:border-primary transition-all shadow-sm relative group"
                 >
                   {user.photoURL ? (
                     <img referrerPolicy="no-referrer" src={user.photoURL} alt={user.displayName || 'User'} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                      {user.displayName?.[0] || 'U'}
+                    <div className={`w-full h-full ${user.isAnonymous ? 'bg-slate-100 dark:bg-slate-800 text-slate-400' : 'bg-primary/10 text-primary'} flex items-center justify-center font-bold`}>
+                      {user.displayName ? user.displayName[0] : (user.isAnonymous ? <UserIcon className="w-5 h-5" /> : 'U')}
                     </div>
                   )}
+                  {user.isAnonymous && <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-yellow-400 border-2 border-white dark:border-dark-bg rounded-full" title="Guest Account" />}
                 </button>
 
                 <AnimatePresence>
@@ -372,12 +426,51 @@ export default function App() {
                         initial={{ opacity: 0, y: 5, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                        className="absolute right-0 mt-12 w-56 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 p-2 overflow-hidden"
+                        className="absolute right-0 mt-12 w-64 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl shadow-2xl z-50 p-3 overflow-hidden"
                       >
-                        <div className="px-4 py-3 border-b border-slate-50 dark:border-dark-border mb-1">
-                          <p className="text-[11px] font-black text-slate-900 dark:text-white truncate uppercase tracking-wider">{user.displayName || 'Anonymous User'}</p>
-                          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate tracking-tight">{user.email}</p>
+                        <div className="px-4 py-4 border-b border-slate-50 dark:border-dark-border mb-2 bg-slate-50/50 dark:bg-dark-bg/30 rounded-xl">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black uppercase">
+                              {user.displayName ? user.displayName[0] : (user.isAnonymous ? <UserIcon className="w-5 h-5 text-slate-400" /> : 'U')}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[11px] font-black text-slate-900 dark:text-white truncate uppercase tracking-wider">
+                                {user.displayName || (user.isAnonymous ? 'Guest Explorer' : 'Explorer')}
+                              </p>
+                              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate tracking-tight">
+                                {user.email || 'Temporary Account'}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-widest text-slate-400">
+                              <span>Semester Progress</span>
+                              <span className="text-primary">{calculateTotalProgress()}%</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                              <motion.div 
+                                className="h-full bg-primary" 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${calculateTotalProgress()}%` }}
+                              />
+                            </div>
+                          </div>
                         </div>
+
+                        {user.isAnonymous && (
+                          <button
+                            onClick={() => {
+                              signInWithGoogle();
+                              setIsUserMenuOpen(false);
+                            }}
+                            className="w-full flex items-center gap-2.5 px-4 py-3 text-left text-[11px] font-black uppercase tracking-widest text-primary hover:bg-primary/5 rounded-xl transition-all border border-primary/10 mb-2"
+                          >
+                            <LogIn className="w-4 h-4" />
+                            Secure Progress
+                          </button>
+                        )}
+
                         <button
                           onClick={() => {
                             logout();
@@ -406,7 +499,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-16">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
         <AnimatePresence mode="wait">
           {searchQuery ? (
             <motion.div
@@ -516,32 +609,33 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
+              <div className="mb-12 sm:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6 sm:gap-8">
                 <motion.div 
                   key={activeSubject.id}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
+                  className="max-w-xl"
                 >
-                  <h1 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight">
                     {activeSubject.title}
                   </h1>
-                  <div className="mt-4 flex items-center gap-4">
-                    <span className="text-xs font-black bg-primary text-white px-3 py-1.5 rounded-lg tracking-widest shadow-lg shadow-primary/20">
+                  <div className="mt-4 flex items-center gap-3 sm:gap-4">
+                    <span className="text-[10px] sm:text-xs font-black bg-primary text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg tracking-widest shadow-lg shadow-primary/20">
                       {activeSubject.code}
                     </span>
-                    <div className="h-0.5 w-8 bg-slate-200 dark:bg-slate-700" />
-                    <p className="text-slate-400 dark:text-slate-500 font-bold uppercase text-[10px] tracking-[0.3em]">Module Guidance Portal</p>
+                    <div className="h-0.5 w-6 sm:w-8 bg-slate-200 dark:bg-slate-700" />
+                    <p className="text-slate-400 dark:text-slate-500 font-bold uppercase text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.3em]">Module Guidance Portal</p>
                   </div>
                 </motion.div>
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   <div className="relative">
                     <button 
                       onClick={() => setIsThemeOpen(!isThemeOpen)}
-                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-dark-surface hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border card-shadow"
+                      className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white dark:bg-dark-surface hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border shadow-sm"
                     >
-                      {theme === 'light' ? <Sun className="w-3.5 -mt-0.5 h-3.5" /> : <Moon className="w-3.5 -mt-0.5 h-3.5" />}
-                      Theme
+                      {theme === 'light' ? <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
+                      <span className="hidden xs:inline">Theme</span>
                     </button>
                     
                     <AnimatePresence>
@@ -575,10 +669,30 @@ export default function App() {
                   <div className="relative">
                     <button 
                       onClick={() => setIsFilterOpen(!isFilterOpen)}
-                      className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-dark-surface hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border card-shadow"
+                      className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white dark:bg-dark-surface hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 transition-all border border-slate-200 dark:border-dark-border shadow-sm"
                     >
-                      <Palette className="w-3.5 -mt-0.5 h-3.5" /> Filter
+                      <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <span className="hidden xs:inline">Filter</span>
                     </button>
+                    
+                    <AnimatePresence>
+                      {showSyncMessage && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className="fixed bottom-10 right-10 z-[100] bg-primary text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border-2 border-white/20 backdrop-blur-md"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center animate-pulse">
+                            <CheckCircle2 className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-black uppercase tracking-widest leading-none mb-1">Welcome Back!</p>
+                            <p className="text-[10px] font-bold opacity-80 leading-none">Syncing your progress... ✨</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     
                     <AnimatePresence>
                       {isFilterOpen && (
@@ -617,26 +731,26 @@ export default function App() {
                   <div className="flex bg-slate-100 dark:bg-dark-surface p-1 rounded-xl border border-slate-200 dark:border-dark-border">
                     <button 
                       onClick={() => setLayoutMode('grid')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${layoutMode === 'grid' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                      className={`flex items-center gap-1 xs:gap-2 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all ${layoutMode === 'grid' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                     >
-                      <LayoutGrid className="w-3 h-3" /> Grid
+                      <LayoutGrid className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">Grid</span>
                     </button>
                     <button 
                       onClick={() => setLayoutMode('list')}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${layoutMode === 'list' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                      className={`flex items-center gap-1 xs:gap-2 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all ${layoutMode === 'list' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                     >
-                      <ListOrdered className="w-3 h-3" /> List
+                      <ListOrdered className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span className="hidden xs:inline">List</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-32">
+              <div className="space-y-20 sm:space-y-32">
                 {activeSubject.units.map((unit, uIdx) => (
                   <section key={unit.id} className="relative">
-                    <div className="flex items-center gap-4 mb-10 border-b border-slate-100 dark:border-dark-border pb-4">
-                      <span className="text-sm font-black text-white bg-slate-900 dark:bg-slate-700 px-3 py-1 rounded">0{uIdx + 1}</span>
-                      <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{unit.title}</h2>
+                    <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-10 border-b border-slate-100 dark:border-dark-border pb-4">
+                      <span className="text-xs sm:text-sm font-black text-white bg-slate-900 dark:bg-slate-700 px-2 sm:px-3 py-1 rounded">0{uIdx + 1}</span>
+                      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{unit.title}</h2>
                     </div>
 
                     {layoutMode === 'grid' ? (
@@ -678,32 +792,32 @@ export default function App() {
                                 </div>
                               )}
 
-                              <div className="flex gap-6 pt-4 border-t border-slate-50 dark:border-slate-800">
+                              <div className="flex flex-wrap gap-4 xs:gap-6 pt-4 border-t border-slate-50 dark:border-slate-800">
                                 <a 
                                   href={`https://www.google.com/search?q=${encodeURIComponent(topic.title + " BCA Notes")}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 hover:text-primary flex items-center gap-2 transition-colors"
+                                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 hover:text-primary flex items-center gap-1.5 sm:gap-2 transition-colors"
                                 >
-                                  <SearchIcon className="w-3.5 h-3.5" /> Source
+                                  <SearchIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Source
                                 </a>
                                 <button 
                                   onClick={() => handleExplain(topic.title)}
-                                  className="text-[11px] font-bold uppercase tracking-widest text-primary hover:text-blue-700 flex items-center gap-2 transition-colors group/ai"
+                                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-primary hover:text-blue-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/ai text-left"
                                 >
-                                  <BookOpen className="w-3.5 h-3.5 group-hover/ai:scale-110 transition-transform" /> Hinglish Notes
+                                  <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover/ai:scale-110 transition-transform shrink-0" /> Hinglish Notes
                                 </button>
                                 <button 
                                   onClick={() => handleYouTube(topic.title)}
-                                  className="text-[11px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700 flex items-center gap-2 transition-colors group/yt"
+                                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/yt"
                                 >
-                                  <Youtube className="w-3.5 h-3.5" /> YouTube
+                                  <Youtube className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" /> YouTube
                                 </button>
                                 <button 
                                   onClick={() => handleChatGPT(topic.title)}
-                                  className="text-[11px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-2 transition-colors group/gpt"
+                                  className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/gpt"
                                 >
-                                  <ExternalLink className="w-3.5 h-3.5 rotate-45 group-hover/gpt:translate-x-0.5 group-hover/gpt:-translate-y-0.5 transition-transform" /> Tutor
+                                  <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 rotate-45 group-hover/gpt:translate-x-0.5 group-hover/gpt:-translate-y-0.5 transition-transform shrink-0" /> Tutor
                                 </button>
                               </div>
                             </motion.div>
@@ -814,27 +928,27 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-dark-surface rounded-3xl shadow-2xl overflow-hidden"
+              className="relative w-full max-w-2xl bg-white dark:bg-dark-surface rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
-              <div className="px-8 py-6 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50/50 dark:bg-dark-bg/50">
-                <div className="flex-1">
+              <div className="px-6 sm:px-8 py-4 sm:py-6 border-b border-slate-100 dark:border-dark-border flex justify-between items-center bg-slate-50/50 dark:bg-dark-bg/50 shrink-0">
+                <div className="flex-1 min-w-0 mr-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <div className="flex items-center gap-1.5 bg-primary/10 px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest text-primary">
+                    <div className="flex items-center gap-1.5 bg-primary/10 px-1.5 sm:px-2 py-0.5 rounded text-[8px] sm:text-[9px] font-black uppercase tracking-widest text-primary">
                       <BookOpen className="w-2.5 h-2.5 fill-primary/20" />
                       Academic Standard
                     </div>
-                    <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">• Updated April 2024</span>
+                    <span className="hidden xs:inline text-[8px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">• Updated 2024</span>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white leading-tight">{selectedNote.topic}</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight truncate">{selectedNote.topic}</h3>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   <div className="relative">
                     <button 
                       onClick={() => setShowSettings(!showSettings)}
-                      className={`p-2 rounded-full transition-all ${showSettings ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-100 dark:bg-dark-bg text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+                      className={`p-1.5 sm:p-2 rounded-full transition-all ${showSettings ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-100 dark:bg-dark-bg text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
                     >
-                      <Settings2 className="w-5 h-5" />
+                      <Settings2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                     
                     <AnimatePresence>
@@ -872,19 +986,19 @@ export default function App() {
                 </div>
               </div>
               
-              <div className="p-10 max-h-[60vh] overflow-y-auto">
+              <div className="p-6 sm:p-10 overflow-y-auto grow">
                 <div className="prose prose-slate dark:prose-invert prose-sm max-w-none">
                   {noteStyle === 'bulletin' && Array.isArray(selectedNote.content) ? (
-                    <ul className="space-y-6">
+                    <ul className="space-y-4 sm:space-y-6">
                       {selectedNote.content.map((bullet, idx) => (
                         <motion.li 
                           key={idx}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: idx * 0.05 }}
-                          className="flex items-start gap-4 text-slate-700 dark:text-slate-300 text-base font-medium leading-relaxed"
+                          className="flex items-start gap-3 sm:gap-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base font-medium leading-relaxed"
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
                           <span>{bullet}</span>
                         </motion.li>
                       ))}
@@ -894,9 +1008,9 @@ export default function App() {
                       key={noteStyle}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="space-y-6"
+                      className="space-y-4 sm:space-y-6"
                     >
-                      <p className="text-slate-700 dark:text-slate-300 leading-loose whitespace-pre-wrap text-[17px] font-medium tracking-tight">
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed sm:leading-loose whitespace-pre-wrap text-[15px] sm:text-[17px] font-medium tracking-tight">
                         {selectedNote.content}
                       </p>
                     </motion.div>
@@ -904,12 +1018,12 @@ export default function App() {
                 </div>
               </div>
               
-              <div className="px-8 py-6 bg-slate-50 dark:bg-dark-bg border-t border-slate-100 dark:border-dark-border flex justify-end">
+              <div className="px-6 sm:px-8 py-4 sm:py-6 bg-slate-50 dark:bg-dark-bg border-t border-slate-100 dark:border-dark-border flex justify-end shrink-0">
                 <button 
                   onClick={() => setSelectedNote(null)} 
-                  className="bg-slate-900 dark:bg-primary text-white text-xs font-bold rounded-xl px-10 py-3 hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-lg active:scale-95"
+                  className="w-full sm:w-auto bg-slate-900 dark:bg-primary text-white text-[11px] sm:text-xs font-black uppercase tracking-widest rounded-xl px-8 sm:px-10 py-3 hover:bg-slate-800 dark:hover:bg-blue-700 transition-all shadow-lg active:scale-95"
                 >
-                  Close Notes
+                  Close
                 </button>
               </div>
             </motion.div>
