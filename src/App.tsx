@@ -262,7 +262,7 @@ export default function App() {
 
   const getTopicId = (s: Subject, u: Unit, t: Topic) => `${s.id}-${u.id}-${t.title}`;
 
-  const calculateTotalProgress = () => {
+  const totalStats = useMemo(() => {
     let total = 0;
     let done = 0;
     syllabusData.forEach(s => {
@@ -273,9 +273,14 @@ export default function App() {
         });
       });
     });
-    if (total === 0) return 0;
-    return Math.round((done / total) * 100);
-  };
+    return {
+      percentage: total === 0 ? 0 : Math.round((done / total) * 100),
+      total,
+      done
+    };
+  }, [progress]);
+
+  const calculateTotalProgress = () => totalStats.percentage;
 
   const handleExplain = (topic: string) => {
     try {

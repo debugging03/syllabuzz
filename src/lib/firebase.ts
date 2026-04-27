@@ -68,6 +68,8 @@ export const logout = async () => {
   if (!auth) return;
   try {
     await signOut(auth);
+    // Clear local storage on logout so the guest starts fresh and doesn't see previous user's data
+    localStorage.removeItem('sem4-progress');
     // Hard refresh ensures all internal states and listeners are completely destroyed
     window.location.reload();
   } catch (error) {
