@@ -1,43 +1,40 @@
 # Syllabuzz 🐝
 > Your Ultimate Semester Study Companion
 
-<div align="center">
-  <!-- REPLACE THE LINK BELOW WITH YOUR ACTUAL GITHUB VIDEO LINK -->
-  <video src="PASTE_YOUR_GITHUB_VIDEO_URL_HERE" width="100%" controls muted></video>
-</div>
-
 **🚀 [Launch Live App](https://debugging03.github.io/syllabuzz/)**
 
-Syllabuzz is a modern, interactive dashboard designed to take the stress out of exam preparation. It organizes your entire syllabus into a streamlined, high-performance interface that helps you focus on what matters: studying.
+Syllabuzz is a modern, interactive dashboard designed to take the stress out of exam preparation. It organizes your entire syllabus into a streamlined, high-performance interface that helps you focus on what matters: **learning, not searching.**
 
 ## ✨ Why Syllabuzz?
 
-- **Everything in One Place**: No more hunting for PDFs. Your whole syllabus is organized by subject and unit.
-- **Find Anything Instantly**: Our "Smart Search" finds topics even if you make a typo.
-- **Hinglish Notes**: Get crystal-clear explanations in everyday language (Hinglish) that makes complex topics easy to understand.
-- **Track Your Progress**: Mark topics as "Done" and watch your progress bar grow. It saves your progress automatically!
-- **Fast Access to Videos & Help**: Directly jump to YouTube tutorials or get smart help for any specific topic with one click.
-- **Easy on the Eyes**: Switch between Light, Dark, and Reading modes to study comfortably for hours.
+| Feature | Description |
+| :--- | :--- |
+| **📦 Everything in One Place** | No more hunting for PDFs. Your whole syllabus is organized by subject and unit. |
+| **🔍 Smart Search** | Find any topic instantly. Our fuzzy search finds topics even if you make a typo. |
+| **💡 Hinglish Notes** | Get crystal-clear explanations in everyday language (Hinglish) that makes complex topics easy. |
+| **📊 Real-time Progress** | Mark topics as "Done" and watch your progress bar grow. Synced across all your devices via Firebase. |
+| **🎥 Instant Learning** | One-click access to YouTube tutorials or AI-powered smart help for any topic. |
+| **👁️ Eye Care Modes** | Switch between Light, Dark, and a special Reading mode for long study sessions. |
 
 ## 📖 How to Use
 
-1. **Pick a Subject**: Use the dropdown at the top to select your subject.
-2. **Search or Browse**: Scroll through the units or use the search bar to find a specific topic.
-3. **Study & Learn**: Click on **"Hinglish Notes"** for a quick breezy explanation, or use the **YouTube/Smart Help** buttons for deeper learning.
-4. **Mark as Done**: Once you've mastered a topic, hit the checkmark to track your progress.
-5. **Customize**: Use the theme and filter buttons to change the look of the app to suit your mood.
+1.  **Pick a Subject** 📚: Select your current subject from the dropdown.
+2.  **Search or Browse** 🔎: Use the search bar to find specific topics or browse by unit.
+3.  **Study & Master** 🧠: Use the **Hinglish Notes** for quick understanding or **YouTube** for deep dives.
+4.  **Track Achievement** ✅: Check topics off as you finish them to visualize your progress.
+5.  **Cloud Sync** ☁️: Sign in with Google to keep your progress synced on mobile and desktop.
 
 ---
 
-## 🛠️ Tech Stack (For Developers)
+## 🛠️ Tech Stack
 
-- **Frontend**: React 19, Vite
-- **Styling**: Tailwind CSS (v4)
-- **Animations**: Motion
-- **Search Engine**: Fuse.js (Fuzzy Search)
-- **Icons**: Lucide React
-
+- **Framework**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Database**: [Firebase Firestore](https://firebase.google.com/) (Real-time Sync)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Search**: [Fuse.js](https://www.fusejs.io/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## 📝 License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available under the **MIT License**.
