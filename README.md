@@ -2,7 +2,8 @@
 > Your Ultimate Semester Study Companion
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/your-video-id" width="100%" controls muted></video>
+  <!-- REPLACE THE LINK BELOW WITH YOUR ACTUAL GITHUB VIDEO LINK -->
+  <video src="PASTE_YOUR_GITHUB_VIDEO_URL_HERE" width="100%" controls muted></video>
 </div>
 
 **🚀 [Launch Live App](https://debugging03.github.io/syllabuzz/)**
