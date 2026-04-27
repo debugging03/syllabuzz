@@ -1,8 +1,13 @@
-# Syllabuzz
+# Syllabuzz 🐝
+> Your Ultimate Semester Study Companion
 
-**🔗 Launch Syllabuzz App: [https://debugging03.github.io/syllabuzz/](https://debugging03.github.io/syllabuzz/)**
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/your-video-id" width="100%" controls muted></video>
+</div>
 
-Syllabuzz is your ultimate study companion for current semester. It takes the stress out of exam preparation by organizing your entire syllabus into an easy-to-follow, interactive dashboard.
+**🚀 [Launch Live App](https://debugging03.github.io/syllabuzz/)**
+
+Syllabuzz is a modern, interactive dashboard designed to take the stress out of exam preparation. It organizes your entire syllabus into a streamlined, high-performance interface that helps you focus on what matters: studying.
 
 ## ✨ Why Syllabuzz?
 
@@ -31,12 +36,6 @@ Syllabuzz is your ultimate study companion for current semester. It takes the st
 - **Search Engine**: Fuse.js (Fuzzy Search)
 - **Icons**: Lucide React
 
-## 📂 Project Structure
-
-- `src/syllabusData.ts`: Central database for all subjects and topics.
-- `src/notesData.ts`: Smart repository for Hinglish notes and summaries.
-- `src/App.tsx`: Main application heart and logic.
-- `src/index.css`: Design system and visual styling.
 
 ## 📝 License
 
