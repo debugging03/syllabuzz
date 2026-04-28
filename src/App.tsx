@@ -1242,7 +1242,7 @@ export default function App() {
                     </motion.div>
 
                     {/* Diagram Hint */}
-                    {selectedNote.diagramHint && (
+                    {selectedNote.diagramUrl && selectedNote.diagramHint && (
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -1259,6 +1259,35 @@ export default function App() {
                       </motion.div>
                     )}
                   </div>
+
+                  {/* Quick Actions (Redirects inside notes) */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="flex flex-col sm:flex-row gap-3 pt-4"
+                  >
+                    <button 
+                      onClick={() => handleYouTube(selectedNote.topic)}
+                      className="flex-1 flex items-center justify-center gap-3 bg-red-600 dark:bg-red-700 text-white py-4 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-700 dark:hover:bg-red-800 transition-all shadow-lg shadow-red-200 dark:shadow-none active:scale-95"
+                    >
+                      <Youtube className="w-5 h-5" /> Watch on YouTube
+                    </button>
+                    {selectedNote.diagramUrl && (
+                      <button 
+                        onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedNote.topic + " diagram " + activeSubject.title)}&tbm=isch`, '_blank')}
+                        className="flex-1 flex items-center justify-center gap-3 bg-indigo-600 dark:bg-indigo-700 text-white py-4 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 dark:hover:bg-indigo-800 transition-all shadow-lg shadow-indigo-200 dark:shadow-none active:scale-95"
+                      >
+                        <ImageIcon className="w-5 h-5" /> View Diagram
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => handleChatGPT(selectedNote.topic)}
+                      className="flex-1 flex items-center justify-center gap-3 bg-emerald-600 dark:bg-emerald-700 text-white py-4 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 dark:hover:bg-emerald-800 transition-all shadow-lg shadow-emerald-200 dark:shadow-none active:scale-95"
+                    >
+                      <ExternalLink className="w-5 h-5 rotate-45" /> Ask AI Tutor
+                    </button>
+                  </motion.div>
                 </div>
               </div>
               

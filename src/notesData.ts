@@ -26,7 +26,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Jaise aapki Phonebook—pehle log diary mein likhte the (File System), ab phone contacts app mein naam, number, aur email smartly search hota hai (DBMS).",
     examTip: "Exam mein E.F. Codd ka naam aur 1970 zaroor mention karna, isse extra weightage milta hai.",
-    diagramHint: "Ek timeline banaiye showing 1960s (IMS) -> 1970s (Relational) -> Modern (NoSQL)."
+    diagramHint: "Ek timeline banaiye showing 1960s (IMS) -> 1970s (Relational) -> Modern (NoSQL).",
+    diagramUrl: "true"
   },
   {
     topic: "File System vs DBMS",
@@ -204,7 +205,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "UNION ka use - Ek shop ke 'Local Customers' aur 'Online Customers' ki combined list nikalne ke liye.",
     examTip: "Venn Diagrams banakar in operations ko samjhayein, full marks milenge.",
-    diagramHint: "A B overlap circles with shaded areas for Union, Intersect, and Except."
+    diagramHint: "A B overlap circles with shaded areas for Union, Intersect, and Except.",
+    diagramUrl: "true"
   },
   {
     topic: "Boyce-Codd Normal Form",
@@ -230,7 +232,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Jaise ek messy wardrobe ko organize karna taaki har kapda (data) apni sahi jagah pe ho aur duplicate na rakha ho.",
     examTip: "Anomalies (Insert, Delete, Update) ko define karna is topic ka main part hai.",
-    diagramHint: "Flowchart showing: Rough Schema -> Refinement Process -> Refined Schema."
+    diagramHint: "Flowchart showing: Rough Schema -> Refinement Process -> Refined Schema.",
+    diagramUrl: "true"
   },
   {
     topic: "Attributes and Entity Sets",
@@ -270,8 +273,9 @@ export const hinglishNotes: Note[] = [
       "Operations: Insertion, Deletion, Searching, aur Sorting."
     ],
     realLifeExample: "Jaise ek kitchen storage rack—masale properly dabbo mein hain taaki cooking (Processing) ke waqt jaldi mil sakein.",
-    examTip: "Data type vs Data structure ka difference explain karna exam ke liye bhot imp hai.",
-    diagramHint: "Classification tree: Linear vs Non-Linear structures."
+    examTip: "Maths ke Logic Gates and Data Structures ke classification ko mix na karein.",
+    diagramHint: "Classification tree: Linear vs Non-Linear structures.",
+    diagramUrl: "true"
   },
   {
     topic: "ODBC and JDBC",
@@ -284,7 +288,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Jaise Universal Charger—aapka phone koi bhi ho, standard protocol (driver) se charge ho jata hai.",
     examTip: "Architecture diagram (Application -> JDBC/ODBC -> Driver -> Database) zaroor banayein.",
-    diagramHint: "Middleware layer architecture with arrows showing data flow."
+    diagramHint: "Middleware layer architecture with arrows showing data flow.",
+    diagramUrl: "true"
   },
 
   // BCA-402 Digital Electronics
@@ -357,6 +362,7 @@ export const hinglishNotes: Note[] = [
     realLifeExample: "Pehle ka computer ek pure room jitna bada tha (1st Gen), aaj ka computer aapki wrist watch mein fit hai (Apple Watch).",
     examTip: "Generation wise technology names (Vacuum tubes, Transistors, ICs, VLSI) ko tabular form mein likhein.",
     diagramHint: "Evolution timeline: Vacuum Tube -> Transistor -> IC -> Microprocessor -> AI icon.",
+    diagramUrl: "true"
   },
   {
     topic: "Number Systems",
@@ -370,6 +376,7 @@ export const hinglishNotes: Note[] = [
     realLifeExample: "Hum 10 ungliyon se ginte hain (Decimal), par switch sirf 'On' ya 'Off' hota hai (Binary).",
     examTip: "Conversion examples (Decimal to Binary) dikhana mat bhulein, especially fractional numbers.",
     diagramHint: "Comparison table of Base 2, 8, 10, and 16 with their character sets.",
+    diagramUrl: "true"
   },
   {
     topic: "Decimal & Alphanumeric Representation",
@@ -383,6 +390,7 @@ export const hinglishNotes: Note[] = [
     realLifeExample: "Jab aap 'A' press karte ho, computer use number '65' (ASCII) ki tarah save karta hai.",
     examTip: "ASCII aur Unicode ka difference (Storage size aur character range) zaroor mention karein.",
     diagramHint: "A character 'A' and its binary/hex mapped value representation.",
+    diagramUrl: "true"
   },
   {
     topic: "Floating Point Representation",
@@ -396,6 +404,7 @@ export const hinglishNotes: Note[] = [
     realLifeExample: "Jaise 0.0005 m ko digital memory mein 5 x 10^-4 ki tarah save karna accuracy ke liye.",
     examTip: "IEEE 32-bit (Single Precision) aur 64-bit (Double Precision) ke configuration ko zaroor draw karein.",
     diagramHint: "3 blocks diagram: [Sign] [Exponent] [Mantissa] showing bit distribution (1, 8, 23).",
+    diagramUrl: "true"
   },
   {
     topic: "Error Detection and Correction Codes",
@@ -409,6 +418,7 @@ export const hinglishNotes: Note[] = [
     realLifeExample: "Jaise bank transaction ke waqt agar signal weak ho, toh CRC codes ensure karte hain ki paise sahi account mein jayein.",
     examTip: "Hamming Code ka parity check table banakar dikhayein examiner ko marks ke liye.",
     diagramHint: "Data bits vs Redundant (Parity) bits comparison box.",
+    diagramUrl: "true"
   },
   {
     topic: "Logic Gates",
@@ -461,8 +471,9 @@ export const hinglishNotes: Note[] = [
       "Simplification: Isse circuit chota, fast aur sasta banta hai."
     ],
     realLifeExample: "Jaise hum Maths mein equations ko simplify karte hain taaki solve karna asaan ho.",
-    examTip: "4-variable K-Map draw karein aur 1s ko group karke final equation derive karein.",
+    examTip: "Is topic ka logic K-Map simplification ke bina अधूरा hai.",
     diagramHint: "A 4x4 K-map grid with labeled binary axes (AB, CD) showing groups of 1s.",
+    diagramUrl: "true"
   },
   {
     topic: "Half Adder and Full Adder",
