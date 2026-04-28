@@ -62,7 +62,7 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "Attributes and Entity Sets",
+    topic: "Overview of Data Design Entities",
     short: "Entities objects hote hain (Student) aur Attributes unki properties (Name, RollNo). Inka collection Entity Set kehlata hai.",
     detailed: "ER model mein 'Entity' koi bhi real-world object ho sakta hai jiska existence hai, jaise ek Employee ya Department. 'Entity Set' ek group hota hai similar physical entities ka. Har entity ke pass properties hoti hain jinhe 'Attributes' kehte hain. Attributes kai types ke hote hain: 1. Simple (Roll No), 2. Composite (Name which has First/Last), 3. Derived (Age which depends on DOB), aur 4. Multi-valued (Phone numbers). Har Entity Set mein ek primary key identify karna zaroori hota hai jo har entity ko uniquely represent kare. ER diagrams mein Entities ko Rectangle aur Attributes ko Ellipse se represent kiya jata hai.",
     bulletin: [
@@ -71,6 +71,84 @@ export const hinglishNotes: Note[] = [
       "Simple vs Composite: Atomic values vs breakable values (e.g., Address).",
       "Stored vs Derived: Primary data vs data computed from other fields.",
       "Key Attribute: Used to uniquely identify an entity in a set."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Components of DBMS",
+    short: "DBMS ke main components: Hardware, Software, Data, Users, aur Procedures jo milke system chalate hain.",
+    detailed: "DBMS ek framework hai jisme 5 core components hote hain: 1. Hardware (Storage, CPU). 2. Software (DB Engine, Tools). 3. Data (The actual records). 4. Procedures (Rules and methods). 5. Users (DBA, Designers, End-users). In sabka coordination zaroori hai system ki efficiency ke liye.",
+    bulletin: [
+      "Software: Core engine that handles language processing (SQL).",
+      "Data: The most critical component, stored as raw values and metadata.",
+      "Hardware: Physical disks and I/O channels for data persistence.",
+      "Users: Different levels of access from admin to casual query users.",
+      "Procedures: Operational guidelines for backup, recovery, and security."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Conceptual Data Base Design with ER Model",
+    short: "ER Diagram system ka blueprint hai jo entities aur unke beech logical relationships ko visually show karta hai.",
+    detailed: "Entity-Relationship (ER) diagram database design ka visual tool hai. Isme Rectangles (Entities), Ellipses (Attributes), aur Diamonds (Relationships) use hote hain. Yeh conceptual level pe requirements mapping karta hai taaki developer logic samajh sake bina actual tables dekhe. Isme cardinality (1:1, 1:N, M:N) aur participation constraints (Total/Partial) define ki jati hain.",
+    bulletin: [
+      "Cardinality: Defines mapping limits (e.g., one student has one ID).",
+      "Diagram Symbols: Rectangles(E), Ellipses(A), Diamonds(R), Lines.",
+      "Conceptual Design: Bridge between business rules and table logic.",
+      "Participation: Total (Double line) vs Partial participation constraints.",
+      "Standard: Peter Chen's notation is the academic base for ER design."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Weak Entities",
+    short: "Weak entity wo hai jo bina owner (strong) entity ke exist nahi kar sakti.",
+    detailed: "Weak Entity ki apni koi identifying primary key nahi hoti (e.g., Dependents of an Employee). Isko identify karne ke liye owner entity ki key aur ek partial key, jise 'Discriminator' kehte hain, ki zaroorat hoti hai. ER diagram mein isko double rectangle se show karte hain aur iski identifying relationship double diamond se denote ki jati hai.",
+    bulletin: [
+      "No Primary Key: Depends on the parent entity.",
+      "Representation: Double rectangle symbol.",
+      "Identifying Relationship: Linked to owner via double diamond symbol.",
+      "Partial Key: Uses a discriminator to distinguish items.",
+      "Total Participation: Always fully dependent on its owner."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Generalization and Specialization",
+    short: "Generalization bottom-up process hai (combining entities), jabki Specialization top-down process hai (splitting entities).",
+    detailed: "ER modeling mein class hierarchies hoti hain. 1. Generalization: Jab multiple specific entities ko combine karke ek broader entity banayi jati hai (jaise 'Car' aur 'Truck' milke 'Vehicle' bante hain). 2. Specialization: Ek general entity ko aur specifically sub-divide karna (e.g., 'Employee' ko 'Manager' aur 'Worker' mein split karna). Inheritance dono mein use hoti hai.",
+    bulletin: [
+      "Generalization: Bottom-up abstraction approach.",
+      "Specialization: Top-down refinement approach.",
+      "Inheritance: Lower-level entities inherit attributes from higher-level.",
+      "ISA Relationship: Can be expressed as 'Car IS A Vehicle'.",
+      "Usage: Resolves overlap and organizes data neatly."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Aggregation",
+    short: "Aggregation ek relationship-of-relationships concept hai jo complex ER logic model karne mein madat karta hai.",
+    detailed: "Jab abstract level par ek relationship ko hi ek 'Entity' ki tarah treat kiya jata hai taaki use kisi aur entity/relationship ke saath connect kiya ja sake, to use Aggregation kehte hain. Yeh basically nested relationships ko simplify karne ke liye ER diagram mein box enclosure se show kiya jata hai.",
+    bulletin: [
+      "Abstraction logic: Treating a relationship as an entity.",
+      "Complexity resolution: Helps link higher-order relationships.",
+      "Visuals: Drawn by putting a bounding box around a relationship.",
+      "Ternary Avoidance: Often used to avoid complex ternary relationships.",
+      "Use Case: E.g., A 'Project Assignment' relationship connected to an 'Evaluation' entity."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Relational Model",
+    short: "Relational model data ko tables (relations) mein organize karta hai jahan rows tuples hain aur columns attributes.",
+    detailed: "E.F. Codd ne relational model propose kiya tha jo mathematical relations pe based hai. 1. Tuple: A single row (Record). 2. Attribute: A single column (Field). 3. Domain: Set of permitted values for an attribute. 4. Degree: Number of columns. 5. Cardinality: Number of rows. Isme keys (Primary, Foreign, Candidate) data consistency aur references maintain karti hain across different tables.",
+    bulletin: [
+      "Relation: A formal term for a table with unique rows.",
+      "Domain Integrity: Ensures values match specific data types and ranges.",
+      "Primary Key: Unique identifier for every single tuple in a relation.",
+      "Foreign Key: Link between two tables representing commonality.",
+      "Relational Schema: Logical definition of table structures and data types."
     ],
     diagramUrl: "true"
   },
@@ -137,7 +215,7 @@ export const hinglishNotes: Note[] = [
 
   // BCA-402 Digital Electronics
   {
-    topic: "The Basic Computer",
+    topic: "Basic Computer Block Diagram",
     short: "Basic computer hardware aur software ka combination hai jo instructions process karta hai simplified Von-Neumann model pe.",
     detailed: "Von Neumann Architecture modern computers ka foundation hai jisme program aur data dono ek hi memory mein store hote hain. Iske 5 main components hote hain: 1. CPU (ALU + CU), 2. Memory Unit (RAM), 3. Input Unit, 4. Output Unit, aur 5. Bus System. Sabse bada disadvantage 'Von Neumann Bottleneck' hai, kyunki CPU aur memory ke beech ek hi bus hone se data retrieval speed process ko limit karti hai.",
     bulletin: [
@@ -159,7 +237,8 @@ export const hinglishNotes: Note[] = [
       "Architecture Date: Proposed in 1945 by John von Neumann.",
       "Speed Constraint: Bus bandwidth dictates the system throughput.",
       "Flow: Input -> CPU/Memory -> Output."
-    ]
+    ],
+    diagramUrl: "true"
   },
   {
     topic: "Instruction Cycle",
@@ -175,7 +254,7 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "Instruction Cycle Interrupts",
+    topic: "Interrupt Cycle",
     short: "Interrupts CPU execution ko break karte hain urgent events handle karne ke liye (Task switches or failures).",
     detailed: "Interrupt steps: 1. Current instruction complete karo. 2. Status/Registers save karo. 3. ISR (Interrupt Service Routine) execute karo. 4. Wapas original program pe laut aao. Types: Hardware (Keyboard), Software (Runtime errors), Maskable (Can be disabled), aur Non-Maskable (NMI - Cannot be ignored, e.g., Power loss).",
     bulletin: [
@@ -261,6 +340,19 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
+    topic: "Logic Circuits",
+    short: "Logic circuits binary data par operational logic lagaakar computation aur control signals create karte hain.",
+    detailed: "Electronic digital circuits jo logic function ko hardware mein real karte hain. Yeh circuits basically Boolean logic follow karke complex arithmetic, processing aur routing handle karte hain. Overall inko 2 classes mein divide kiya jata hai: Combinational (State independent) aur Sequential (State dependent with memory).",
+    bulletin: [
+      "Core Mechanism: Uses simple logic gates to build complex operations.",
+      "Voltage Levels: Interprets 5V as True (1) and 0V as False (0).",
+      "Two Types: Combinational and Sequential circuits.",
+      "Applications: Arithmetic Processing, Bus Steering, Control logic.",
+      "Implementation: Built inside ICs on silicon wafers using transistors."
+    ],
+    diagramUrl: "true"
+  },
+  {
     topic: "Combinational Circuits",
     short: "In circuits ka output sirf current inputs pe depend karta hai (No memory).",
     detailed: "Combinational circuits mein previous state save karne ka hardware nahi hota. Examples: Adders, MUX, Demux, Encoders, aur Decoders. Inka design gate propagation delay se limited hota hai. Truth tables aur Boolean equations inka functional behavior define karte hain.",
@@ -270,7 +362,8 @@ export const hinglishNotes: Note[] = [
       "Logic Patterns: Sum of Products (SOP) and Product of Sums (POS).",
       "Optimization: Simplified using K-Maps to reduce gate count.",
       "Building Blocks: Base for logical steering in CPU buses."
-    ]
+    ],
+    diagramUrl: "true"
   },
   {
     topic: "Minimization of Gates",
@@ -285,41 +378,35 @@ export const hinglishNotes: Note[] = [
     ]
   },
   {
-    topic: "Adders",
-    short: "Adders binary arithmetic manage karte hain (Half, Full, aur Carry Look-ahead configurations).",
-    detailed: "1. Half Adder: 2 bits handle karta hai (Sum=A⊕B, Carry=A·B). 2. Full Adder: 3 bits handle karta hai (A, B, Cin). 3. Ripple Carry Adder: Multiple full adders chain hote hain (Simple but slow). 4. Carry Look-ahead Adder: Ye fast hota hai kyunki ye carry bit pehle se compute kar leta hai serial propagation ka wait kiye bina. Modern processors hamesha Carry Look-ahead use karte hain high speeds ke liye.",
+    topic: "Half Adder and Full Adder",
+    short: "Adders binary arithmetic manage karte hain.",
+    detailed: "1. Half Adder: 2 bits handle karta hai (Sum=A⊕B, Carry=A·B). 2. Full Adder: 3 bits handle karta hai (A, B, Cin) multi-bit operations enable karne ke liye.",
     bulletin: [
       "Half Adder: Basic 2-bit addition; cannot handle carry-in.",
       "Full Adder: 3-bit processing; Sum = A⊕B⊕Cin.",
-      "Ripple Carry: Delay is proportional to number of bits (Slow carry propagation).",
-      "Carry Look-ahead: Fast but complex; uses predictive logic paths.",
-      "Cascade: Joining FA units for multi-bit processing blocks."
+      "Ripple Carry: Delay is proportional to number of bits."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Decoders & Encoders",
-    short: "Decoders binary bits ko address signals mein convert karte hain, aur Encoders inverse operation karte hain.",
-    detailed: "Decoder (n inputs → 2^n outputs) memory address decode karne aur 7-segment displays ke liye use hota hai. Encoder (2^n → n) priority resolve karne ke liye best hai. Priority Encoder multiple HIGH inputs mein se highest priority wala selection choose karta hai correctly simultaneous signals handle karne ke liye.",
+    topic: "Encoder and Decoder",
+    short: "Decoders binary bits ko logic signals mein convert karte hain, aur Encoders inverse operation karte hain.",
+    detailed: "Decoder (n inputs → 2^n outputs) address bus select karne ke liye use hota hai. Encoder (2^n → n) hardware signals (jaise keyboard) ko binary mein encode karta hai.",
     bulletin: [
-      "Decoder: Extracts 1 specific HIGH line from binary input code.",
-      "Encoder: Generates binary code based on which input line is active.",
-      "Priority Encoder: Handles multiple active inputs based on importance level.",
-      "Application: Memory address selection and interrupt source identification.",
-      "Constraint: Decoder has exactly one HIGH output at a given time."
+      "Decoder: Extracts specific line from binary code.",
+      "Encoder: Generates binary code based on active input line.",
+      "Application: Sub-system addressing."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Multiplexer",
-    short: "Many-to-one circuit jo multiple signals mein se ek ko select karke output pe bhejta hai.",
-    detailed: "MUX (Data Selector) 2^n data inputs aur n select lines use karta hai. Isse kisi bhi Boolean function ko implement kiya ja sakta hai. Demultiplexer (One-to-many) iska inverse hai jo single line input ko multiple output paths pe route karta hai based on selection code.",
+    topic: "Multiplexer and Demultiplexer",
+    short: "MUX multiple signals mein se ek select karta hai, DEMUX signal distributor hai.",
+    detailed: "MUX (Data Selector) 2^n data inputs aur n select lines use karta hai. Demux single line input ko multiple output paths pe route karta hai.",
     bulletin: [
-      "MUX: Controls data flow from many sources to one sink.",
-      "Selection: S-lines determine which input reaches the output.",
-      "Demux: Distributes a single signal to multiple optional destinations.",
-      "Logic Emulator: MUX can implement any combinational logic function.",
-      "Efficiency: Critical for CPU internal bus sharing and communication."
+      "MUX: Routes many inputs to one sink.",
+      "DEMUX: Distributes one input to many sinks.",
+      "Efficiency: Critical for CPU internal bus sharing."
     ],
     diagramUrl: "true"
   },
@@ -337,14 +424,23 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "ROM & RAM",
-    short: "ROM non-volatile permanent storage hai, jabki RAM temporary volatile workspace hai.",
-    detailed: "ROM Types: 1. PROM (Programmed once), 2. EPROM (UV light erase), 3. EEPROM (Electrically erase), 4. Flash (Block-wise erase, pen drives mein use). RAM Types: SRAM (Fast, cache), DRAM (Cheap, memory), SDRAM (Synchronized with clock), aur DDR (Double Data Rate). Memory system speed, capacity aur cost ke compromise pe built hai.",
+    topic: "Read Only Memory (ROM)",
+    short: "ROM permanent storage provide karta hai boot configuration aur logic mapping ke liye.",
+    detailed: "ROMs chip level pe permanent logic aur program hold karte hain. Prominent forms: PROM, EPROM, EEPROM, aur Flash Memory. Inka primary kaam computer boot process system firmware (BIOS/UEFI) hold karna hota hai.",
     bulletin: [
-      "ROM: Permanent firmware logic; Non-volatile data retention.",
-      "EPROM: Erasable via Ultra-Violet exposure in special equipment.",
-      "EEPROM: Electrically erasable BIOS chips for easy updates.",
-      "Flash Memory: Fast block-wise erase technology used in SSDs.",
+      "ROM: Stores firmware non-volatilely.",
+      "EEPROM/Flash: Allow modifying data dynamically later.",
+      "Usage: Replaces complex Combinational logic as look-up tables."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "RAM vs ROM",
+    short: "ROM non-volatile permanent storage hai, jabki RAM temporary volatile workspace hai.",
+    detailed: "ROM Types: PROM, EPROM, EEPROM, Flash. RAM Types: SRAM (Fast, cache), DRAM (Cheap, memory). Memory system in dono chip types ke balance par chalta hai—RAM processor data block save karta hai while ROM hard logic hold karta hai.",
+    bulletin: [
+      "ROM: Permanent firmware logic; Non-volatile.",
+      "RAM: Temporary workspace; Volatile.",
       "SRAM vs DRAM: SRAM needs no refresh (Fast); DRAM needs refresh (Cheap)."
     ],
     diagramUrl: "true"
@@ -363,58 +459,41 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "Flip Flops",
+    topic: "Flip-Flops (SR, JK, D, T)",
     short: "Flip-flops 1-bit memory components hain (SR, D, JK, T types).",
-    detailed: "1. SR Flip-flop: Basic reset/set but has 'Invalid' state. 2. D Flip-flop: Data storage ke liye best hai; SR ki ambiguity khatam karta hai. 3. JK Flip-flop: Improved SR; 1,1 pe Toggle (Complement) karta hai. 4. T Flip-flop: Toggle functionality (Counters ke liye). Master-Slave FF logic 'Race around condition' solve karne ke liye Master cycle (High) aur Slave cycle (Low) use karta hai.",
+    detailed: "1. SR Flip-flop: Basic reset/set but has 'Invalid' state. 2. D Flip-flop: Data storage ke liye best hai. 3. JK Flip-flop: Improved SR; 1,1 pe Toggle (Complement) karta hai. 4. T Flip-flop: Toggle functionality (Counters ke liye). Master-Slave FF logic 'Race around condition' solve karta hai.",
     bulletin: [
       "SR FF: 2 inputs (Set/Reset); Invalid when both are 1.",
-      "D FF: Q(next) = D; Simple latch logic for registers.",
+      "D FF: Q(next) = D; Simple latch logic.",
       "JK FF: Most versatile; J=K=1 flips the state (Toggle).",
-      "T FF: Single input; state flips on every pulse if T=1.",
-      "Timing: Edge-triggered logic ensures stability during clock transitions."
+      "T FF: Single input; state flips on every pulse if T=1."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Excitation Tables",
-    short: "Ye batati hain ki targeted state change (e.g. 0 to 1) ke liye flip-flop ko kya input dena hoga.",
-    detailed: "Designers Counter ya sequence generator banane ke liye excitation tables use karte hain. Ye table states (Present and Next) se target inputs (J, K etc.) nikalne ka formula deti hai. Bina excitation tables ke synchronous sequential logic design karna hardware level pe impossible hai.",
-    bulletin: [
-      "Mapping Tool: Translates desired state changes into hardware signals.",
-      "JK Table: 0→1 needs J=1, K=X (Don't care).",
-      "SR Table: 0→1 needs S=1, R=0.",
-      "D Table: Always same as the Next State value.",
-      "Foundation: Used to simplify K-Maps for counter design."
-    ]
-  },
-  {
     topic: "Registers",
     short: "Registers collection of flip-flops hain jo parallel data (bits) store karte hain.",
-    detailed: "CPU speed inhi pe depend karti hai. Types: 1. SISO (Serial In, Serial Out), 2. SIPO (Serial In, Parallel Out), 3. PISO (Parallel In, Serial Out), 4. PIPO (Parallel In, Parallel Out - Sabse fast). Shift registers bits ko left/right move karke math (multiply/divide by 2) perform kar sakte hain memory efficiency ke sath.",
+    detailed: "CPU speed inhi pe depend karti hai. Types: SISO, SIPO, PISO, PIPO (Sabse fast). Shift registers bits ko left/right move karke math operations execute kar sakte hain.",
     bulletin: [
       "Data Storage: Array of flip-flops working in unison.",
-      "PIPO: Instantaneous parallel update across all bits; fastest type.",
-      "Shift Capacity: Bits can be logically moved to neighboring cells.",
-      "System Stack: Uses specialized stack registers (SP) for addresses.",
+      "PIPO: Instantaneous parallel update across all bits.",
       "General Purpose: Visible to programmers like AX, BX in x86 systems."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Counters",
+    topic: "Counters (Asynchronous and Synchronous)",
     short: "Counters sequential circuits hain jo pulses count karte hain (UP/DOWN/LOOP).",
-    detailed: "Types: 1. Asynchronous (Ripple): Simple design par ripple delay delay rehta hai. 2. Synchronous: Saari bits ek sath trigger hoti hain (High performance). Design Steps: 1. State diagram banao. 2. State table banao. 3. Flip-flop type chose karo. 4. Excitation table use karo. 5. K-Map se simplify karo. 6. Circuit implement karo. Digitial clocks aur timers inhi logic pe built hain.",
+    detailed: "Types: 1. Asynchronous (Ripple): Simple design par cumulative delay rehta hai. 2. Synchronous: Saari bits ek sath trigger hoti hain common clock se. Counters memory timing aur cycle sequence mein vital role play karte hain.",
     bulletin: [
       "Ripple Counter: Propagation delay increases with number of stages.",
-      "Synchronous: Parallel clocking ensures zero cumulative delay.",
-      "MOD-N: Resets after a specific number of count pulses.",
-      "Excitation Path: Logic feedback loops decide the counting pattern.",
-      "Applications: Frequency dividers and pulse encoders."
+      "Synchronous: Parallel clocking ensures minimal delay.",
+      "Mod-N: Counts up to N then resets back to 0."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "ALU Organisation",
+    topic: "ALU Organization",
     short: "ALU (Arithmetic Logic Unit) CPU ka wo part hai jo actual math aur logic operations perform karta hai registers aur control signals ki help se.",
     detailed: "ALU logic gates ke complex combinations use karta hai. Fixed-point ALU logic integers handles karta hai, FPU floating point handles karta hai. Accumulator basic result sink hai. Flags (Condition Codes) operation results ke basis pe update hote hain comparison instructions execute karne ke liye decision logic banate hain.",
     bulletin: [
@@ -427,20 +506,39 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "The Control Unit",
-    short: "Control Unit CPU ka master coordinator hai jo instruction decoding aur system synchronization manage karta hai.",
-    detailed: "Types: 1. Hardwired Control (Fixed gates/flip-flops; Fast par inflexible). 2. Microprogrammed (Wilkes Control - Micro-instructions control ROM mein store hoti hain; Flexible par slow). Microprogrammed logic machine instructions ko micro-program flow mein break karta hai hardware logic signals generate karne ke liye.",
+    topic: "Control Unit",
+    short: "Control Unit CPU ka master coordinator hai jo instruction decoding manage karta hai.",
+    detailed: "CU ke 2 classes: 1. Hardwired Control (Fast par inflexible). 2. Microprogrammed (Micro-instructions control ROM mein store hoti hain; Flexible par slow).",
     bulletin: [
-      "Hardwired: Preferred for RISC; used in high-speed, fixed-logic chips.",
-      "Microprogrammed: CISC preferred; stored in Control Memory/Micro ROM.",
-      "Horizontal Micro-instruction: Wide format; high parallelism; large memory.",
-      "Vertical Micro-instruction: Narrow format; encoded signals; needs decoding.",
-      "Nano-programming: 2-level microprogramming that reduces control memory size."
+      "Coordinator: Pulls logic levers sequentially.",
+      "Logic Output: Generates timing signals based on clock pulses."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Addressing Schemes",
+    topic: "Hardwired Control Unit",
+    short: "Logic directly physical states/gates mein embedded hoti hai.",
+    detailed: "Inflexible high-performance logic mainly used in RISC CPUs (like ARM). Ye flipops aur gates se hardcoded hoti hai jiske wajah se speed bhot milti hai lekin ise later modify karna impossible hai.",
+    bulletin: [
+      "RISC CPU: Found primarily in reduced architectures.",
+      "Highest Speed: Zero translation delay.",
+      "Complexity Limit: Cannot be used for highly complex instructions."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Microprogrammed Control Unit",
+    short: "Logic memory (ROM) mein micro-programs ke form mein save hoti hai.",
+    detailed: "Complex instruction decoder (Wilkes Control design). Ye RAM jaisa hi hota hai but iske codes sequence generation handle karte hain (CISC - jaise Intel processors) jise asani se update aur modify kiya ja sakta hai firmware k through.",
+    bulletin: [
+      "CISC CPU: Designed to handle 1000s of different commands.",
+      "Micro-instruction Formats: Vertical and Horizontal encodings.",
+      "Updatability: Possible via Micro-code updates."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Addressing Modes",
     short: "Addressing modes explain karte hain ki computer operand memory se kaise nikalega.",
     detailed: "Important Modes: 1. Immediate (Data in instruction). 2. Direct (Address in instruction). 3. Indirect (Pointer in memory). 4. Register (Data in register). 5. Indexed (Base + Index register). 6. Relative (PC + Offset). 7. Stack (Implicit stack pointer). Modus selection CPU word size aur memory range trade-offs pe depend karta hai.",
     bulletin: [
@@ -497,28 +595,24 @@ export const hinglishNotes: Note[] = [
     detailed: "Hierarchy Structure: 1. L1 (~1ns). 2. L2 (~5ns). 3. L3 (~10ns). 4. RAM (~100ns). 5. Secondary Storage (HDD/SSD). 6. Tertiary Storage (Tape). Memory locality (Temporal and Spatial) ensures high hit rates in caches.",
     bulletin: [
       "Pyramid Logic: Closer to CPU = Faster, Smaller, More Expensive.",
-      "Registers: CPU internal high-speed storage (L0).",
-      "Cache: Bridging the speed gap between CPU and RAM.",
-      "DRAM: Dynamic RAM used as the main workstation memory.",
-      "Locality: Spatial (nearby data) and Temporal (recent data) focus."
+      "Registers: CPU internal high-speed storage.",
+      "Cache: Bridging the speed gap between CPU and RAM."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Cache Memory",
+    topic: "Cache Memory Organization",
     short: "Fast buffer jo CPU aur Main Memory ke beech speed synchronization karta hai.",
-    detailed: "Mapping: 1. Direct (Fixed line). 2. Fully Associative (Any line). 3. Set Associative (N-way split). Policies: LRU (Least Recently Used), FIFO, LFU, Random. Memory Interleaving bandwidth badhane ke liye multiple modules parallel load karta hai.",
+    detailed: "Mapping techniques: 1. Direct (Fixed line). 2. Fully Associative (Any line). 3. Set Associative (N-way split). Cache CPU aur slow RAM ke beech wait times ko completely chupa deta hai.",
     bulletin: [
       "Hit Ratio: Higher is better; typically >90% performance target.",
       "Replacement: LRU replaces the block not used for the longest time.",
-      "Associative Memory: Search by content/value instead of bit address.",
-      "Interleaving: Overlapping memory requests to boost bandwidth.",
-      "COHERENCY: Ensuring all cache copies of a variable are the same."
+      "Associative Memory: Search by content/value instead of bit address."
     ],
     diagramUrl: "true"
   },
   {
-    topic: "Combinational vs Sequential Circuits",
+    topic: "RAID and its Levels",
     short: "Combinational mein output current input pe depend hai (Adder), jabki Sequential mein memory (Flip-flop) inputs aur past state dono use karti hai.",
     detailed: "Architecture basics: Combinational gates processing perform karte hain logic paths simplify kar ke (Adders, MUX). Sequential gates memory aur state persistence control karte hain timing pulses synchronize kar ke registers aur counters design components mein foundation units bankar processing history recall logic maintain karte hain complex decision cycles ke execution phase mein software level requirements matching ke hisab se.",
     bulletin: [
@@ -528,6 +622,39 @@ export const hinglishNotes: Note[] = [
       "Memory: Flip-flops and Latches are exclusive to Sequential design.",
       "Complexity: Modern processors mix both; Comb for ALU, Seq for Pipelines."
     ]
+  },
+  {
+    topic: "Input / Output System",
+    short: "CPU aur peripherals ke beech basic architecture aur communication system.",
+    detailed: "I/O devices slow hote hain CPU ke compare mein. I/O controllers aur Device Drivers is speed gap ko manage karte hain aur standardized interfaces provide karte hain peripherals connect karne ko.",
+    bulletin: [
+      "I/O Controllers: specialized chips tracking external hardware.",
+      "Device Drivers: OS-level software bridging devices.",
+      "Ports: USB, SATA, PCIe are modern implementations."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Interrupt Driven I/O",
+    short: "Device ready hone pe CPU ko signal bhejti hai baki time CPU apna kaam karta hai.",
+    detailed: "Polling (Programmed I/O) mein CPU waste hota tha busy waiting mein. Interrupt driven I/O isi inefficiency ko avoid karta aaur CPU ko asynchronously notify karta hai task completion pe.",
+    bulletin: [
+      "Efficient Pipeline: CPU is never stuck waiting.",
+      "ISR Execution: Specific routines triggered by specific devices.",
+      "Vectored Interrupts: Provide immediate branch destinations."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "DMA (Direct Memory Access)",
+    short: "DMA controller directly I/O aur Memory ke beech data transfer karta hai CPU ko bypass karke.",
+    detailed: "Large data transfers ke liye (jaise hard drive se RAM tak array copys), CPU ko wait karana wasteful hai. DMA chip CPU ko signal deta hai aur bus hijack karke independently data transfer complete karta hai.",
+    bulletin: [
+      "Bus Mastering: DMA chip safely takes control of the memory bus.",
+      "Cycle Stealing: Data blocks transferred while CPU decodes instructions.",
+      "Zero CPU Cost: Perfect for bulk transfers."
+    ],
+    diagramUrl: "true"
   },
   {
     topic: "Instruction Formats",
@@ -545,6 +672,61 @@ export const hinglishNotes: Note[] = [
 
   // BCA-403 Data Structure
   {
+    topic: "Singly Linked Lists",
+    short: "Linked list nodes use karta hai jo memory mein scattered ho sakte hain par pointers ke through connected rehte hain.",
+    detailed: "Singly Linked List mein har node ke pass data aur ek Next pointer hota hai. Iska advantage Dynamic Sizing hai—arrays ki tarah fix size ki limit nahi hoti.",
+    bulletin: [
+      "Singly: One-way direction; Head to Null pointer flow.",
+      "Node Structure: Contains data and next pointer.",
+      "Dynamic Allocation: Grows and shrinks at runtime."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Doubly Linked Lists",
+    short: "Doubly linked list bidirectional traversal provide karta hai prev aur next pointers ke through.",
+    detailed: "Har node ke pass Prev aur Next pointers hote hain jo forward aur backward movement allow karte hain. Ismein deletion operation faster hota hai kyunki hume previous node ka access direct milta hai.",
+    bulletin: [
+      "Doubly: Two-way traversal possible.",
+      "Memory: Takes more memory due to extra pointer.",
+      "Head/Tail: Often uses both head and tail pointers."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Circularly Linked Lists",
+    short: "Circular list ka last node wapas first node ko point karta hai round-robin efficiency ke liye.",
+    detailed: "Singly ya Doubly list jisme last node null point karne ke bajaye head ko point kare. Iska common use buffer management aur scheduling algorithms mein hota hai.",
+    bulletin: [
+      "Circular: Constant loop structure.",
+      "Round Robin: Used in OS scheduling.",
+      "Traversal: Can start from any node and reach others."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Representation of Arrays in Memory",
+    short: "Arrays linear memory blocks hote hain jahan elements contiguous locations pe store hote hain indexing ke through.",
+    detailed: "Computer memory linear hoti hai. Array elements ko address calculate karne ke liye formula use hota hai: Address = BaseAddr + Index * SizeOfElement. 1-D arrays simple hote hain, jabki 2-D arrays Row-Major (row side) ya Column-Major (column side) order mein map ho sakte hain logic placement ke liye.",
+    bulletin: [
+      "Contiguous Storage: No gaps between elements.",
+      "Address Calculation: BaseAddr + (Index * Size).",
+      "Row Major vs Column Major: Different 2D storage layouts."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Polynomials & Sparse matrix",
+    short: "Sparse matrix wo matrix hai jisme majority elements zero hote hain, aur optimized storage ki zaroorat hoti hai.",
+    detailed: "Agar matrix mein non-zero elements kam hon, to zero elements store karna memory waste hai. Optimized representation: 1. Triplet Representation: (Row, Col, Value) lists save karna. 2. Compressed Sparse Row (CSR). Isse analysis speed badhti hai aur storage drastically kam ho jati hai scientific computation mein.",
+    bulletin: [
+      "Zero Density: Significantly more zeros than non-zeros.",
+      "Triplet Form: (Row, Col, Value) list.",
+      "Optimization: Saves memory and computation time."
+    ],
+    diagramUrl: "true"
+  },
+  {
     topic: "Stack Operations",
     short: "Stack LIFO (Last-In-First-Out) logic pe based hai jahan PUSH aur POP primary operations hote hain memory pointer management ke sath.",
     detailed: "Stack ek linear data structure hai jo strictly 'Last-In-First-Out' (LIFO) protocol follow karta hai. Iska matlab hai jo element sabse aakhir mein insert kiya gaya hai, wahi sabse pehle delete hoga. Do main operations hote hain: 1. PUSH - Naya element stack ke top pe add karna. Isse pehle hume 'Stack Overflow' (Stack full hona) check karna padta hai. 2. POP - Top element ko remove karna. Isse pehle 'Stack Underflow' (Stack khali hona) check karna zaroori hai. Iske alawa 'PEEK' operation se hum top element dekh sakte hain bina use remove kiye. Hardware level pe, registers jaise 'Stack Pointer' (SP) hamesha current top element ka address hold karte hain. Stack ka use Recursion handling, Expression transformation (Infix to Postfix), aur Function calls memory management mein heavily kiya jata hai.",
@@ -558,15 +740,81 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "BST: Definition and Operations",
-    short: "BST ek binary tree hai jahan left < parent aur right > parent rule follow hota hai complexity reduce karne ke liye.",
-    detailed: "Binary Search Tree (BST) searching ke liye optimized tree hai. Property: Har node x ke liye, uske left subtree ke sare nodes ki value x se kam hogi, aur right subtree ki value x se zyada hogi. Operations: 1. Search (O(log n) average case), 2. Insert (Sahi position find karke leave attach karna), 3. Delete (Nodes adjust karna based on children count). BST ka in-order traversal hamesha elements ko sorted order (ascending) mein print karta hai. Worst case (Skewed tree) mein complexity O(n) ho jati hai, jise solve karne ke liye AVL ya B-Red trees (Balanced trees) use hote hain.",
+    topic: "Queue: Linear and Circular",
+    short: "Queue FIFO (First-In-First-Out) protocol use karta hai system scheduling aur buffering ke liye (Front & Rear pointers).",
+    detailed: "1. Linear Queue: Front se delete (De-queue) aur Rear se insert (En-queue) hota hai. Issue: Rear full hone pe front khali reh gaya to data insert nahi hota. 2. Circular Queue: Is problem ko modular arithmetic se solve karta hai jahan last index ke baad wapas zero index start hota hai space optimization ke liye.",
     bulletin: [
-      "BST Property: Left-Child < Parent < Right-Child.",
-      "Sorted Traversal: In-order traversal naturally results in a sorted list.",
-      "Efficiency: Searching is O(log n) in balanced configurations.",
-      "Worst Case: Can degrade to O(n) if the tree becomes a 'Skewed' list.",
-      "Balancing: Leads to advanced concepts like AVL and B-Trees."
+      "FIFO Logic: First input is processed first (Fair service).",
+      "Linear Queue: Suffers from memory fragmentation at the front.",
+      "Circular Queue: Pointers wrap around to the start (Memory efficient).",
+      "En-queue: Adding to the rear; De-queue: Removing from the front.",
+      "Modulus Math: (Rear + 1) % Size logic for circular movement."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Binary Trees: Basic Terminologies and Types",
+    short: "Binary Tree mein har node ke max 2 children hote hain (Left & Right).",
+    detailed: "Binary Tree hierarchy structure hai jisme har parent ke maximum 2 sub-nodes ho sakte hain. Types: Full, Complete, aur Balanced trees. Terminology: Root (top), Leaf (end), Edge (path), Height (total levels).",
+    bulletin: [
+      "Degree: Max degree is 2.",
+      "Types: Skewed, Perfect, Full, Balanced.",
+      "Traversals: Inorder, Preorder, Postorder."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "BST & AVL Trees",
+    short: "BST sorting rule follow karta hai, jabki AVL rotations use karke use balance rakhta hai.",
+    detailed: "1. BST: Left < Parent < Right constraint. O(log n) efficiency. 2. AVL Tree: Self-balancing BST jisme balance factor {-1, 0, 1} hona chaiye. Rotations (LL, RR, LR, RL) perform kiye jate hain stability ke liye.",
+    bulletin: [
+      "Search: O(log n) guaranteed in AVL.",
+      "Rotations: Critical for keeping height minimal.",
+      "Order: Inorder traversal always gives sorted output."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Representations of Graphs",
+    short: "Graphs ko Adjacency Matrix ya Adjacency List se represent kiya jata hai efficiency ke basis pe.",
+    detailed: "1. Adjacency Matrix: V x V 2D array jahan 1 presence aur 0 absence dikhata hai. 2. Adjacency List: Har node ke liye linked list store ki jati hai current connections save karne ke liye. Optimized for sparse graphs.",
+    bulletin: [
+      "Matrix: Fast lookup, high space cost.",
+      "List: Space efficient, slower connectivity check.",
+      "Types: Directed (Arrows), Undirected (Lines)."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Internal Sorting",
+    short: "Internal sorting memory (RAM) mein partition logic aur merge techniques use karke fast sorting provide karta hai.",
+    detailed: "1. Quick Sort: Pivot based partitioning algorithm (Divide & Conquer). 2. Heap Sort: Max/Min Heap building process to extract elements. 3. Bubble Sort: Adjacent elements swapping iteratively.",
+    bulletin: [
+      "Quick Sort: Avg O(n log n).",
+      "Heap Sort: Guaranteed O(n log n).",
+      "In-place: Algorithms that use constant extra space."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Searching",
+    short: "Binary search sorted data pe middle pivot use karke fastest search results deta hai.",
+    detailed: "Binary Search algorithm data ko half mein divide karta hai (Left/Right) target element dhoondne ke liye. Iska average complexity O(log n) hai, lekin input data sorted hona mandatory hai.",
+    bulletin: [
+      "Binary Search: Divide and Conquer approach.",
+      "Constraint: Data must be sorted.",
+      "Interpolation Search: Predictive searching based on value distribution."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "B Trees",
+    short: "B-Tree persistent storage (Database) ke liye multi-way balanced tree hai.",
+    detailed: "B-Tree balanced m-way tree hai jo specifically disks/databases ke liye design hai taaki search depth minimum rahe. Har node multiple keys aur multiple children pointers store kar sakta hai disk blocks ko fill karne ke liye efficiency ke sath.",
+    bulletin: [
+      "B-Tree: Optimized for block storage.",
+      "Height: Stays extremely short even with millions of records.",
+      "Usage: Foundation of SQL Indexes."
     ],
     diagramUrl: "true"
   },
@@ -598,6 +846,45 @@ export const hinglishNotes: Note[] = [
   },
 
   // BCA-404 Statistics
+  {
+    topic: "Histograms and frequency polygons",
+    short: "Histogram bars use karta hai quantitative frequency dikhane ke liye, jabki Polygon lines se trends represent karta hai.",
+    detailed: "1. Histogram: Data intervals (Classes) ko bars ke form mein represent karta hai jahan bar ki height frequency dikhati hai. 2. Frequency Polygon: Mid-points of histogram bars ko connect karke banaya jata hai. Yeh continuous data distribution ki shape samajhne mein help karte hain visually, especially comparison tasks mein.",
+    bulletin: [
+      "Bars: Width represents the class interval; Height represents frequency.",
+      "Polygon: Formed by joining the mid-points of class intervals.",
+      "Overlap: Useful for comparing two different frequency distributions.",
+      "Area: Relationship exists between the total area of histogram and raw data sum.",
+      "Symmetry: Helps identify if the distribution is skewed or normal."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Theoretical distribution",
+    short: "Binomial discrete trials (Success/Failure) handle karta hai, jabki Poisson fixed interval mein rate of events handle karta hai.",
+    detailed: "1. Binomial: Trials fix hote hain (n), occurrences (p) probability ke sath. Formula P(X) = nCx p^x q^(n-x). 2. Poisson: Jab events rare hon aur intervals fix hon. Ismein sirf ek parameter lambda (mean) hota hai. Donon discrete probability distributions hain jo counts and frequency prediction mein use hote hain.",
+    bulletin: [
+      "Binomial: Two outcomes only (Pass/Fail); Finite number of trials.",
+      "Poisson: Events per time/space unit (Calls per hour).",
+      "Curve Shape: Positively skewed but approaches normal as N increases.",
+      "Constraint: Trials must be independent in both distributions.",
+      "Calculus: Used in queuing theory and risk assessment modeling."
+    ],
+    diagramUrl: "true"
+  },
+  {
+    topic: "Least Square Regression lines",
+    short: "Regression line (Line of best fit) do variables ke beech trend dikhati hai aur future values predict karne mein help karti hai.",
+    detailed: "Linear Regression model mathematical equation 'Y = a + bX' use karta hai. Iska goal 'Residuals' (Errors) ko minimize karna hota hai. Graph pe yeh points ke beech se guzarti hui wo line hai jo overall trend ko best capture karti hai. Iska slope (b) batata hai ki X badhne pe Y kitna badlega (rate of change).",
+    bulletin: [
+      "Best Fit: Uses the 'Least Squares Method' to minimize total error.",
+      "Equation: Y = a + bX (a is intercept, b is regression coefficient).",
+      "Prediction: Extrapolating known data points to estimate unknowns.",
+      "Residuals: The vertical distance between actual points and the line.",
+      "R-Squared: Statistical measure of how close the data is to the line."
+    ],
+    diagramUrl: "true"
+  },
   {
     topic: "Normal distribution",
     short: "Normal distribution (Bell Curve) symmetric hota hai jahan Mean, Median, aur Mode center point pe overlap karte hain.",

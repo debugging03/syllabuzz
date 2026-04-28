@@ -38,8 +38,9 @@ export const syllabusData: Subject[] = [
           { title: "Components of DBMS" },
           {
             title: "The 3 level architecture of DBMS",
-            subtopics: ["Hierarchical", "Network", "Relational Model"]
+            subtopics: ["Hierarchical", "Network"]
           },
+          { title: "Relational Model" },
           { title: "Distributed Database" },
           { title: "KBDBMS" },
           { title: "OODBMS (Basic Concepts)" }
@@ -52,10 +53,9 @@ export const syllabusData: Subject[] = [
           { title: "Overview of Data Design Entities" },
           { title: "Attributes and Entity Sets" },
           { title: "Relationship and Relationship Sets" },
-          {
-            title: "Features of the ER Model",
-            subtopics: ["Key Constraints", "Participation Constraints", "Weak Entities", "Class Hierarchies", "Aggregation"]
-          },
+          { title: "Weak Entities" },
+          { title: "Generalization and Specialization" },
+          { title: "Aggregation" },
           {
             title: "Conceptual Data Base Design with ER Model",
             subtopics: ["Entity vs Attribute", "Entity vs Relationship", "Binary vs Ternary Relationship", "Aggregation vs Ternary Relationship"]
@@ -115,10 +115,10 @@ export const syllabusData: Subject[] = [
         title: "Introduction to Digital Circuits",
         topics: [
           { title: "The Basic Computer" },
+          { title: "Basic Computer Block Diagram" },
           { title: "The Von-Neumann Architecture" },
-          { title: "Instruction Execution: An Example" },
-          { title: "Instruction Cycle Interrupts" },
-          { title: "Interrupts and Instruction Cycle" },
+          { title: "Instruction Cycle" },
+          { title: "Interrupt Cycle" },
           {
             title: "Computers: Then and Now",
             subtopics: ["The Beginning", "First Generation", "Second Generation", "Third Generation", "Later Generations"]
@@ -147,59 +147,41 @@ export const syllabusData: Subject[] = [
           { title: "Canonical and Standard Forms" },
           { title: "Minimization of Gates" },
           { title: "Design of Combinational Circuits" },
-          {
-            title: "Examples of Logic Combinational Circuits",
-            subtopics: ["Adders", "Decoders", "Multiplexer", "Encoder", "Programmable Logic Array", "Read Only Memory ROM"]
-          }
+          { title: "Half Adder and Full Adder" },
+          { title: "Multiplexer and Demultiplexer" },
+          { title: "Encoder and Decoder" },
+          { title: "Programmable Logic Array (PLA)" },
+          { title: "Read Only Memory (ROM)" }
         ]
       },
       {
         id: "de-u4",
         title: "Principles of Logic Circuits II",
         topics: [
-          { title: "Sequential Circuits: The Definition" },
-          {
-            title: "Flip Flops",
-            subtopics: ["Basic Flip-Flops", "Excitation Tables", "Master Slave Flip Flops", "Edge Triggered Flip-flops"]
-          },
-          { title: "Sequential Circuit Design" },
-          { title: "Examples of Sequential Circuits" },
+          { title: "Sequential Circuits" },
+          { title: "Flip-Flops (SR, JK, D, T)" },
           { title: "Registers" },
-          {
-            title: "Counters",
-            subtopics: ["Asynchronous Counters", "Synchronous Counters"]
-          },
-          { title: "RAM" },
-          { title: "Design of a Sample Counter" }
+          { title: "Counters (Asynchronous and Synchronous)" },
+          { title: "RAM" }
         ]
       },
       {
         id: "de-u5",
         title: "Basic Computer Organisation: The Memory System",
         topics: [
-          {
-            title: "The Memory Hierarchy",
-            subtopics: ["RAM", "ROM", "DRAM", "Flash Memory", "Secondary Memory", "Hard Disk Drives", "Optical Memories", "CCDs", "Bubble Memories"]
-          },
+          { title: "Memory Hierarchy" },
+          { title: "RAM vs ROM" },
           { title: "RAID and its Levels" },
-          {
-            title: "High Speed Memories",
-            subtopics: ["Cache Memory", "Cache Organisation", "Memory Interleaving", "Associative Memory"]
-          }
+          { title: "Cache Memory Organization" }
         ]
       },
       {
         id: "de-u6",
         title: "The Input/Output System",
         topics: [
-          { title: "Input / Output Devices or External or Peripheral Devices" },
-          { title: "The Input Output Interface" },
-          { title: "The Device Controllers and its Structure" },
-          { title: "Device Drivers" },
-          {
-            title: "Input Output Techniques",
-            subtopics: ["Programmed Input / Output", "Interrupt-Driven Input / Output", "Interrupt-Processing", "DMA (Direct Memory Access)", "Input Output Processors", "External Communication Interfaces"]
-          }
+          { title: "Input / Output System" },
+          { title: "Interrupt Driven I/O" },
+          { title: "DMA (Direct Memory Access)" }
         ]
       },
       {
@@ -210,51 +192,25 @@ export const syllabusData: Subject[] = [
             title: "Instruction Set Architecture",
             subtopics: ["Characteristics", "Design Considerations", "Operand Data Types", "Types of Instructions", "Number of Addresses", "Addressing Schemes"]
           },
-          {
-            title: "Addressing Modes",
-            subtopics: ["Immediate", "Direct", "Indirect", "Register", "Register Indirect", "Indexed", "Base Register", "Relative", "Stack"]
-          },
-          { title: "Instruction Set and Format Design Issues" }
+          { title: "Addressing Modes" }
         ]
       },
       {
         id: "de-u8",
         title: "Registers, Micro-Operations and Instruction Execution",
         topics: [
-          { title: "Basic CPU Structure" },
-          {
-            title: "Register Organization",
-            subtopics: ["Programmer Visible", "Status and Control", "General Registers"]
-          },
-          {
-            title: "Micro-operation Concepts",
-            subtopics: ["Register Transfer", "Arithmetic", "Logic", "Shift"]
-          },
-          { title: "Instruction Execution and Microoperations" },
-          { title: "Instruction Pipelining" }
+          { title: "Basic CPU Block Diagram" },
+          { title: "Instruction Formats" }
         ]
       },
       {
         id: "de-u9",
         title: "ALU Organisation",
         topics: [
-          { title: "ALU Organisation" },
-          { title: "A Simple ALU Organization" },
-          { title: "A Sample ALU Design" },
-          { title: "Arithmetic Processors" }
-        ]
-      },
-      {
-        id: "de-u10",
-        title: "The Control Unit",
-        topics: [
-          { title: "The Control Unit" },
-          { title: "The Hardwired Control" },
-          { title: "Wilkes Control" },
-          {
-            title: "The MicroProgrammed Control",
-            subtopics: ["Micro-Instructions", "Control Memory Organisation", "Micro-Instruction Formats", "Execution of Micro-Program"]
-          }
+          { title: "ALU Organization" },
+          { title: "Control Unit" },
+          { title: "Hardwired Control Unit" },
+          { title: "Microprogrammed Control Unit" }
         ]
       }
     ]

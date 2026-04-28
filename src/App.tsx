@@ -1011,7 +1011,7 @@ export default function App() {
                                 </button>
                                 {getDiagramForTopic(topic.title) && (
                                   <button 
-                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " block diagram for " + activeSubject.name)}&tbm=isch`, '_blank')}
+                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " block diagram for " + activeSubject.title)}&tbm=isch`, '_blank')}
                                     className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/diagram"
                                   >
                                     <ImageIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover/diagram:scale-110 transition-transform shrink-0" /> Diagram
@@ -1075,7 +1075,7 @@ export default function App() {
                                   </button>
                                   {getDiagramForTopic(topic.title) && (
                                     <button 
-                                      onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram circuit " + activeSubject.name)}&tbm=isch`, '_blank')}
+                                      onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram circuit " + activeSubject.title)}&tbm=isch`, '_blank')}
                                       className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all"
                                       title="Search Diagram"
                                     >
