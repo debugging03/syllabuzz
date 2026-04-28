@@ -6,6 +6,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Fuse from 'fuse.js';
+import { syllabusData, Subject, Topic, Unit } from './syllabusData';
+import { getNoteForTopic, getDiagramForTopic, NoteStyle } from './notesData';
+import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous, db, syncProgress } from './lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { 
   BookOpen, 
   Search as SearchIcon, 
@@ -27,12 +31,9 @@ import {
   Youtube,
   LogIn,
   LogOut,
-  User as UserIcon
+  User as UserIcon,
+  Image as ImageIcon
 } from 'lucide-react';
-import { syllabusData, Subject, Topic, Unit } from './syllabusData';
-import { getNoteForTopic, NoteStyle } from './notesData';
-import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous, db, syncProgress } from './lib/firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
 
 interface SearchResult {
   subject: Subject;
@@ -670,6 +671,14 @@ export default function App() {
                           >
                             <BookOpen className="w-3.5 h-3.5" /> Notes
                           </button>
+                          {getDiagramForTopic(result.topic.title) && (
+                            <button 
+                              onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(result.topic.title + " diagram for computer architecture " + result.subject.name)}&tbm=isch`, '_blank')}
+                              className="text-[10px] font-black uppercase tracking-widest text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 transition-colors group/diagram"
+                            >
+                              <ImageIcon className="w-3.5 h-3.5" /> Diagram
+                            </button>
+                          )}
                           <button 
                             onClick={() => handleYouTube(result.topic.title, result.subject.code)}
                             className="text-[10px] font-black uppercase tracking-widest text-red-600 hover:text-red-700 flex items-center gap-1.5 transition-colors group/yt"
@@ -1000,6 +1009,14 @@ export default function App() {
                                 >
                                   <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover/ai:scale-110 transition-transform shrink-0" /> Hinglish Notes
                                 </button>
+                                {getDiagramForTopic(topic.title) && (
+                                  <button 
+                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " block diagram for " + activeSubject.name)}&tbm=isch`, '_blank')}
+                                    className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/diagram"
+                                  >
+                                    <ImageIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover/diagram:scale-110 transition-transform shrink-0" /> Diagram
+                                  </button>
+                                )}
                                 <button 
                                   onClick={() => handleYouTube(topic.title)}
                                   className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-red-600 hover:text-red-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/yt"
@@ -1056,6 +1073,15 @@ export default function App() {
                                   >
                                     <BookOpen className="w-4 h-4" />
                                   </button>
+                                  {getDiagramForTopic(topic.title) && (
+                                    <button 
+                                      onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram circuit " + activeSubject.name)}&tbm=isch`, '_blank')}
+                                      className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all"
+                                      title="Search Diagram"
+                                    >
+                                      <ImageIcon className="w-4 h-4" />
+                                    </button>
+                                  )}
                                   <button 
                                     onClick={() => handleYouTube(topic.title)}
                                     className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
