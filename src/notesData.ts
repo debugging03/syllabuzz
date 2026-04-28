@@ -1333,6 +1333,63 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
+    topic: "Expressive Power of Algebra and Calculus",
+    explanation: "Expressive power ka matlab hai ki ek language (jaise Relational Algebra) kitne complex data queries ko handle kar sakti hai. Algebra aur Calculus dono ki expressive power barabar hoti hai, matlab jo kaam aap algebra se kar sakte hain, wahi calculus se bhi kar sakte hain.",
+    keyPoints: [
+      "Equivalence: Relational Algebra aur Safe Relational Calculus expressive power mein equal hain.",
+      "Codd's Theorem: E.F. Codd ne prove kiya tha ki dono languages equivalent hain.",
+      "Completeness: Agar koi language in dono ke barabar power rakhti hai, toh use 'Relationally Complete' kaha jata hai.",
+      "Complexity: Relational Algebra procedural hai (step-by-step), jabki Calculus non-procedural (goal-oriented) hai."
+    ],
+    realLifeExample: "Jaise ek sawal ko solve karne ke do tareeke—ek step-by-step (Algebra) aur ek seedha final result batana (Calculus). Dono se answer same hi aayega.",
+    examTip: "'Codd's Theorem' ka naam zaroor likhein aur batayein ki SQL in dono se milkar bani hai.",
+    diagramHint: "Ek cycle diagram dikhaiye jiske center mein 'Data Retrieval' ho aur charo taraf Algebra, Calculus aur SQL jude hon.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "The Forms of a Basic SQL Query",
+    explanation: "SQL query ka basic structure 'SELECT-FROM-WHERE' hota hai. Yeh batata hai ki kya data nikalna hai (Select), kahan se nikalna hai (From), aur kounsi condition pe (Where).",
+    keyPoints: [
+      "SELECT: Columns ki list jo aap dikhana chahte hain.",
+      "FROM: Table ka naam jahan data save hai.",
+      "WHERE: Data filter karne ke liye condition (Optional).",
+      "Distinct: Duplicate rows hatane ke liye use hota hai."
+    ],
+    realLifeExample: "SELECT name FROM students WHERE marks > 80; (Sirf un students ke naam dikhao jinke marks 80 se zyada hain).",
+    examTip: "Basic syntax example zaroor likhein aur DISTINCT keyword ka use explain karein.",
+    diagramHint: "A block diagram showing: [SELECT Clause] -> [FROM Clause] -> [WHERE Clause].",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Nested Queries and Correlated Nested Queries",
+    explanation: "Nested query (Subquery) wo query hai jo doosri query ke andar 'WHERE' clause mein hoti hai. Correlated query mein inner query outer query ke data pe depend karti hai.",
+    keyPoints: [
+      "Subquery: Pehle inner query chalti hai, uska result outer query use karti hai.",
+      "Correlated: Inner query outer query ki har row ke liye baar-baar chalti hai.",
+      "Operators: IN, EXISTS, ANY, ALL ka use hota hai values compare karne ke liye.",
+      "Performance: Correlated queries thodi slow ho sakti hain kyunki wo loop ki tarah chalti hain."
+    ],
+    realLifeExample: "Nested: Un students ke naam batao jo 'Computer Science' department ke professors se padhte hain.",
+    examTip: "EXISTS aur NOT EXISTS ka example denge toh examiner ko pata chalega ki aapko core concept pata hai.",
+    diagramHint: "A box-within-a-box diagram representing Inner and Outer queries.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Aggregate Operators",
+    explanation: "Aggregate operators multiple rows ke data ko calculate karke ek 'Single Value' (Result) dete hain.",
+    keyPoints: [
+      "SUM(): Total value nikalne ke liye.",
+      "AVG(): Average nikalne ke liye.",
+      "COUNT(): Rows ginne ke liye.",
+      "MIN/MAX(): Sabse choti aur sabse badi value dhoondne ke liye.",
+      "Group By: In operators ka use hum GROUP BY ke sath category-wise results ke liye karte hain."
+    ],
+    realLifeExample: "SELECT SUM(salary) FROM employees; (Poore department ki total salary nikalna).",
+    examTip: "COUNT(*) aur COUNT(column_name) ka difference explain karein (Null handles).",
+    diagramHint: "Table of numbers being squeezed into a single result bubble.",
+    diagramUrl: "true"
+  },
+  {
     topic: "Triggers and Active Databases",
     explanation: "Triggers wo 'Automatic Actions' hain jo database mein kisi event (Insert, Update, Delete) ke hone pe apne aap chalti hain.",
     keyPoints: [
