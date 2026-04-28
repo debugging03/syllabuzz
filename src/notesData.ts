@@ -176,7 +176,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Jaise 'Aadhar Number' -> 'Name'. Agar mujhe Aadhar number pata hai, toh main person ka naam uniquely nikal sakta hoon.",
     examTip: "X -> Y signify karta hai ki Y is functionally dependent on X. Is line ko exam mein underline karein.",
-    diagramHint: "Ek arrow diagram dikhaiye: [Aadhar Number] --- determines ---> [User Name]."
+    diagramHint: "Ek arrow diagram dikhaiye: [Aadhar Number] --- determines ---> [User Name].",
+    diagramUrl: "true"
   },
   {
     topic: "Third Normal Form",
@@ -189,7 +190,8 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Student table mein agar City depends on Pincode, aur Pincode depends on StudentID, toh studentID -> Pincode -> City ek transitive dependency hai. 3NF ise tod dega.",
     examTip: "Transitive dependency word ka zikr zaroor karein aur example table banayein.",
-    diagramHint: "Example table split dikhaiye: [ID, Pin, City] split into [ID, Pin] and [Pin, City]."
+    diagramHint: "Example table split dikhaiye: [ID, Pin, City] split into [ID, Pin] and [Pin, City].",
+    diagramUrl: "true"
   },
   {
     topic: "SQL Queries: Union, Intersection and Except",
@@ -214,7 +216,62 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Ek professor jo multiple subjects padhata ho aur students ka multi-key dependency ho, wahan BCNF lagana padta hai data accurately save karne ke liye.",
     examTip: "BCNF ko 3.5 NF bhi kehte hain, ye fact likhna mat bhulna.",
-    diagramHint: "Hierarchy diagram dikhaiye: 1NF -> 2NF -> 3NF -> BCNF (Strictness direction)."
+    diagramHint: "Hierarchy diagram dikhaiye: 1NF -> 2NF -> 3NF -> BCNF (Strictness direction).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Introductions to Schema Refinement",
+    explanation: "Schema refinement woh process hai jisme hum database design ko reorganize karte hain taaki data duplication kam ho aur storage efficient bane.",
+    keyPoints: [
+      "Objective: Data redundant system ko khatam karna.",
+      "Anomalies: Insertion, Update aur Deletion anomalies ko fix karna.",
+      "Method: Normalization ka use karke tables ko split karna.",
+      "Integrity: Ensure karna ki data relations hamesha valid rahein."
+    ],
+    realLifeExample: "Jaise ek messy wardrobe ko organize karna taaki har kapda (data) apni sahi jagah pe ho aur duplicate na rakha ho.",
+    examTip: "Anomalies (Insert, Delete, Update) ko define karna is topic ka main part hai.",
+    diagramHint: "Flowchart showing: Rough Schema -> Refinement Process -> Refined Schema."
+  },
+  {
+    topic: "Attributes and Entity Sets",
+    explanation: "Attributes ek entity ki properties hoti hain, aur Entity Set un entities ka ek collection hota hai jo ek jaisi properties share karte hain.",
+    keyPoints: [
+      "Attribute: Property of an entity (e.g., Student Name). Represented by Oval.",
+      "Entity Set: Group of similar entities (e.g., All Students).",
+      "Types: Simple, Composite, Multi-valued, and Derived attributes.",
+      "Keys: Specific attributes jo entity ko uniquely identify karte hain."
+    ],
+    realLifeExample: "Aapki Class ek Entity Set hai, aur har student ke attributes hain—Roll No, Name, Address.",
+    examTip: "Multi-valued attribute (double oval) aur Derived attribute (dashed oval) ko diagram mein sahi banayein.",
+    diagramHint: "ER diagram snippet with one Rectangle and multiple Ovals connected to it.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Relationship and Relationship Sets",
+    explanation: "Relationship do ya do se zyada entities ke beech ka connection hai. Relationship set un relationships ka group hota hai.",
+    keyPoints: [
+      "Symbol: ER diagram mein isse Diamond shape se dikhaya jata hai.",
+      "Cardinality: Batata hai ki ek entity kitne doosre entities se jud sakti hai (1:1, 1:N, M:N).",
+      "Degree: Kitni entities us relationship mein involve hain (Unary, Binary, Ternary).",
+      "Mapping: Entities ki association ke rules define karta hai."
+    ],
+    realLifeExample: "Student 'Enrolls' in Course—'Enrolls' yahan relationship hai between Student and Course entities.",
+    examTip: "Cardinality ratio (1:1, 1:M) ko arrow notation ke sath samjhayein.",
+    diagramHint: "Diamond box connecting two rectangles with cardinality labels.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Introduction to Data Structure",
+    explanation: "Data Structure data ko memory mein store aur organize karne ka ek efficient tareeka hai taaki hum use asani se retrieve aur manipulate kar sakein.",
+    keyPoints: [
+      "Classification: Linear (Array, Stack) aur Non-linear (Tree, Graph).",
+      "Primitive: int, char, float types.",
+      "Non-Primitive: User-defined structures jaise Linked Lists ya Queues.",
+      "Operations: Insertion, Deletion, Searching, aur Sorting."
+    ],
+    realLifeExample: "Jaise ek kitchen storage rack—masale properly dabbo mein hain taaki cooking (Processing) ke waqt jaldi mil sakein.",
+    examTip: "Data type vs Data structure ka difference explain karna exam ke liye bhot imp hai.",
+    diagramHint: "Classification tree: Linear vs Non-Linear structures."
   },
   {
     topic: "ODBC and JDBC",
@@ -978,6 +1035,140 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
+    topic: "Algorithms and Analysis of Algorithms",
+    explanation: "Algorithm ek step-by-step procedure hai kisi problem ko solve karne ke liye. Analysis hume batata hai ki wo algorithm kitna 'Efficient' hai (Time aur Space ke terms mein).",
+    keyPoints: [
+      "Time Complexity: Algorithm kitna waqt lega (Big O notation: O(n), O(log n)).",
+      "Space Complexity: Algorithm memory mein kitni jagah lega.",
+      "Asymptotic Notations: Big-O (Worst case), Omega (Best case), aur Theta (Average case).",
+      "Efficiency: Kam time aur kam memory lene wala algorithm hamesha BEST hota hai."
+    ],
+    realLifeExample: "Jaise chai banane ka recipe (Algorithm). Agar aap 1 minute mein bana rahe ho toh wo 10 minute wali recipe se zyada efficient hai.",
+    examTip: "Big O notation (O(n), O(n^2)) ke graphs aur definitions zaroor yaad karein.",
+    diagramHint: "Graph showing Time (Y-axis) vs Input Size (X-axis) for different complexities.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Stack-Introduction",
+    explanation: "Stack ek linear data structure hai jo LIFO (Last In First Out) principle follow karta hai. Isme insertion aur deletion sirf ek hi end (Top) se hota hai.",
+    keyPoints: [
+      "LIFO: Jo aakhir mein aaya, wo sabse pehle jayega.",
+      "Push: Element add karna.",
+      "Pop: Element remove karna.",
+      "Overflow/Underflow: Stack full ya khali hone ki conditions."
+    ],
+    realLifeExample: "Jaise shadi mein rakhi hui plateon ka dher (Pile of plates). Aap sabse upar wali plate pehle uthate ho.",
+    examTip: "Stack operations ka visual stack diagram (Vertical box) zaroor banayein.",
+    diagramHint: "Vertical box with elements stacked on top of each other.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Queues-Introduction",
+    explanation: "Queue ek linear data structure hai jo FIFO (First In First Out) principle follow karta hai. Isme insertion peeche (Rear) se aur deletion aage (Front) se hota hai.",
+    keyPoints: [
+      "FIFO: Jo pehle aaya, wo pehle jayega.",
+      "Enqueue: Element peeche se add karna.",
+      "Dequeue: Element aage se remove karna.",
+      "Pointers: Front (nikalne ke liye) aur Rear (dalne ke liye) pointers use hote hain."
+    ],
+    realLifeExample: "Jaise ticket counter ki line—jo banda pehle line mein laga, use ticket pehle milegi.",
+    examTip: "Circular queue aur Priority queue ke concepts ko brief mein mention karein.",
+    diagramHint: "Horizontal boxes with arrows labeled 'Front' and 'Rear'.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Permutation and Combination",
+    explanation: "Permutation ka matlab hai 'Arrangement' (Order matters), aur Combination ka matlab hai 'Selection' (Order doesn't matter).",
+    keyPoints: [
+      "Permutation (nPr): Objects ko arrange karne ke kitne tareeke hain.",
+      "Combination (nCr): Objects ko select karne ke kitne tareeke hain.",
+      "Formula: nPr = n! / (n-r)! aur nCr = n! / r!(n-r)!.",
+      "Difference: Permutation mein order zaroori hai (e.g., Password), Combination mein nahi (e.g., Team selection)."
+    ],
+    realLifeExample: "Permutation: 1, 2, 3 se banne wale numbers (123 vs 321). Combination: 3 doston mein se 2 ko party pe bulana.",
+    examTip: "nCr = nCn-r property ka use calculations fast karne ke liye karein.",
+    diagramHint: "Matrix or diagram showing selection vs arrangement differences."
+  },
+  {
+    topic: "Binomial Theorem",
+    explanation: "Binomial theorem ek mathematical formula hai jo (a + b)^n jaise expressions ko expand karne mein madad karta hai, chahe 'n' kitna bhi bada ho.",
+    keyPoints: [
+      "Expansion: (a+b)^n = nC0 a^n + nC1 a^n-1 b + ... + nCn b^n.",
+      "General Term: Tr+1 = nCr a^n-r b^r.",
+      "Application: Iska use probability distributions (Binomial Distribution) mein hota hai.",
+      "Coefficients: Pascal's Triangle ka use karke coefficients turant nikale ja sakte hain."
+    ],
+    realLifeExample: "Jaise kisi cheez ke hone ke chances nikalna multiple trials mein (e.g., 10 bar coin toss karne pe heads aane ki probability).",
+    examTip: "Pascal's Triangle draw karke dikhayein examiner ko coefficients samjhane ke liye.",
+    diagramHint: "Pascal's Triangle (1, 1-1, 1-2-1, 1-3-3-1 etc.)."
+  },
+  {
+    topic: "Dispersion",
+    explanation: "Dispersion hume batata hai ki data 'Mean' (Average) se kitna bikhra hua (Spread) hai. Yeh data ki consistency check karne mein help karta hai.",
+    keyPoints: [
+      "Measures: Range, Mean Deviation, Standard Deviation (SD), aur Variance.",
+      "Range: Max value - Min value.",
+      "Standard Deviation: Sabse reliable measure jo batata hai average deviation kitna hai.",
+      "Consistency: Kam dispersion matlab data ek jaisa hai (Consistent), zyada dispersion matlab data bikhra hua hai."
+    ],
+    realLifeExample: "Jaise do batsmen ka score—agar ek hamesha 40-50 banata hai (Low Dispersion), aur dusra kabhi 0 kabhi 100 (High Dispersion).",
+    examTip: "Standard Deviation (σ) ka formula zaroor yaad karein, har numerical mein kaam aata hai.",
+    diagramHint: "Two curves: one sharp (low dispersion) and one flat (high dispersion)."
+  },
+  {
+    topic: "Moments, Skewness, kurtosis",
+    explanation: "Yeh measures data ki 'Shape' batate hain. Skewness batata hai asymmetry, aur Kurtosis batata hai ki curve kitna peake ya flat hai.",
+    keyPoints: [
+      "Skewness: Agar data left ya right side jhuka hua hai (Positive/Negative skew).",
+      "Kurtosis: Curve ki 'Peakedness'. Leptokurtic (Pointy), platykurtic (Flat), mesokurtic (Normal).",
+      "Moments: Base calculations jo SD, Skewness aur Kurtosis nikalne mein help karte hain."
+    ],
+    realLifeExample: "Skewness: Jaise income distribution—zyadatar log kam kamate hain (Left skew), kuch hi log boht ameer hote hain.",
+    examTip: "Skewness = (Mean - Mode) / SD formula zaroor mention karein.",
+    diagramHint: "Three curves showing Left-skewed, Symmetric, and Right-skewed data.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Distributed Database",
+    explanation: "Distributed Database mein data ek jagah nahi, balki alag-alag locations (Sites) par save hota hai jo network se jude hote hain.",
+    keyPoints: [
+      "Transparency: User ko lagta hai ki data ek hi jagah hai (Single unit).",
+      "Reliability: Agar ek site down ho jaye, toh dusri site se data mil sakta hai.",
+      "Fragmentation: Data ko todkar (Horizontal/Vertical) alag sites pe rakhna.",
+      "Replication: Same data ki copies multiple sites pe rakhna."
+    ],
+    realLifeExample: "Jaise Google Drive—aapka data duniya ke alag-alag servers (US, India, Europe) pe distributed hai par aapko ek hi dashboard dikhta hai.",
+    examTip: "Homogeneous vs Heterogeneous distributed systems ka difference likhein.",
+    diagramHint: "Cloud icon connected to multiple server icons in different locations.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "OODBMS (Basic Concepts)",
+    explanation: "Object-Oriented DBMS data ko 'Objects' (jaise Java/C++ code mein hota hai) ke form mein store karta hai, na ki sirf tables mein.",
+    keyPoints: [
+      "Objects & Classes: Data aur functions ek saath (Encapsulation).",
+      "Inheritance: Parent class ki properties child class mein aana.",
+      "Complexity: Yeh complex data (jaise maps, videos, 3D models) handle karne ke liye best hai.",
+      "No Tables: Isme rows/columns ka concept nahi hota, seedha object pointers hote hain."
+    ],
+    realLifeExample: "Jaise Video Games—har character ek object hai jisme uski health, speed aur skills (data + functions) ek saath hain.",
+    examTip: "Persistent Objects word ka use karein jo software band hone ke baad bhi DB mein rehte hain.",
+    diagramHint: "Icon of an object containing 'Data' and 'Methods' blocks inside."
+  },
+  {
+    topic: "Instruction Set Architecture",
+    explanation: "ISA ek abstract model hai jo batata hai ki CPU kounsi instructions (Commands) execute kar sakta hai aur memory se kaise baat karega.",
+    keyPoints: [
+      "Interface: Yeh hardware aur software ke beech ka bridge hai.",
+      "Components: Opcode types, Addressing modes, aur Registers list.",
+      "RISC vs CISC: RISC (Simple/Fast instructions), CISC (Complex/Powerful instructions).",
+      "Importance: Bina ISA ke koi compiler ya OS nahi likha ja sakta."
+    ],
+    realLifeExample: "Jaise restaurant ka Menu—ye batata hai ki kitchen (Hardware) kya-kya bana sakta hai aur customer (Software) kya order de sakta hai.",
+    examTip: "x86 (Intel) vs ARM architecture ka example zaroor dein.",
+    diagramHint: "Layered diagram showing Hardware -> ISA -> Software (OS/Apps)."
+  },
+  {
     topic: "Linear Correlation",
     explanation: "Correlation batata hai ki do variables aapas mein kitne jude huye hain. Ise '-1' se '+1' ke beech napa jata hai.",
     keyPoints: [
@@ -1003,17 +1194,275 @@ export const hinglishNotes: Note[] = [
     examTip: "Empirical relation (Mode = 3*Median - 2*Mean) jarur likhen.",
     diagramHint: "A curve showing where Mean, Median, and Mode sit relative to each other.",
   },
+  {
+    topic: "chi-square test",
+    explanation: "Chi-Square ek statistical test hai jo ye check karta hai ki actual data (Observed) aur expected data mein kitna farak hai.",
+    keyPoints: [
+      "Goodness of Fit: Kya data expected pattern ko follow kar raha hai?",
+      "Independence: Kya do factors (e.g., Smoking and Cancer) aapas mein jude hain ya nahi.",
+      "Symbol: χ² (Khai-Square).",
+      "Null Hypothesis: Yeh maanta hai ki koi significant difference nahi hai."
+    ],
+    realLifeExample: "Jaise ek ludo ka gitta (Die)—kya usme har number aane ke equal chances hain? Check karne ke liye Chi-Square test lagao.",
+    examTip: "Degree of Freedom (df = n-1) calculate karna mat bhulein.",
+    diagramHint: "Chi-square distribution curve (starts at 0, positively skewed)."
+  },
+  {
+    topic: "Sampling Theory",
+    explanation: "Sampling ka matlab hai ek bade group (Population) se ek chota hissa (Sample) chunna taaki poore group ke baare mein prediction ki ja sake.",
+    keyPoints: [
+      "Population vs Sample: Poora India vs 1000 selected citizens.",
+      "Random Sampling: Har kisi ke select hone ke equal chances hote hain (Fair).",
+      "Z-test & T-test: Sample ke results ko verify karne ke liye tests.",
+      "Bias: Agar selection galat ho toh result galat aayega."
+    ],
+    realLifeExample: "Jaise khana banate waqt sirf ek chammach test karna ye janne ke liye ki namak sahi hai ya nahi.",
+    examTip: "Small sample (n < 30) ke liye T-test aur Large sample (n >= 30) ke liye Z-test use hota hai.",
+    diagramHint: "Large circle (Population) with a smaller circle (Sample) being pulled out by an arrow."
+  },
+  {
+    topic: "Mean deviation and standard deviation",
+    explanation: "Mean Deviation average deviation batata hai, aur Standard Deviation (SD) squares use karta hai taaki negative signs khatam ho jayein aur accuracy badhe.",
+    keyPoints: [
+      "Mean Deviation: Sum(|x - mean|) / n. Simple deviaton calculation.",
+      "Standard Deviation (σ): Root Mean Square deviation. Statistics ka king hai.",
+      "Variance: SD ka square (σ^2).",
+      "Usage: Quality control aur financial risk calculation mein bypass nahi kiya ja sakta."
+    ],
+    realLifeExample: "Jaise bijli ka bill—agar har mahine fix hai toh SD kam hai, agar kabhi 100 kabhi 5000 toh SD bahut zyada hai.",
+    examTip: "SD find karne ka short-cut method (Assumed mean method) practice karein time bachane ke liye.",
+    diagramHint: "Formula box with Σ symbols and square roots.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Probability theory",
+    explanation: "Probability ka matlab hai kisi event ke hone ke 'Chances'. Iski value hamesha 0 (Impossible) se 1 (Certain) ke beech hoti hai.",
+    keyPoints: [
+      "Conditional Probability: P(A|B) - Event A hone ke chances jab B pehle hi ho chuka ho.",
+      "Mathematical Expectation: Long-run average value (Mean of probability).",
+      "Mutually Exclusive: Wo events jo ek saath nahi ho sakte (e.g., Head aur Tail same toss mein).",
+      "Bayes' Theorem: Updated probability nikalne ke liye application."
+    ],
+    realLifeExample: "Jaise aaj barish hogi ya nahi, ya phir ek card nikalne pe King aane ke chances.",
+    examTip: "P(A ∪ B) = P(A) + P(B) - P(A ∩ B) formula hamesha kaam aata hai.",
+    diagramHint: "Venn diagram showing overlapping circles and colored intersection (P(A∩B)).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Minimum Cost Spanning Trees",
+    explanation: "MST ek graph ka wo hissa hai jo saare nodes ko connect karta hai sabse kam total 'Weight' (rasta) kharch karke.",
+    keyPoints: [
+      "Algorithms: Prim's Algorithm aur Kruskal's Algorithm.",
+      "No Cycles: Tree hai isliye koi bhi loop nahi hona chahiye.",
+      "Greedy Approach: Har step pe sabse sasta edge select karna.",
+      "Application: Network cables lagana ya road maps design karna minimum cost mein."
+    ],
+    realLifeExample: "Jaise ek colony mein bijli ki taar (wires) aise lagana ki har ghar tak bijli pahunche aur taar (wire) ki lambai sabse kam ho.",
+    examTip: "Prim's (Vertex based) aur Kruskal's (Edge based) ke beech ka main difference yaad rakhein.",
+    diagramHint: "A graph with some edges highlighted and a total cost sum labeled at the bottom.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Sorting Algorithms (Merge, Quick, Bubble)",
+    explanation: "Sorting ka matlab hai data ko ek order (A-Z ya 1-100) mein arrange karna. Har algorithm ki apni speed aur memory requirement hoti hai.",
+    keyPoints: [
+      "Bubble Sort: Padosi ko swap karna (Slowest - O(n^2)).",
+      "Merge Sort: Data ko aadha-aadha todna aur phir merge karna (Fast - O(n log n)).",
+      "Quick Sort: Pivot select karke partition karna (Avg fast - O(n log n)).",
+      "Complexity: O(n log n) complex algorithms bade data ke liye best hote hain."
+    ],
+    realLifeExample: "Merge Sort: Jaise 10 dheriyan (piles) ko arrange karna pehle do-do ko combine karke phir char-char ko.",
+    examTip: "Merge Sort ka 'Divide and Conquer' diagram exam mein full marks dilata hai.",
+    diagramHint: "Tree diagram showing array splitting into single elements and then merging back sorted.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Interpolation Search",
+    explanation: "Interpolation search binary search ka hi ek smart version hai jo values ke 'Distribution' ka andaza lagakar target dhoondta hai.",
+    keyPoints: [
+      "Smart Guessing: Agar hume dhoondna hai '90' aur array 1-100 hai, toh ye end ke paas check karega na ki bich mein.",
+      "Constraint: Data sorted aur uniformly distributed hona chahiye.",
+      "Fastest: Best case mein O(log log n) speed deta hai.",
+      "Formula: Pos = Low + [(target-arr[low])*(high-low) / (arr[high]-arr[low])]."
+    ],
+    realLifeExample: "Jaise dictionary mein 'Z' dhoondte waqt hum peeche ke pages se start karte hain, na ki ekdum center se.",
+    examTip: "Iska formula complex hai but ye binary search se fast hai, ye point highlight karein.",
+    diagramHint: "An array with an arrow jumping directly towards the target value rather than the midpoint.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Monte Carlo method",
+    explanation: "Monte Carlo method randomness aur 'Repeated Sampling' use karta hai complex problems solve karne ke liye jinka exact answer nikalna mushkil ho.",
+    keyPoints: [
+      "Simulation: Computer se hazaaron bar random trials chalana.",
+      "Probability Based: Expected outcome nikalne ke liye randomness ka fayda uthana.",
+      "Usage: Risk analysis, stock price prediction, aur physics simulations mein.",
+      "Precision: Jitne zyada trials, utna accurate result."
+    ],
+    realLifeExample: "Jaise ye guess karna ki barish hogi ya nahi based on 10,000 simulations of wind and cloud patterns.",
+    examTip: "Monte Carlo ka naam Monaco ke casino se aaya hai (Gambling logic), ye interesting fact intro mein likh sakte hain.",
+    diagramHint: "A square with random dots inside and a circle inscribed (Common Pi-calculation example).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Relationship Algebra",
+    explanation: "Relational Algebra ek procedural query language hai jo batati hai ki data 'Kaise' (How) nikalna hai operations use karke.",
+    keyPoints: [
+      "Operations: Selection (σ), Projection (π), Union (∪), Set Difference (-), Cartesian Product (X).",
+      "Selection: Rows select karna based on condition.",
+      "Projection: Specific columns select karna.",
+      "Join: Do tables ko aapas mein combine karna common column ke base pe."
+    ],
+    realLifeExample: "Jaise filter lagana—pehle 'City' filter kiya (Selection) phir sirf 'Name' dikhaya (Projection).",
+    examTip: "Symbols (σ, π, ∪, ⋈) ka sahi use karein, examiners symbols dekhte hi marks dete hain.",
+    diagramHint: "Table transformation diagram: Input Table -> [Operator Symbol] -> Output Table.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Relation Calculus",
+    explanation: "Relational Calculus ek non-procedural language hai jo batati hai ki 'Kya' (What) data chahiye, bina ye bataye ki kaise nikalna hai.",
+    keyPoints: [
+      "Types: Tuple Relational Calculus (TRC) aur Domain Relational Calculus (DRC).",
+      "Logic: Yeh mathematical logic aur predicates pe base hota hai.",
+      "Declarative: Isme hum sirf condition batate hain (e.g., {t | Student(t) AND t.Age > 20}).",
+      "Power: Iski expressive power Relational Algebra ke barabar hi hoti hai."
+    ],
+    realLifeExample: "Jaise Google search—aap sirf likhte ho 'Best Pizza', aap ye nahi batate ki database mein kahan dhoondna hai.",
+    examTip: "Tuple constant aur variables ke beech ka difference clarify karein.",
+    diagramHint: "Mathematical logic notation examples box.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Triggers and Active Databases",
+    explanation: "Triggers wo 'Automatic Actions' hain jo database mein kisi event (Insert, Update, Delete) ke hone pe apne aap chalti hain.",
+    keyPoints: [
+      "ECA Model: Event (Kya hua), Condition (Kab chalna hai), Action (Kya karna hai).",
+      "Automation: Audit logs maintain karne aur integrity check karne ke liye best hai.",
+      "Types: Before Triggers aur After Triggers.",
+      "Security: Unauthorized changes ko block karne ke liye bhi use hote hain."
+    ],
+    realLifeExample: "Jaise 'Out of Stock' alert—jab product ki quantity 0 ho jaye (Event), toh system automatically 'Restock' email bhej deta hai (Action).",
+    examTip: "Trigger syntax ka ek chota pseudo-code example zaroor likhein.",
+    diagramHint: "Logic flow: Update Event -> Trigger Check -> Automatic Action execution.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "RAID and its Levels",
+    explanation: "RAID multiple hard disks ko combine karke speed aur data safety badhane ki ek technique hai.",
+    keyPoints: [
+      "RAID 0 (Striping): High speed, par koi safety nahi.",
+      "RAID 1 (Mirroring): Data ki copy doosri disk pe same to same (Safe).",
+      "RAID 5 (Parity): Speed aur safety ka perfect balance.",
+      "Redundancy: Agar ek disk fail bhi ho jaye, toh computer chalta rehta hai."
+    ],
+    realLifeExample: "Jaise important certificates ki ek copy ghar pe aur ek locker mein rakhna (RAID 1).",
+    examTip: "RAID 0, 1 aur 5 ke beech comparison table zaroor banayein.",
+    diagramHint: "Visual of multiple disks with data blocks and parity bits.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Transaction management and Structure of a DBMS",
+    explanation: "Transaction management ensure karta hai ki database hamesha consistent rahe, chahe multiple users ek saath kaam karein ya system crash ho jaye.",
+    keyPoints: [
+      "ACID Properties: Atomicity, Consistency, Isolation, Durability.",
+      "Atomicity: 'All or Nothing'—ya toh pura transaction hoga ya kuch bhi nahi.",
+      "Durability: Ek baar save ho gaya toh power jane pe bhi nahi hona chahiye.",
+      "Isolation: Do users ke kaam ek dusre ko disturb nahi karne chahiye."
+    ],
+    realLifeExample: "Bank Transfer—agar mere account se paise kat gaye par aapke mein nahi pahunche, toh transaction pura cancel (Rollback) ho jayega.",
+    examTip: "ACID properties ka acronym aur har point ki definition must hai.",
+    diagramHint: "ACID acronym box with 4 pillars icons.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "KBDBMS",
+    explanation: "KBDBMS (Knowledge-Base DBMS) data ke saath-saath 'Rules' aur 'Logic' bhi store karta hai taaki system intelligent decisions le sake.",
+    keyPoints: [
+      "Inference: Sirf data store nahi karta, balki naya knowledge derive karta hai (Deductive).",
+      "Expert Systems: AI apps mein heavily use hota hai.",
+      "Logic Based: Prolog jaisi languages se inspired storage logic.",
+      "Difference: Normal DBMS facts store karta hai, KBDBMS facts + rules store karta hai."
+    ],
+    realLifeExample: "Medical Diagnosis System—Jahan symptoms (Data) ke sath bimari ke rules (Knowledge) match karke ilaaj bataya jata hai.",
+    examTip: "Knowledge vs Data ka difference intro mein zaroor likhein.",
+    diagramHint: "Database box connected to an 'Inference Engine' block.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Weak Entities",
+    explanation: "Weak Entity wo entity hai jiske paas apni khud ki Primary Key nahi hoti aur wo doosri (Owner) entity pe depend karti hai.",
+    keyPoints: [
+      "Symbol: Double Rectangle se dikhaya jata hai.",
+      "Discriminator: Inke paas ek partial key hoti hai (Dashed underline).",
+      "Relationship: Owner se 'Identifying Relationship' (Double Diamond) ke through judte hain.",
+      "Existence: Agar Owner delete ho jaye, toh weak entity bhi delete ho jati hai."
+    ],
+    realLifeExample: "Jaise 'Employee' aur unke 'Dependents' (Family members). Agar employee company chod dega, toh unka family data bhi hat jayega.",
+    examTip: "Double Rectangle aur Double Diamond symbols banana mat bhulna.",
+    diagramHint: "A strong entity connected to a double-bordered weak entity.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Distributed Database",
+    explanation: "Distributed Database mein data ek computer pe nahi, balki alag-alag locations (Sites) par networked system mein save hota hai.",
+    keyPoints: [
+      "Availability: Agar ek office band hai, toh data dusre office ke server se mil jayega.",
+      "Fragmentation: Table ko todkar alag sites pe rakhna (Horizontal/Vertical).",
+      "Replication: Same data ki copies multiple sites pe rakhna speed ke liye.",
+      "Transparency: User ko pta bhi nahi chalta ki data 5 alag shehron mein hai."
+    ],
+    realLifeExample: "Facebook—Aapka data India, Singapore aur USA ke servers pe hai, par aapko wo ek hi screen pe dikhta hai.",
+    examTip: "Homogeneous aur Heterogeneous systems ke types mention karein.",
+    diagramHint: "Interconnected server icons across a map cloud.",
+    diagramUrl: "true"
+  },
 ];
 
 
 export function getDiagramForTopic(topicTitle: string): string | null {
-  const note = hinglishNotes.find(n => n.topic === topicTitle);
+  const note = getNoteForTopic(topicTitle);
   return note?.diagramUrl || null;
 }
 
 export function getNoteForTopic(topicTitle: string): Note | null {
-  const note = hinglishNotes.find(n => n.topic === topicTitle);
-  if (!note) return null;
+  const clean = (s: string) => s.toLowerCase().replace(/[^\w\s]/g, '').trim();
+  const titleClean = clean(topicTitle);
+
+  // 1. Try exact or case-insensitive match
+  let note = hinglishNotes.find(n => n.topic === topicTitle || clean(n.topic) === titleClean);
+  
+  // 2. Try partial match
+  if (!note) {
+    note = hinglishNotes.find(n => {
+      const noteClean = clean(n.topic);
+      return noteClean.includes(titleClean) || titleClean.includes(noteClean);
+    });
+  }
+
+  // 3. Try word overlap (Fuzzy-ish)
+  if (!note) {
+    const titleWords = titleClean.split(/\s+/).filter(w => w.length > 2);
+    note = hinglishNotes.find(n => {
+      const noteWords = clean(n.topic).split(/\s+/);
+      const overlap = titleWords.filter(w => noteWords.includes(w));
+      return overlap.length >= Math.min(titleWords.length, 2); // At least 2 words match or all words if few
+    });
+  }
+
+  // Fallback for missing notes - provide helpful feedback instead of null
+  if (!note) {
+    return {
+      topic: topicTitle,
+      explanation: "Hinglish notes for this specific topic are currently being synthesized. Our academic team is working on simplifying this content for you.",
+      keyPoints: [
+        "Content update in progress",
+        "Refer to standard textbooks for now",
+        "Check back in 24-48 hours"
+      ],
+      realLifeExample: "Logic update in progress—stay tuned!",
+      examTip: "Try searching this topic on YouTube using our quick-link button while we update your curated notes."
+    };
+  }
   
   // High-performance fallback for non-migrated notes
   if (!note.explanation) {
