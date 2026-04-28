@@ -7,7 +7,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Fuse from 'fuse.js';
 import { syllabusData, Subject, Topic, Unit } from './syllabusData';
-import { getNoteForTopic, getDiagramForTopic, NoteStyle } from './notesData';
+import { getNoteForTopic, getDiagramForTopic, Note } from './notesData';
 import { signInWithGoogle, logout, onAuthStateChanged, User, auth, signInAnonymous, db, syncProgress } from './lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { 
@@ -47,8 +47,7 @@ export default function App() {
   const [progress, setProgress] = useState<Record<string, boolean>>({});
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [selectedNote, setSelectedNote] = useState<{ topic: string; content: string | string[] } | null>(null);
-  const [noteStyle, setNoteStyle] = useState<NoteStyle>('detailed');
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [layoutMode, setLayoutMode] = useState<'grid' | 'list' | 'roadmap'>('grid');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -112,10 +111,7 @@ export default function App() {
       }
     }
 
-    const savedStyle = localStorage.getItem('sem4-note-style') as NoteStyle;
-    if (savedStyle) setNoteStyle(savedStyle);
-
-    const savedLayout = localStorage.getItem('sem4-layout-mode') as 'grid' | 'list';
+    const savedLayout = localStorage.getItem('sem4-layout-mode') as 'grid' | 'list' | 'roadmap';
     if (savedLayout) setLayoutMode(savedLayout);
 
     const savedTheme = localStorage.getItem('sem4-theme');
@@ -206,11 +202,10 @@ export default function App() {
 
   useEffect(() => {
     if (selectedNote) {
-      const newContent = getNoteForTopic(selectedNote.topic, noteStyle);
-      setSelectedNote(prev => prev ? { ...prev, content: newContent } : null);
+      const newContent = getNoteForTopic(selectedNote.topic);
+      setSelectedNote(newContent);
     }
-    localStorage.setItem('sem4-note-style', noteStyle);
-  }, [noteStyle]);
+  }, [selectedNote?.topic]);
 
   useEffect(() => {
     localStorage.setItem('sem4-layout-mode', layoutMode);
@@ -285,8 +280,8 @@ export default function App() {
 
   const handleExplain = (topic: string) => {
     try {
-      const noteContent = getNoteForTopic(topic, noteStyle);
-      setSelectedNote({ topic, content: noteContent });
+      const noteContent = getNoteForTopic(topic);
+      setSelectedNote(noteContent);
     } catch (e) {
       console.error("Error explaining topic:", e);
     }
@@ -297,13 +292,7 @@ export default function App() {
   };
 
   const handleChatGPT = (topic: string, subjectTitle?: string) => {
-    const stylePrompt = noteStyle === 'bulletin' 
-      ? 'in detailed bullet points' 
-      : noteStyle === 'short' 
-        ? 'in a concise summary' 
-        : 'in a comprehensive detailed explanation';
-    
-    const prompt = `Explain the topic "${topic}" from the BCA Semester 4 syllabus of "${subjectTitle || activeSubject.title}" ${stylePrompt} in Hinglish. Make it easy to understand for exams.`;
+    const prompt = `Explain the topic "${topic}" from the BCA Semester 4 syllabus of "${subjectTitle || activeSubject.title}" in professional Hinglish. Breakdown the theory, give key points, a real-life example, and exam tips.`;
     window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, '_blank');
   };
 
@@ -1162,79 +1151,114 @@ export default function App() {
                   <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-tight truncate">{selectedNote.topic}</h3>
                 </div>
                 
-                <div className="flex items-center gap-2 shrink-0">
-                  <div className="relative">
-                    <button 
-                      onClick={() => setShowSettings(!showSettings)}
-                      className={`p-1.5 sm:p-2 rounded-full transition-all ${showSettings ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-100 dark:bg-dark-bg text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
-                    >
-                      <Settings2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                    
-                    <AnimatePresence>
-                      {showSettings && (
-                        <motion.div 
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          className="absolute right-0 top-12 mt-2 w-48 bg-white dark:bg-dark-surface border border-border dark:border-dark-border rounded-xl shadow-xl z-50 p-2 overflow-hidden"
-                        >
-                          <div className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest px-3 mb-2">Note Style</div>
-                          {(['short', 'detailed', 'bulletin'] as NoteStyle[]).map(style => (
-                            <button
-                              key={style}
-                              onClick={() => {
-                                setNoteStyle(style);
-                              }}
-                              className={`w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-wider rounded-lg transition-colors mb-1 last:mb-0 ${
-                                noteStyle === style 
-                                ? 'bg-primary/10 text-primary' 
-                                : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
-                              }`}
-                            >
-                              {style}
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  
-                  <button onClick={() => setSelectedNote(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                    <X className="w-6 h-6 text-slate-400 dark:text-slate-500" />
-                  </button>
-                </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button onClick={() => setSelectedNote(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+                        <X className="w-6 h-6 text-slate-400 dark:text-slate-500" />
+                      </button>
+                    </div>
               </div>
               
-              <div className="p-6 sm:p-10 overflow-y-auto grow">
-                <div className="prose prose-slate dark:prose-invert prose-sm max-w-none">
-                  {noteStyle === 'bulletin' && Array.isArray(selectedNote.content) ? (
-                    <ul className="space-y-4 sm:space-y-6">
-                      {selectedNote.content.map((bullet, idx) => (
+              <div className="p-4 sm:p-8 overflow-y-auto grow custom-scrollbar">
+                <div className="space-y-6 sm:space-y-8">
+                  {/* Simple Explanation */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                      <div className="p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <BookOpen className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em]">🧠 Simple Explanation</span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 text-sm sm:text-[15px] font-medium leading-relaxed bg-slate-50/50 dark:bg-dark-bg/50 p-4 rounded-2xl border border-slate-100 dark:border-dark-border">
+                      {selectedNote.explanation}
+                    </p>
+                  </motion.div>
+
+                  {/* Key Points */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                      <div className="p-1.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                        <ListOrdered className="w-4 h-4" />
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em]">📌 Key Points</span>
+                    </div>
+                    <ul className="grid grid-cols-1 gap-3">
+                      {selectedNote.keyPoints.map((point, idx) => (
                         <motion.li 
                           key={idx}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="flex items-start gap-3 sm:gap-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base font-medium leading-relaxed"
+                          transition={{ delay: 0.2 + (idx * 0.05) }}
+                          className="flex items-start gap-3 p-3 bg-white dark:bg-dark-surface border border-slate-100 dark:border-dark-border rounded-xl group hover:border-primary/30 transition-colors"
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                          <span>{bullet}</span>
+                          <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                            <span className="text-[10px] font-bold text-primary">{idx + 1}</span>
+                          </div>
+                          <span className="text-slate-600 dark:text-slate-400 text-sm font-medium leading-normal">{point}</span>
                         </motion.li>
                       ))}
                     </ul>
-                  ) : (
+                  </motion.div>
+
+                  {/* Real-Life Example */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/20 rounded-2xl p-5 space-y-3"
+                  >
+                    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold">
+                      <Palette className="w-4 h-4" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em]">💡 Real-Life Example</span>
+                    </div>
+                    <p className="text-slate-700 dark:text-slate-300 text-sm italic font-medium">
+                      {selectedNote.realLifeExample}
+                    </p>
+                  </motion.div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Exam Tip */}
                     <motion.div 
-                      key={noteStyle}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="space-y-4 sm:space-y-6"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 }}
+                      className="bg-rose-50/50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/20 rounded-2xl p-4 space-y-2"
                     >
-                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed sm:leading-loose whitespace-pre-wrap text-[15px] sm:text-[17px] font-medium tracking-tight">
-                        {selectedNote.content}
+                      <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
+                        <Trophy className="w-4 h-4" />
+                        <span className="text-[9px] font-black uppercase tracking-widest">🎯 Exam Tip</span>
+                      </div>
+                      <p className="text-slate-600 dark:text-slate-400 text-xs font-bold leading-relaxed">
+                        {selectedNote.examTip}
                       </p>
                     </motion.div>
-                  )}
+
+                    {/* Diagram Hint */}
+                    {selectedNote.diagramHint && (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.35 }}
+                        className="bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/20 rounded-2xl p-4 space-y-2"
+                      >
+                        <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                          <ImageIcon className="w-4 h-4" />
+                          <span className="text-[9px] font-black uppercase tracking-widest">🖼️ Diagram Hint</span>
+                        </div>
+                        <p className="text-slate-600 dark:text-slate-400 text-xs font-medium leading-relaxed italic">
+                          {selectedNote.diagramHint}
+                        </p>
+                      </motion.div>
+                    )}
+                  </div>
                 </div>
               </div>
               
