@@ -292,7 +292,7 @@ export default function App() {
   };
 
   const handleChatGPT = (topic: string, subjectTitle?: string) => {
-    const prompt = `Explain the topic "${topic}" from the BCA Semester 4 syllabus of "${subjectTitle || activeSubject.title}" in professional Hinglish. Breakdown the theory, give key points, a real-life example, and exam tips.`;
+    const prompt = `Explain the topic "${topic}" from the BCA Semester 4 syllabus of "${subjectTitle || activeSubject.title}" in professional Hinglish. Breakdown the theory, give key points, and a real-life example.`;
     window.open(`https://chatgpt.com/?q=${encodeURIComponent(prompt)}`, '_blank');
   };
 
@@ -1223,30 +1223,14 @@ export default function App() {
                       {selectedNote.realLifeExample}
                     </p>
                   </motion.div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Exam Tip */}
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 }}
-                      className="bg-rose-50/50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/20 rounded-2xl p-4 space-y-2"
-                    >
-                      <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400">
-                        <Trophy className="w-4 h-4" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">🎯 Exam Tip</span>
-                      </div>
-                      <p className="text-slate-600 dark:text-slate-400 text-xs font-bold leading-relaxed">
-                        {selectedNote.examTip}
-                      </p>
-                    </motion.div>
-
+ 
+                  <div className="grid grid-cols-1 gap-4">
                     {/* Diagram Hint */}
                     {selectedNote.diagramUrl && selectedNote.diagramHint && (
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.35 }}
+                        transition={{ delay: 0.3 }}
                         className="bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/20 rounded-2xl p-4 space-y-2"
                       >
                         <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
@@ -1259,7 +1243,7 @@ export default function App() {
                       </motion.div>
                     )}
                   </div>
-
+ 
                   {/* Quick Actions (Redirects inside notes) */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
