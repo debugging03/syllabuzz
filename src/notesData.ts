@@ -1,6 +1,7 @@
 
 export interface Note {
   topic: string;
+  subjectCode?: string; // To handle duplicate topics across subjects
   explanation?: string;      // 🧠 Simple Explanation
   keyPoints?: string[];      // 📌 Key Points
   realLifeExample?: string;  // 💡 Real-Life Example
@@ -16,6 +17,7 @@ export const hinglishNotes: Note[] = [
   // BCA-401 RDBMS
   {
     topic: "Overview and History of DBMS",
+    subjectCode: "BCA-401",
     explanation: "DBMS (Database Management System) ek sophisticated software layer hai jo hardware aur data ke beech bridge ka kaam karta hai. Iska main kaam hai data ko efficiently store karna, secure rakhna aur jab zaroorat ho toh fast retrieve karna. Database technology 1960s se start hui thi aur aaj ye primitive File Systems ko replace karke enterprise levels pe use hoti hai.",
     keyPoints: [
       "Historical Evolution: 1960s (Hierarchical - IBM IMS), 1970s (Relational - IBM System R), 1980s (SQL Standard), 1990s (Object-Oriented), 2000s (NoSQL and Cloud).",
@@ -28,6 +30,7 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "File System vs DBMS",
+    subjectCode: "BCA-401",
     explanation: "File System data storage ka basic aur purana tareeka hai jahan data physically separate files mein store hota hai. DBMS ek integrated approach hai jahan sara data ek single gateway ke through access hota hai, jo performance aur security ko drastically improve karta hai.",
     keyPoints: [
       "Data Redundancy: File system mein same student ka data admission aur library file mein duplicate ho sakta hai, DBMS ise single entry se manage karta hai.",
@@ -40,6 +43,7 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "Advantage of DBMS",
+    subjectCode: "BCA-401",
     explanation: "DBMS use karne ke advantages purely performance aur management se jude hain. Yeh business logic ko simplified rakhta hai aur data ki safety ko prioritize karta hai.",
     keyPoints: [
       "Data Sharing: Remote locations se multiple users bina kisi collision ke real-time data access kar sakte hain.",
@@ -76,6 +80,7 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "Components of DBMS",
+    subjectCode: "BCA-401",
     explanation: "DBMS ek composite system hai jo hardware aur human resource ke saath work karta hai. Ye sirf ek internal engine nahi, balki ek full interaction ecosystem hai.",
     keyPoints: [
       "Hardware Component: Physical storage engines, SSDs, RAM aur processing units.",
@@ -85,6 +90,149 @@ export const hinglishNotes: Note[] = [
       "Data: Sabse core component—actual logical records."
     ],
     realLifeExample: "Aapka Instagram—Servers (Hardware), App logic (Software), Aapke Photos (Data), aur Engineers jo ise chalate hain (People).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Describing and Storing Data in a DBMS",
+    subjectCode: "BCA-401",
+    explanation: "DBMS mein data ko store karne ke liye hum use 'Data Models' ke through describe karte hain. Yeh process batata hai ki data physical disk pe kaise save hoga aur logical level pe hume kaisa dikhega.",
+    keyPoints: [
+      "Data Abstraction: Complex hardware details ko hide karke simple view provide karna.",
+      "Storage Engine: Component jo decide karta hai ki data blocks mein kaise distribute hoga.",
+      "Schema Definition: Tables, types aur constraints set karna taaki data organized rahe.",
+      "Record Management: Har entry ko unique identify karke efficiency maintain karna."
+    ],
+    realLifeExample: "Jaise aap phone mein contact save karte ho—aap sirf 'Name' aur 'Number' dekhte ho (Description), par database use background mein memory blocks mein store karta hai (Storing).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Queries in DBMS",
+    subjectCode: "BCA-401",
+    explanation: "Queries woh requests hain jo hum database se information nikalne (retrieve) ya badalne (modify) ke liye karte hain. SQL (Structured Query Language) iska sabse popular medium hai.",
+    keyPoints: [
+      "DML (Data Manipulation): Select, Insert, Update, aur Delete operations.",
+      "Query Processor: System jo query ko parse karta hai aur best execution plan dhoondta hai.",
+      "Efficiency: Indexing use karke queries ko millions of rows mein fast chalana.",
+      "Ad-hoc Queries: User apni marzi se kisi bhi format mein data demand kar sakta hai."
+    ],
+    realLifeExample: "Google search query—aap kuch keywords daalte ho aur database aapko relevant result turant nikaal ke de deta hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Distributed Database",
+    subjectCode: "BCA-401",
+    explanation: "Distributed Database ka matlab hai data ek single machine ke bajaye alag-alag physical locations (nodes) pe spread hona, jo network se connect hote hain.",
+    keyPoints: [
+      "Transparency: User ko aisa lagta hai ki wo single system use kar raha hai, chahe data kahin bhi ho.",
+      "Reliability: Agar ek site fail ho jaye, toh doosri site se data mil sakta hai (No single point of failure).",
+      "Scalability: Naye nodes add karke system ki capacity asani se badhayi ja sakti hai.",
+      "Types: Homogeneous (Same DBMS on all sites) aur Heterogeneous (Different DBMS on different sites)."
+    ],
+    realLifeExample: "Jaise Facebook—aapka data US ke server pe ho sakta hai aur aapke dost ka Singapore ke server pe, par interface sabko unified dikhta hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "KBDBMS",
+    subjectCode: "BCA-401",
+    explanation: "KBDBMS (Knowledge Base DBMS) standard database mein 'Knowledge' aur 'Reasoning' power add karta hai. Ye sirf data store nahi karta, balki rules use karke decisions bhi le sakta hai.",
+    keyPoints: [
+      "Deductive Power: Isme system pehle se mojud rules se naye facts 'Inference' kar sakta hai.",
+      "Expert Systems: Medical ya Legal apps mein jahan expertise ki zaroorat hoti hai wahan iska use hota hai.",
+      "Logic Based: Ye usually Prolog ya similar logic programming languages ke principles apply karta hai.",
+      "Rich Semantics: Ye data ke aapas ke deep meanings aur dependencies ko samajhta hai."
+    ],
+    realLifeExample: "Jaise ek AI Doctor app—simultaneously rules check karega ki agar 'Fever' hai aur 'Cold' hai, toh system predict karega 'Flu' ki possibility.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "OODBMS (Basic Concepts)",
+    subjectCode: "BCA-401",
+    explanation: "OODBMS (Object-Oriented DBMS) database ko programming objects (like in Java/C++) ke format mein treat karta hai. Isme data aur logic (methods) saath-saath bundle hote hain.",
+    keyPoints: [
+      "Object Identity: Har record (Object) ki apni unique identity hoti hai chahe values duplicate hon.",
+      "Encapsulation: Data aur operations (functions) ko ek hi unit mein band karna.",
+      "Inheritance: Ek object ki properties doosre objects mein transfer karna.",
+      "Complex Data: Multimedia, CAD designs, aur XML files store karne ke liye standard tables se behtar hota hai."
+    ],
+    realLifeExample: "Gaming apps—jahan ek 'Player' object ke paas apni health, score (Data) aur Jump, Run (Functions) attributes hote hain jo database mein as-it-is save hote hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Conceptual Design for a Large Enterprise",
+    subjectCode: "BCA-401",
+    explanation: "Badi organizations (Enterprise) ke liye database design karna complex hota hai kyunki wahan hazaron users aur interconnected departments hote hain. Isme hierarchy aur security ka khas khayal rakha jata hai.",
+    keyPoints: [
+      "Top-Down Approach: Pehle poore organization ka aerial view lena, phir departments mein split karna.",
+      "View Integration: Alak-alga departments (HR, Sales, IT) ke individual ER diagrams ko merge karke ek master schema banana.",
+      "Conflicts Resolution: Do departments agar same entity ko alag naam se bula rahe hain toh use normalize karna.",
+      "Performance Tuning: Large data volume handle karne ke liye pehle se hi partitions plan karna."
+    ],
+    realLifeExample: "Jaise ek bada hospital—jisne Doctor, Patient, Billing aur Pharmacy sabka data ek hi central logic se connect kiya ho.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Nested Queries",
+    subjectCode: "BCA-401",
+    explanation: "Nested Query (Subquery) woh query hoti hai jo ek dusri query ke andar (AKS 'Where' clause mein) likhi jati hai. Yeh 'Query inside Query' logic complex filters ke liye bhot kaam aata hai.",
+    keyPoints: [
+      "Inner vs Outer: Pehle inner query execute hoti hai, uska result outer query filter ki tarah use karti hai.",
+      "Single Value vs List: Subqueries ek single value bhi return kar sakti hain aur values ki poori list bhi.",
+      "Readability: Complex joins ki jagah subqueries use karke code ko samajhna asaan ho jata hai.",
+      "Operators: Isme IN, NOT IN, <, > jaise operators use hote hain."
+    ],
+    realLifeExample: "Un students ke naam dikhao jinki fee (Outer Query) unki class ki 'Average Fee' (Inner Query) se zyada hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Set-Comparison Operations",
+    subjectCode: "BCA-401",
+    explanation: "Kayi baar hume ek value ko values ke poore group (Set) ke saath compare karna padta hai. SQL iske liye SOME, ANY aur ALL jaise special tools provide karta hai.",
+    keyPoints: [
+      "SOME / ANY: Agar koi value set mein se kisi BHI EK value ke barabar hai, toh condition True hai.",
+      "ALL: Jab value set ki SABHI values ke saath condition match kare tabhi True hoga.",
+      "EXISTS: Check karna ki subquery ne koi record return kiya bhi hai ya nahi.",
+      "Efficiency: Large data filtering mein inka logical use processing time bachata hai."
+    ],
+    realLifeExample: "Check karna ki kya is student ke marks class ke 'SABHI' (ALL) fail hone wale students se zyada hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Null Values and Embedded SQL",
+    subjectCode: "BCA-401",
+    explanation: "NULL ka matlab hai 'Unknown' ya 'Missing' data. Embedded SQL wo technique hai jahan hum database queries ko C++ ya Java jaise high-level code ke andar direct likhte hain.",
+    keyPoints: [
+      "Null Logic: NULL zero ya space nahi hai, ye batata hai ki value available nahi hai.",
+      "IS NULL: SQL queries mein check karne ke liye special operator use hota hai.",
+      "Host Language: SQL commands ko host programming language (e.g. C) ke variables ke saath link karna.",
+      "Cursors: Embedded SQL mein multiple records handle karne ke liye pointers (Cursors) ka use hota hai."
+    ],
+    realLifeExample: "Form bharte waqt 'Middle Name' khali chhod dena database mein NULL ki tarah save hota hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Dynamic SQL",
+    subjectCode: "BCA-401",
+    explanation: "Dynamic SQL woh queries hain jo runtime (program chalte waqt) generate hoti hain. Yeh fixed nahi hoti, balki user ke input ke according dynamically badal jati hain.",
+    keyPoints: [
+      "Flexibility: User jaisa filter select karega, query waisi hi create ho jayegi.",
+      "PREPARE statement: Query string ko execute karne se pehle compile karna.",
+      "Security Risk: Isme 'SQL Injection' ka dar rehta hai isliye bhot dhyan se parameter use karne padte hain.",
+      "Usage: Complex dashboards jahan bhot saare filters hote hain."
+    ],
+    realLifeExample: "Amazon search board—jab aap Price range aur Color select karte ho, system runtime pe query banata hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Normalization Decomposition into BCNF Decomposition into 3-NF",
+    subjectCode: "BCA-401",
+    explanation: "Decomposition ka matlab hai ek badi table ko todkar choti tables mein badalna taaki data redundancy (duplicates) khatam ho sake aur high academic standards maintain ho sakein.",
+    keyPoints: [
+      "Lossless Join: Tables ko wapas join karne pe original data milna chahiye, koi info ghum nahi honi chahiye.",
+      "Dependency Preservation: Todne ke baad bhi saari purani relationships (FDs) barkaraar rehni chahiye.",
+      "3-NF Goal: Har non-key field sirf main key pe depend kare (No transitive link).",
+      "BCNF Goal: Har functional dependency (A -> B) mein 'A' ek Super Key honi chahiye (No overlap overlap)."
+    ],
+    realLifeExample: "Ek table jisme Student aur College info dono thi—todkar 'Student' aur 'College' ki alag tables banana (3-NF).",
     diagramUrl: "true"
   },
   {
@@ -233,14 +381,263 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "Introduction to Data Structure",
-    explanation: "Data Structure data ko computer memory mein store, organize aur effectively manage karne ka ek mathematical aur logical tareeka hai. Iska primary objective processing complexity ko kam karna aur search/retrieval operations ko fast banana hai.",
+    subjectCode: "BCA-403",
+    explanation: "Data Structure data ko computer memory mein store, organize aur effectively manage karne ka ek mathematical aur logical tareeka hai. Inka use search speed aur processing efficiency badhane ke liye kiya jata hai.",
     keyPoints: [
-      "Classification: Linear (Array, Stack, Queue) jahan data ek sequence mein hota hai, aur Non-linear (Tree, Graph) jahan hierarchical ya networked connections hote hain.",
-      "Data Type vs Structure: Data type (int, char) memory space allocate karta hai, jabki Data Structure un units ko logical relationship mein bandhta hai.",
-      "Performance Metrics: Time Complexity (processing speed) aur Space Complexity (memory usage) through Big O notation.",
-      "Operations: Crucial operations include Traversing, Insertion, Deletion, Searching, Sorting aur Merging."
+      "Classification: Linear (Array, Stack, Queue) jahan data ek sequence mein hota hai, aur Non-linear (Tree, Graph).",
+      "Memory Allocation: Static (Fixed size) vs Dynamic (Runtime change).",
+      "Algorithm Link: Har algorithm kisi na kisi data structure pe base hota hai (e.g. Searching on Array).",
+      "Real-world Utility: Database indexing, scheduling, aur path finding mein inka core use hai."
     ],
-    realLifeExample: "Jaise ek organized kitchen storage—har masala aur bartan (Data) apni specific fixed jagah (Structure) pe hai taaki cooking (Process) ke waqt time waste na ho.",
+    realLifeExample: "Jaise aapka wardrobe—kapdo ko unke type (shirts, pants) ke according rakhna (Structure) taaki unhe dhoondna asaan ho.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Open source software development process",
+    subjectCode: "BCA-403",
+    explanation: "Open source development ka matlab hai aisa software banana jiska code 'Public' ho aur koi bhi use modify ya improve kar sake (e.g. Linux, Android).",
+    keyPoints: [
+      "Collaboration: Duniya bhar ke developers GitHub jaise platforms pe milkar code likhte hain.",
+      "Licensing: GPL ya MIT licenses jo decide karte hain ki code kaise reuse ho sakta hai.",
+      "Forking: Kisi project ki copy banakar uspe apna naya version start karna.",
+      "Transparency: Har update aur change clear hota hai, jisse bugs jaldi pakde jate hain."
+    ],
+    realLifeExample: "Jaise Wikipedia—har koi info add kar sakta hai, aur saara history aur process sabke liye open hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Multiply Linked Lists",
+    subjectCode: "BCA-403",
+    explanation: "Multiply Linked Lists mein har node mein multiple pointers hote hain jo alag-alag logical lists ka part ho sakte hain (e.g. Sparse Matrix representation).",
+    keyPoints: [
+      "Multi-pointer Node: Node mein 2 se zyada pointers hote hain (Horizontal, Vertical, etc.).",
+      "Dimensions: High dimensional data ko represent karne ke kaam aata hai.",
+      "Search paths: Ek hi data set ko multiple criteria (ID, Name, Date) se traverse karna.",
+      "Complexity: Inhe manage karna mushkil hota hai kyunki link sync rakhna bhot important hai."
+    ],
+    realLifeExample: "Jaise ek complex train map—ek station multiple routes (Lines) se juda hota hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Applications of Linked Lists",
+    subjectCode: "BCA-403",
+    explanation: "Linked Lists ka use tab hota hai jab memory dynamicly handle karni ho ya bhot saare insertions/deletions perform karne hon.",
+    keyPoints: [
+      "Stack/Queue implementation: Dynamic size stacks banane ke liye pointers best hain.",
+      "Polynomial Math: Computer math mein variables ko save karne ke liye.",
+      "Graph Adjacency: Graphs ke connections (Neighbors) store karne ke liye list based structures.",
+      "Browser Cache: 'Forward' aur 'Back' buttons ki history manage karna."
+    ],
+    realLifeExample: "Music player playlist—aap gaane add/delete karte ho runtime pe, jo linked list memory use karta hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Introduction to Linked Stack and Linked Queues",
+    subjectCode: "BCA-403",
+    explanation: "Jab hum Stack (LIFO) aur Queue (FIFO) ko Linked List use karke banate hain, toh unhe 'Linked representation' kehte hain. Isse 'Fixed Size' ki problem khatam ho jati hai.",
+    keyPoints: [
+      "No Max Limit: Memory jab tak hai, aap data add kar sakte ho (No overflow).",
+      "Pointers only: Indexing ki jagah Pointers use hote hain (Top, Front, Rear).",
+      "Dynamic allocation: Har naya element memory ka naya block (Node) leta hai.",
+      "Efficiency: Deletion fast hota hai kyunki shift karne ki zaroorat nahi padti."
+    ],
+    realLifeExample: "Jaise digital queue system—jitne log aate jayenge queue badhti jayegi bina pehle se size set kiye.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Array Operations",
+    subjectCode: "BCA-403",
+    explanation: "Arrays pe perform hone wale basic mathematical aur structural changes ko 'Array Operations' kehte hain.",
+    keyPoints: [
+      "Traversal: Har element ko ek baar check karna sequence mein.",
+      "Insertion: Naya element beech mein daalna (Isme baaki elements 'Shift' karne padte hain).",
+      "Deletion: Kisi element ko remove karna aur gap fill karna (Shifting overhead).",
+      "Multi-dim: 2D arrays mein row/column major formulas se indexing manage karna."
+    ],
+    realLifeExample: "Excel sheet mein nayi row insert karna—niche ki saari rows ek step niche shift ho jati hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Trees: Definition and Basic Terminologies",
+    subjectCode: "BCA-403",
+    explanation: "Tree ek non-linear hierarchical data structure hai jisme nodes 'Parent-Child' relationship mein jude hote hain.",
+    keyPoints: [
+      "Root: Sabse upar wala master node.",
+      "Leaf: Jiska koi child nahi hota (Last nodes).",
+      "Depth: Root se kisi node tak ki doori.",
+      "Degree: Ek node ke kitne children hain."
+    ],
+    realLifeExample: "Aapke computer ka File System—(C Folder -> Users -> Documents -> Resume.pdf).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Binary Tree Traversals",
+    subjectCode: "BCA-403",
+    explanation: "Traversal ka matlab hai tree ke har node ko ek specific order mein visit karna processing ke liye.",
+    keyPoints: [
+      "Pre-order: Root -> Left -> Right (Cloning ke kaam aata hai).",
+      "In-order: Left -> Root -> Right (BST mein sorted output deta hai).",
+      "Post-order: Left -> Right -> Root (Deletion/Clean-up ke liye best).",
+      "Level-order: Layer by layer har node visit karna (BFS logic)."
+    ],
+    realLifeExample: "Jaise directory scan karna—pehle folder ka naam padhna (Root) phir uske andar ki files (Children).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Applications of Stack",
+    subjectCode: "BCA-403",
+    explanation: "Stack ka 'LIFO' behavior bhot saare logical processing tasks mein use hota hai jahan hume history ya reverse order maintain karna ho.",
+    keyPoints: [
+      "Expression Conversion: Infix (A+B) ko Postfix (AB+) mein badalna calculators ke liye.",
+      "Undo/Redo: Software mein pichle action pe wapas jana.",
+      "Recursion: Function calls ka address save karna CPU registers mein.",
+      "Syntax Parsing: Compiler mein brackets '{}' matching check karna."
+    ],
+    realLifeExample: "Jaise browser ka 'Back' button—jo page sabse aakhri mein khula, wahi pehle wapas aayega.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Operations on Queues",
+    subjectCode: "BCA-403",
+    explanation: "Queues pe perform hone wale basic functions jo FIFO (First-In-First-Out) rule follow karte hain.",
+    keyPoints: [
+      "Enqueue: Naya element Rear end pe add karna.",
+      "Dequeue: Purana element Front end se remove karna.",
+      "IsFull/IsEmpty: Queue ki memory limit check karna pointers offset se.",
+      "Priority Queue: Elements ko unki urgency (Priority) ke according process karna."
+    ],
+    realLifeExample: "Jaise printer job—jisne pehle print command di, usika page pehle nikalta hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Graphs: Introduction",
+    subjectCode: "BCA-403",
+    explanation: "Graph ek non-linear data structure hai jo 'Vertices' (Nodes) aur 'Edges' (Links) se bana hota hai, complex networks represent karne ke liye.",
+    keyPoints: [
+      "Directed: Link (Edge) sirf ek side ja rahi hai (e.g. Follower on Instagram).",
+      "Undirected: Link dono side hai (e.g. Friend on Facebook).",
+      "Weighted: Link ke saath koi value (Distance/Cost) judi hai.",
+      "Cycle: Jab rasta ghumke wapas usi node pe aa jaye."
+    ],
+    realLifeExample: "Jaise Delhi Metro ka map—Stations nodes hain aur tracks (lines) edges hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Single-Source Shortest-Path Problem",
+    subjectCode: "BCA-403",
+    explanation: "Is problem ka goal hota hai ek fixed point (Source) se baaki saare points tak ka sabse chota rasta (Shortest Path) dhoondna.",
+    keyPoints: [
+      "Dijkstra Algorithm: Sabse popular tareeka shortest path dhoondne ka.",
+      "Greedy logic: Har step pe sabse sasta padosi (Neighbor) select karna.",
+      "Edge Relaxation: Rasta dhoondte waqt purane lambe raston ko naye chote raston se update karna.",
+      "Constraints: Negative weights wale graphs mein Dijkstra fail ho sakta hai (Wahan Bellman-Ford use hota hai)."
+    ],
+    realLifeExample: "Google Maps—aapki current location se destination tak ka sabse sasta/fast rasta dikhana.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Understanding Internal and External Sorting",
+    subjectCode: "BCA-403",
+    explanation: "Sorting ko memory usage ke base pe consolidate kiya jata hai. Dataset kitna bada hai, usse sorting method badal jata hai.",
+    keyPoints: [
+      "Internal Sorting: Jab saara data RAM mein feed ho jaye (Fast results, e.g. Quick Sort).",
+      "External Sorting: Jab data bhot bada ho aur hard disk se chunks mein lana pade (e.g. Multi-way Merge Sort).",
+      "Trade-off: Speed vs Data Size management.",
+      "Stability: Kya same value wale items ka order sort ke baad bhi wahi rehta hai?"
+    ],
+    realLifeExample: "Internal: Apne phone ke contacts sort karna. External: Ek badi library ki 10 lakh kitabein alphabetical order mein lagana.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "The Basic Computer",
+    subjectCode: "BCA-402",
+    explanation: "Basic Computer ek hypothetical model hai jo batata hai ki kaise circuits, hardware aur micro-instructions milkar ek simple computational machine banate hain.",
+    keyPoints: [
+      "Logic Foundation: AND, OR, aur NOT gates se bani hardware units jo 0-1 logic process karti hain.",
+      "Control Logic: Machine signals jo har instruction ke flow (fetch to execute) ko guide karte hain.",
+      "Minimalism: Ek simple register set (like Accumulator) aur basic ALU functions ki requirement.",
+      "Binary Core: Har process ka end result hardware voltages mein badalna."
+    ],
+    realLifeExample: "Jaise ek pocket calculator—ye ek 'Basic Computer' hai jisme fixed instructions hain logic operations perform karne ke liye.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Data Representation",
+    subjectCode: "BCA-402",
+    explanation: "Data Representation ka matlab hai ki hum real-world data (numbers, text) ko computer ke andhar binary patterns (0s and 1s) mein kaise translate karte hain.",
+    keyPoints: [
+      "Binary Coding: Har character ya number ko bits ke fixed groups mein convert karna.",
+      "Fixed Point: Integers ko fix memory blocks mein represent karne ka simple logic.",
+      "Sign-Magnitude: Negative numbers dikhane ke liye MSB (pichli bit) ko use karna.",
+      "Storage Efficiency: Kam se kam bits use karke maximum accurate info store karna."
+    ],
+    realLifeExample: "Jaise 'A' ko system 65 (decimal) maanta hai aur memory mein binary pattern '01000001' se represent karta hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Data Representation for Computation",
+    subjectCode: "BCA-402",
+    explanation: "Computation ke liye data ko aise format mein rakha jata hai jisse ALU fast mathematical calculation (Addition, Subtraction) kar sake.",
+    keyPoints: [
+      "2's Complement: Binaries ko subtract karne ka best hardware mechanism (Addition of negative).",
+      "Overflow Check: Jab calculation ka result memory se bada ho jaye toh system kaise handle kare.",
+      "Floating Point: Bhot bade ya point wale numbers ke liye Mantissa-Exponent logic setup.",
+      "Hardware Alignment: Data bits ko ALU ke register size (32/64 bit) ke saath sync karna."
+    ],
+    realLifeExample: "Jaise calculator mein 1/3 karne pe '0.333...' dikhta hai—ye internally floating point representation use karke calculate hota hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Canonical and Standard Forms",
+    subjectCode: "BCA-402",
+    explanation: "Boolean algebra mein expressions ko systematic tarike se likhne ke tareeke ko Canonical vs Standard forms kehte hain.",
+    keyPoints: [
+      "SOP (Sum of Products): AND gates ke outputs ko OR gate se connect karna (e.g. AB + CD).",
+      "POS (Product of Sums): OR gates ke outputs ko AND gate se connect karna (e.g. (A+B)(C+D)).",
+      "Canonical SOP: Har term mein saare variables ka hona (Minterms).",
+      "Minimization: In forms ko K-Map mein use karke gates ki count kam ki jati hai."
+    ],
+    realLifeExample: "Jaise recipe likhna—standard form hai 'Ubaalo aur Milao', par canonical form hai har ek ingredient aur heat level detail mein batana.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Design of Combinational Circuits",
+    subjectCode: "BCA-402",
+    explanation: "Combinational Circuits design karne ka ek fix 5-step process hota hai jisme inputs ko logic gates ke physical network mein badla jata hai.",
+    keyPoints: [
+      "Requirement Analysis: Problem ko samajhna aur inputs vs outputs identify karna.",
+      "Truth Table: Har possible input ke liye desired output kya hona chahiye uska map banana.",
+      "Equation Derivation: SOP/POS logic nikalna truth table se.",
+      "Equation Minimization: K-Map use karke logic ko chota karna.",
+      "Logic Diagram: Final circuit diagram banana Gates use karke."
+    ],
+    realLifeExample: "Jaise ek switch board design karna—agar light tab chale jab switch A aur B dono ON hon, toh hum AND gate circuit design karenge.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "RAM",
+    subjectCode: "BCA-402",
+    explanation: "RAM (Random Access Memory) computer ki active memory hai jo runtime data store karti hai. Ye volatile hoti hai (Power switch off = Data loss).",
+    keyPoints: [
+      "SRAM (Static): Speed fast, expensive, registers/cache mein use hoti hai (No refresh).",
+      "DRAM (Dynamic): Slower, cheap, main memory mein use hoti hai (Constant refresh chahiye).",
+      "Random Access: Isme kisi bhi address se data turant retrieve kiya ja sakta hai (No sequential wait).",
+      "Memory Unit: Chips aur capacitors ka combination jo electronic charge hold karta hai 0/1 logic ke liye."
+    ],
+    realLifeExample: "Jaise aapka desk—aap kitabein cupboard se nikaal ke table (RAM) pe rakhte ho taaki jaldi padh sako.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Basic CPU Block Diagram",
+    subjectCode: "BCA-402",
+    explanation: "CPU Block diagram processor ke internal parts (ALU, CU, Registers) ke aapas ke connection aur functional logic ko dikhata hai.",
+    keyPoints: [
+      "Internal Bus: CPU ke andhar hi andhar data move karne ka rasta.",
+      "Register Array: PC, IR, AC, aur MAR jaise special purpose blocks.",
+      "Control Signals: Timing pulses jo determine karti hain kab data register se ALU jayega.",
+      "Sync logic: Hardware units ko clock cycle ke saath coordinate karna."
+    ],
+    realLifeExample: "Jaise ek remote-control car ka main chip—wo antenna se signal leta hai aur motors ko voltage signals bhejta hai architecture ke according.",
     diagramUrl: "true"
   },
   {
@@ -439,6 +836,58 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
+    topic: "Programmable Logic Array (PLA)",
+    subjectCode: "BCA-402",
+    explanation: "PLA ek programmable logic device hai jisme AND aur OR dono planes programmable hote hain. Ye complex logic logic functions ko kam space mein implement karne ke liye use hota hai.",
+    keyPoints: [
+      "Customization: Programmer decide kar sakta hai ki kaunse inputs AND honge aur kaunse outputs OR honge.",
+      "Efficiency: ROM ke comparison mein ye memory save karta hai kyunki isme sirf zaroorat wale minterms produce kiye ja sakte hain.",
+      "Input Buffer: Inputs ko true aur complement dono form mein plane ko bhejna.",
+      "Cost: Thoda mehenga hota hai par high performance applications mein best hai."
+    ],
+    realLifeExample: "Jaise ek customized digital lock—jahan aap decide karte ho ki kaunse digits ka complex combination lock ko trigger karega.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Read Only Memory (ROM)",
+    subjectCode: "BCA-402",
+    explanation: "ROM ek permanent storage device hai jo power jane ke baad bhi data hold rakhta hai (Non-volatile). Isme manufacturer ya user permanent instructions save karte hain.",
+    keyPoints: [
+      "Fixed Logic: Isme AND plane fixed hota hai (Decoders) aur sirf OR plane programmable hota hai.",
+      "Firmware: Computer ki BIOS setting ya startup instructions ROM mein hi hoti hain.",
+      "Reliability: Iska data change karna mushkil hai isliye ye 'Safe' memory mani jati hai.",
+      "Types: PROM (Programmable), EPROM (Erasable), EEPROM (Electrically Erasable)."
+    ],
+    realLifeExample: "Washing machine ke programs—manual mein set hota hai 'Quick Wash' ya 'Heavy Wash' ka pattern jo ROM mein permanent saved hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Sequential Circuits",
+    subjectCode: "BCA-402",
+    explanation: "Sequential circuits mein memory element hota hai. Inka output sirf present input pe nahi, balki 'Past Inputs' (History) pe bhi depend karta hai.",
+    keyPoints: [
+      "Feedback: Output ka ek hissa wapas input mein bhaga jata hai information store karne ke liye.",
+      "Clock Signal: Timing circuits ke coordinate pe hi operations change hote hain.",
+      "States: System 'Present State' aur 'Next State' logic pe work karta hai.",
+      "Components: Flip-flops aur Latches inke basic storage units hain."
+    ],
+    realLifeExample: "Aapka digital clock—use 'Memory' chahiye ki पिछला minute kya tha taaki wo naya minute update kar sake.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Singly Linked Lists",
+    subjectCode: "BCA-403",
+    explanation: "Singly Linked List ek linear collection hai nodes ka jisme har node do hisso mein batta hota hai: Data aur Next pointer (Address). Ye sirf ek direction (Forward) mein chalti hai.",
+    keyPoints: [
+      "Dynamic Size: Application chalte waqt aap naye members add kar sakte ho.",
+      "Memory efficiency: Arrays ki tarah memory me ek saath rehne ki zaroorat nahi, blocks bikhre ho sakte hain (Linked using addresses).",
+      "Terminator: Aakhri node ka pointer always 'NULL' hota hai.",
+      "Insertion: Sirf pointers change karke naya data add ho jata hai (No shifting of elements)."
+    ],
+    realLifeExample: "Train ke coach—har coach piche wale se juda hai, aur engine (Head) pehle coach ko janta hai.",
+    diagramUrl: "true"
+  },
+  {
     topic: "Multiplexer and Demultiplexer",
     explanation: "MUX (Data Selector) multiple wires se data lekar ek single wire pe data bhejta hai. DEMUX (Data Distributor) ek wire se data lekar instructions ke according use alag-alag lines pe bhejta hai.",
     keyPoints: [
@@ -609,6 +1058,7 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "RAID and its Levels",
+    subjectCode: "BCA-402",
     explanation: "RAID (Redundant Array of Independent Disks) ek virtualization technology hai jo multiple physical disk drives ko ek single logical storage unit mein merge karti hai data reliability aur performance badhane ke liye.",
     keyPoints: [
       "RAID 0 (Striping): Data split hota hai across disks for high speed, par koi backup nahi hota.",
@@ -1297,6 +1747,7 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "RAID and its Levels",
+    subjectCode: "BCA-401",
     explanation: "RAID multiple hard disks ko combine karke speed aur data safety badhane ki ek technique hai.",
     keyPoints: [
       "RAID 0 (Striping): High speed, par koi safety nahi.",
@@ -1332,6 +1783,214 @@ export const hinglishNotes: Note[] = [
     ],
     realLifeExample: "Jaise Medical Expert System—Symptom data (Fever, Cough) store hota hai, aur rule base knowledge (If fever AND cough Then Flu) use karke system diagnosis automatically generate karta hai reasoning logic base logic.",
     diagramUrl: "true"
+  },
+  {
+    topic: "Binomial Coefficients",
+    subjectCode: "BCA-404",
+    explanation: "Binomial coefficients 'nCr' notation represent karte hain jo batate hain ki 'n' items mein se 'r' items ko kitne tarikon se pick (Choose) kiya ja sakta hai.",
+    keyPoints: [
+      "Formula: nCr = n! / (r! * (n-r)!).",
+      "Symmetry: nCr is always equal to nC(n-r) (e.g. 5C2 = 5C3).",
+      "Pascal's Triangle: Coefficients ko layer by layer calculate karne ka graphic method.",
+      "Algebra link: (a+b)^n expansion mein har term ke aage yahi coefficients hote hain."
+    ],
+    realLifeExample: "Jaise 5 players mein se 2 players select karna (5C2) team banane ke liye.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Least Square Regression lines",
+    subjectCode: "BCA-404",
+    explanation: "Regression lines wo best-fit seedhi lines hoti hain jo data points ke scatter plot mein sabse kam error (Residual sum) ke saath guzarti hain.",
+    keyPoints: [
+      "Objective: Y = a + bX form mein line banana taaki prediction asaan ho.",
+      "Least Square Method: Real value aur predicted value ke distance ka square minimize karna.",
+      "Slope (b): Ye batata hai ki X ke badalne se Y kitna badlega.",
+      "Intercept (a): Jab X zero hai tab Y ki value kya hai."
+    ],
+    realLifeExample: "Jaise 'Study Hours' vs 'Test Score'—ek line banana jo predict kare ki 5 ghante padhne pe kitne marks aayenge.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Measures of central tendency",
+    subjectCode: "BCA-404",
+    explanation: "Central tendency ka matlab hai poore data set ki ek 'Central' ya 'Average' value dhoondna jo poore group ko represent kar sake.",
+    keyPoints: [
+      "Mean: Sabhi numbers ka sum divided by total count (Simple average).",
+      "Median: Data ko sort karne ke baad bilkul beech wali value (Income analysis mein best).",
+      "Mode: Wo value jo data mein sabse zyada baar (Frequency) aayi ho.",
+      "Relationship: Symmetric distribution mein teeno barabar hote hain."
+    ],
+    realLifeExample: "Cricket mein 'Batting Average'—batman ke har match ke scores ko milakar ek 'Mean' nikalna.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Linear Correlation",
+    subjectCode: "BCA-404",
+    explanation: "Linear Correlation batata hai ki do variables (X aur Y) ke beech kitna strong aur kis direction mein relationship hai.",
+    keyPoints: [
+      "Positive (+1): Ek badhne pe dusra bhi badhta hai (e.g. Temperature vs Ice-cream sales).",
+      "Negative (-1): Ek badhne pe dusra kam hota hai (e.g. Altitude vs Temperature).",
+      "Zero Context: Jab variables ke beech koi relationship na ho.",
+      "Scatter Plot: Graphic tareeka points ki 'Linearity' check karne ka."
+    ],
+    realLifeExample: "Jaise experience barhne se aksar salary barhti hai—ise 'Positive Correlation' kahenge.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Sampling Theory",
+    subjectCode: "BCA-404",
+    explanation: "Sampling Theory ka objective hai ek badi population se chota sa group (Sample) chun-na aur uske results se poori population ka andaza (Inference) lagana.",
+    keyPoints: [
+      "Random Sampling: Har individual ka chance equal hona sample mein aane ka.",
+      "Sampling Error: Sample result aur actual population result ke beech ka difference.",
+      "Standard Error: Sampling distribution ke deviation ko measure karna accuracy ke liye.",
+      "Efficiency: Kam paison aur time mein bade area ka data analyze karna."
+    ],
+    realLifeExample: "Chawal pak gaye ya nahi, ye check karne ke liye hum poori degchi nahi khaate, sirf 2-3 dane (Sample) check karte hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "students t-test",
+    subjectCode: "BCA-404",
+    explanation: "T-test tab use hota hai jab sample size chota ho (N < 30) aur population standard deviation unknown ho, do groups ke mean compare karne ke liye.",
+    keyPoints: [
+      "Small Sample focus: Jab data points kam hon tab precision maintain karna.",
+      "Degrees of Freedom: (n-1) logic pe base tables use karna significance check karne ke liye.",
+      "Comparison: Kya do alag classrooms ki average height mein real farak hai ya sirf coincidentally aya hai.",
+      "Hypothesis: Null hypothesis check karna probability tables se."
+    ],
+    realLifeExample: "Dawai ka asar check karna—ek chote group pe research karke mean results compare karna.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Z-test",
+    subjectCode: "BCA-404",
+    explanation: "Z-test tab use hota hai jab data bhot bada ho (N > 30) aur population ki variance (Standard Deviation) hume pehle se pata ho.",
+    keyPoints: [
+      "Large Sample: Normal distribution curve follow karne ke liye huge data requirement.",
+      "Standard Score: Har measurement ko population mean ke standard distance pe rakhna.",
+      "Confidence Level: 95% ya 99% accuracy zones check karna.",
+      "Usage: Quality control in large factories where thousands of items are produced."
+    ],
+    realLifeExample: "Ek factory jahan 10,000 bulbs bane ho, wahan sample check karke 'Large Sample' logic se Z-test lagana.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Frequency distributions",
+    subjectCode: "BCA-404",
+    explanation: "Frequency distribution data ko classes ya categories mein organize karta hai taaki ye pata chal sake ki kaunsi value kitni baar repeat ho rahi hai.",
+    keyPoints: [
+      "Class Intervals: Data ko groups mein bantna (e.g. 0-10, 10-20 marks).",
+      "Tally Marks: Counting ka traditional visual tareeka.",
+      "Cumulative Frequency: Pichli frequencies ko add karte jana totals check karne ke liye.",
+      "Visuals: Histograms aur Ogives banane ka primary base."
+    ],
+    realLifeExample: "Voting count—kis candidate ko kitne votes (Frequency) mile, uska chart banana.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Repetition and Constrained Repetition",
+    subjectCode: "BCA-404",
+    explanation: "Combinatorics mein calculation badal jati hai agar same items repeat ho rahe hon ya unpe koi restriction (Constraint) lagi ho.",
+    keyPoints: [
+      "Permutation with repetition: n^r logic (Jab order matter kare aur repeat allow ho).",
+      "Constraints: Jaise 'Vowels hamesha saath hon' ya 'Numbers 5 se start ho'.",
+      "Indistinguishable objects: Jab 3 'A' letters hon toh unka arrangement factorial se divide hota hai.",
+      "Logical filtering: Possible cases mein se invalid cases minus karna."
+    ],
+    realLifeExample: "Password banana—agar repetition allowed hai toh options zyada hain, agar nahi hai toh options kam hote hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "test of Hypotheses and significance",
+    subjectCode: "BCA-404",
+    explanation: "Hypothesis testing ek statistical process hai jisme hum decide karte hain ki kya research ka result real hai ya fir sirf ek coincidence (Chance).",
+    keyPoints: [
+      "Null Hypothesis (H0): Wo state jahan hum maante hain ki koi change ya effect nahi hua.",
+      "Alternative Hypothesis (H1): Wo state jo research prove karna chahti hai.",
+      "Level of Significance (α): Error hone ka allowed risk (usually 5%).",
+      "P-value: Wo probability jo batati hai ki results kitne significant hain."
+    ],
+    realLifeExample: "Ek nayi energy drink test karna—H0 hai ki 'Koi energy increase nahi hui', H1 hai ki 'Energy increase hui'.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "degree of freedom",
+    subjectCode: "BCA-404",
+    explanation: "Degree of freedom batata hai ki ek calculation mein kitni values 'Free' hain badalne ke liye bina result ko affect kiye.",
+    keyPoints: [
+      "Sample Constraint: Agar hume average pata hai, toh aakhri value 'Fixed' ho jati hai.",
+      "Formula: Distribution tests mein usually (n-1) ya (row-1)*(col-1) use hota hai.",
+      "Importance: Iska use T-test aur Chi-square tables mein accurate results dhoondne ke liye hota.",
+      "Logical bound: Ye data ke randomness ko limit karta hai parameters ke basis pe."
+    ],
+    realLifeExample: "Jaise agar aapko 7 din alag kapde pehne hain aur 6 kapde choose kar liye, toh 7ve din ke liye koi 'Freedom' nahi bachi.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "small and large sampling",
+    subjectCode: "BCA-404",
+    explanation: "Statistics mein calculation methods badal jate hain based on data volume. Обычно 30 items ka count boundary ki tarah use hota hai.",
+    keyPoints: [
+      "Small Sample (n < 30): T-test best hota hai kyunki standard error zyada hone ka risk hota hai.",
+      "Large Sample (n > 30): Z-test aur Normal distribution logic zyada accurate mana jata hai.",
+      "Economy: Small samples saste hote hain par research bias ka risk hota hai.",
+      "Reliability: Large samples population ko zyada accurately represent karte hain."
+    ],
+    realLifeExample: "Ek small group interview (Small Sample) vs poore desh ka census (Large Sample).",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Flip-Flops (SR, JK, D, T)",
+    subjectCode: "BCA-402",
+    explanation: "Flip-flops digital electronics ke basic memory elements hain jo 1-bit data (0 ya 1) store kar sakte hain. Inke alag-alag logic configurations stability aur control provide karte hain.",
+    keyPoints: [
+      "SR (Set-Reset): Basic flip-flop par isme 1,1 state forbidden hoti hai (Invalid).",
+      "JK: SR ka improved version jisme 1,1 pe 'Toggle' (Switch) hota hai.",
+      "D (Data): Input ko delay ke baad output pe bhejta hai (Buffer memory).",
+      "T (Toggle): Input 1 hone pe state badalta hai, 0 hone pe wahi rehta hai."
+    ],
+    realLifeExample: "Jaise ek switch board—aapne ON kiya toh light tab tak ON rahegi jab tak aap RESET switch nahi dabate.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Circular Queues",
+    subjectCode: "BCA-403",
+    explanation: "Circular Queue mein standard queue ki 'Memory Waste' problem fix hoti hai. Isme Rear pointer aakhri position ke baad wapas pehli khali position pe aa jata hai.",
+    keyPoints: [
+      "No Waste: Agar aage se elements delete huye hain, toh back wala space reuse ho sakta hai.",
+      "Modulo Operator: Pointers update karne ke liye '(rear + 1) % size' logic use hota hai.",
+      "Fixed Size: Memory size fixed rehti hai par usability improved hoti hai.",
+      "Traffic Control: Network buffers aur operating system scheduling mein best hai."
+    ],
+    realLifeExample: "Jaise ek musical round table—jiski seat khali hogi wahan naya person (data) baith sakta hai circle mein.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Permutation and Combination",
+    subjectCode: "BCA-404",
+    explanation: "Permutation ka matlab hai arrangements (jahan Order matter karta hai) aur Combination ka matlab hai selection (jahan sirf Grouping matter karti hai).",
+    keyPoints: [
+      "Permutation (nPr): n! / (n-r)!. Order is critical (e.g. Password).",
+      "Combination (nCr): n! / (r! * (n-r)!). Order ignore hota hai (e.g. Team selection).",
+      "Fundamental Principle: Counting ke liye addition aur multiplication rules use hote hain.",
+      "Logical Link: nPr hamesha nCr se bada ya barabar hota hai."
+    ],
+    realLifeExample: "Password '123' vs '321' (Permutation) - ye alag hain. Salad mein 'Gajar aur Tamatar' vs 'Tamatar aur Gajar' (Combination) - ye same hain.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Introduction to Monte Carlo method",
+    subjectCode: "BCA-404",
+    explanation: "Monte Carlo method simulations use karta hai probability distribution ke variables predict karne ke liye. Ye randomness ko system behavior model karne ka tool banata hai.",
+    keyPoints: [
+      "Random Trials: Thousands of random events simulate karna computer algorithm se.",
+      "Numerical Solution: Un sawalon ka jawab nikalna jinhe manually solve nahi kiya ja sakta.",
+      "Error Margin: Jitne zyada experiments honge, accuracy utni high hogi.",
+      "Finance/Gaming: Stock market volatility aur complex casino games analyze karne mein use hota."
+    ],
+    realLifeExample: "Jaise ye guess karna ki ek stadium mein kitne log umbrellas layenge, unke random individual behavior ko computer mein simulate karke.",
+    diagramUrl: "true"
   }
 ];
 
@@ -1341,42 +2000,40 @@ export function getDiagramForTopic(topicTitle: string): string | null {
   return note?.diagramUrl || null;
 }
 
-export function getNoteForTopic(topicTitle: string): Note | null {
-  const clean = (s: string) => s.toLowerCase().replace(/[^\w\s]/g, '').trim();
+export function getNoteForTopic(topicTitle: string, subjectCode?: string): Note | null {
+  const clean = (s: string) => s.toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
   const titleClean = clean(topicTitle);
 
-  // 1. Try exact or case-insensitive match
-  let note = hinglishNotes.find(n => n.topic === topicTitle || clean(n.topic) === titleClean);
+  // 1. Try to find with subject code first if provided
+  let note: Note | undefined;
   
-  // 2. Try partial match
-  if (!note) {
-    note = hinglishNotes.find(n => {
-      const noteClean = clean(n.topic);
-      return noteClean.includes(titleClean) || titleClean.includes(noteClean);
-    });
+  if (subjectCode) {
+    note = hinglishNotes.find(n => 
+      (n.subjectCode === subjectCode) && 
+      (n.topic === topicTitle || clean(n.topic) === titleClean)
+    );
   }
 
-  // 3. Try word overlap (Fuzzy-ish)
+  // 2. Exact match (case insensitive) fallback if no subject match or no subject provided
   if (!note) {
-    const titleWords = titleClean.split(/\s+/).filter(w => w.length > 2);
-    note = hinglishNotes.find(n => {
-      const noteWords = clean(n.topic).split(/\s+/);
-      const overlap = titleWords.filter(w => noteWords.includes(w));
-      return overlap.length >= Math.min(titleWords.length, 2); // At least 2 words match or all words if few
-    });
+    note = hinglishNotes.find(n => n.topic === topicTitle || clean(n.topic) === titleClean);
   }
-
-  // Fallback for missing notes - provide helpful feedback instead of null
+  
+  // 3. Fallback for missing notes - provide helpful feedback instead of guessing wrongly
   if (!note) {
     return {
       topic: topicTitle,
-      explanation: "Hinglish notes focus: " + topicTitle + "\n\nIs specific topic ke liye condensed revision notes abhi system mein generate ho rahe hain. Hamari team clarity aur readability improve karne ke liye content update kar rahi hai.",
+      explanation: "Is specific topic ke liye Hinglish notes abhi system mein generate ho rahe hain. Hamari team clarity aur accuracy provide karne ke liye content update kar rahi hai.",
       keyPoints: [
-        "Digital content synthesis in progress",
+        "Content synchronization in progress",
         "Refer to academic textbooks for in-depth theory for now",
         "Higher quality simplified notes updating within 24-48 hours"
       ],
-      realLifeExample: "Jald hi update hoga—hum quality content ke saath koi compromise nahi karte!",
+      realLifeExample: "Jald hi update hoga—accuracy hamari priority hai!",
     };
   }
   
@@ -1384,7 +2041,7 @@ export function getNoteForTopic(topicTitle: string): Note | null {
   if (!note.explanation) {
     return {
       topic: note.topic,
-      explanation: note.short || "Is topic ke liye high-quality simplified notes digital library mein register ho rahe hain.",
+      explanation: note.short || "Is topic ke liye simplified notes library mein register ho rahe hain.",
       keyPoints: note.bulletin || ["Content synchronization in progress..."],
       realLifeExample: "Update underway...",
       diagramUrl: note.diagramUrl

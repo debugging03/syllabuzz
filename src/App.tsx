@@ -280,7 +280,7 @@ export default function App() {
 
   const handleExplain = (topic: string) => {
     try {
-      const noteContent = getNoteForTopic(topic);
+      const noteContent = getNoteForTopic(topic, activeSubject.code);
       setSelectedNote(noteContent);
     } catch (e) {
       console.error("Error explaining topic:", e);
@@ -662,7 +662,7 @@ export default function App() {
                           </button>
                           {getDiagramForTopic(result.topic.title) && (
                             <button 
-                              onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(result.topic.title + " diagram for computer architecture " + result.subject.name)}&tbm=isch`, '_blank')}
+                              onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(result.topic.title + " diagram")}&tbm=isch`, '_blank')}
                               className="text-[10px] font-black uppercase tracking-widest text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 transition-colors group/diagram"
                             >
                               <ImageIcon className="w-3.5 h-3.5" /> Diagram
@@ -1000,7 +1000,7 @@ export default function App() {
                                 </button>
                                 {getDiagramForTopic(topic.title) && (
                                   <button 
-                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " block diagram for " + activeSubject.title)}&tbm=isch`, '_blank')}
+                                    onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram")}&tbm=isch`, '_blank')}
                                     className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 sm:gap-2 transition-colors group/diagram"
                                   >
                                     <ImageIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover/diagram:scale-110 transition-transform shrink-0" /> Diagram
@@ -1064,7 +1064,7 @@ export default function App() {
                                   </button>
                                   {getDiagramForTopic(topic.title) && (
                                     <button 
-                                      onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram circuit " + activeSubject.title)}&tbm=isch`, '_blank')}
+                                      onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(topic.title + " diagram")}&tbm=isch`, '_blank')}
                                       className="p-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-all"
                                       title="Search Diagram"
                                     >
@@ -1223,27 +1223,7 @@ export default function App() {
                       {selectedNote.realLifeExample}
                     </p>
                   </motion.div>
- 
-                  <div className="grid grid-cols-1 gap-4">
-                    {/* Diagram Hint */}
-                    {selectedNote.diagramUrl && selectedNote.diagramHint && (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-900/20 rounded-2xl p-4 space-y-2"
-                      >
-                        <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
-                          <ImageIcon className="w-4 h-4" />
-                          <span className="text-[9px] font-black uppercase tracking-widest">🖼️ Diagram Hint</span>
-                        </div>
-                        <p className="text-slate-600 dark:text-slate-400 text-xs font-medium leading-relaxed italic">
-                          {selectedNote.diagramHint}
-                        </p>
-                      </motion.div>
-                    )}
-                  </div>
- 
+                    
                   {/* Quick Actions (Redirects inside notes) */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -1259,7 +1239,7 @@ export default function App() {
                     </button>
                     {selectedNote.diagramUrl && (
                       <button 
-                        onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedNote.topic + " diagram " + activeSubject.title)}&tbm=isch`, '_blank')}
+                        onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(selectedNote.topic + " diagram")}&tbm=isch`, '_blank')}
                         className="flex-1 flex items-center justify-center gap-3 bg-indigo-600 dark:bg-indigo-700 text-white py-4 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 dark:hover:bg-indigo-800 transition-all shadow-lg shadow-indigo-200 dark:shadow-none active:scale-95"
                       >
                         <ImageIcon className="w-5 h-5" /> View Diagram
