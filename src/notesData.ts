@@ -7,6 +7,8 @@ export interface Note {
   realLifeExample?: string;  // 💡 Real-Life Example
   diagramHint?: string;     // 🖼️ Diagram Hint
   diagramUrl?: string;      // Keep for search logic
+  sqlSyntax?: string;        // 💻 SQL Syntax
+  sqlExample?: string;       // 📝 Query Example
   // Legacy fields for backward compatibility during migration
   short?: string;
   detailed?: string;
@@ -115,6 +117,8 @@ export const hinglishNotes: Note[] = [
       "Efficiency: Indexing use karke queries ko millions of rows mein fast chalana.",
       "Ad-hoc Queries: User apni marzi se kisi bhi format mein data demand kar sakta hai."
     ],
+    sqlSyntax: "SELECT columns FROM table WHERE condition;\nINSERT INTO table (cols) VALUES (vals);\nUPDATE table SET col = val WHERE condition;\nDELETE FROM table WHERE condition;",
+    sqlExample: "-- Students ke naam dhoondna jahan marks 80 se zyada hain\nSELECT Name, Marks FROM Students WHERE Marks > 80;\n\n-- Naya student add karna\nINSERT INTO Students (ID, Name, Marks) VALUES (101, 'Rahul', 85);",
     realLifeExample: "Google search query—aap kuch keywords daalte ho aur database aapko relevant result turant nikaal ke de deta hai.",
     diagramUrl: "true"
   },
@@ -180,6 +184,8 @@ export const hinglishNotes: Note[] = [
       "Readability: Complex joins ki jagah subqueries use karke code ko samajhna asaan ho jata hai.",
       "Operators: Isme IN, NOT IN, <, > jaise operators use hote hain."
     ],
+    sqlSyntax: "SELECT col FROM table WHERE col OPERATOR (SELECT col FROM table ...);",
+    sqlExample: "-- Un students ko find karna jinke marks classes ke average se zyada hain\nSELECT Name FROM Students \nWHERE Marks > (SELECT AVG(Marks) FROM Students);",
     realLifeExample: "Un students ke naam dikhao jinki fee (Outer Query) unki class ki 'Average Fee' (Inner Query) se zyada hai.",
     diagramUrl: "true"
   },
@@ -193,6 +199,8 @@ export const hinglishNotes: Note[] = [
       "EXISTS: Check karna ki subquery ne koi record return kiya bhi hai ya nahi.",
       "Efficiency: Large data filtering mein inka logical use processing time bachata hai."
     ],
+    sqlSyntax: "WHERE col OPERATOR ANY (subquery);\nWHERE col OPERATOR ALL (subquery);\nWHERE EXISTS (subquery);",
+    sqlExample: "-- Un courses ko select karna jinme kam se kam ek student enrolled hai\nSELECT CourseName FROM Courses C\nWHERE EXISTS (SELECT 1 FROM Enrollment E WHERE E.CID = C.CID);",
     realLifeExample: "Check karna ki kya is student ke marks class ke 'SABHI' (ALL) fail hone wale students se zyada hain.",
     diagramUrl: "true"
   },
@@ -206,6 +214,8 @@ export const hinglishNotes: Note[] = [
       "Host Language: SQL commands ko host programming language (e.g. C) ke variables ke saath link karna.",
       "Cursors: Embedded SQL mein multiple records handle karne ke liye pointers (Cursors) ka use hota hai."
     ],
+    sqlSyntax: "-- Null check syntax\nSELECT * FROM Table WHERE Col IS NULL;\n\n-- Embedded SQL (Example in pseudocode style)\nEXEC SQL SELECT name INTO :h_name FROM Users WHERE ID = :h_id;",
+    sqlExample: "-- Un users ko find karna jinhone abhi tak email verify nahi kiya (Null verify_date)\nSELECT Name FROM Users WHERE EmailVerifiedAt IS NULL;",
     realLifeExample: "Form bharte waqt 'Middle Name' khali chhod dena database mein NULL ki tarah save hota hai.",
     diagramUrl: "true"
   },
@@ -320,15 +330,18 @@ export const hinglishNotes: Note[] = [
     diagramUrl: "true"
   },
   {
-    topic: "SQL Queries: Union, Intersection and Except",
-    explanation: "SQL Set Operators Multiple queries ke results ko mathematical logic se merge karte hain. Yeh complex report generation ke liye essential hain.",
+    topic: "Union, Intersection and Exception",
+    subjectCode: "BCA-401",
+    explanation: "SQL Set Operators multiple queries ke results ko mathematical logic se merge karne ke liye use hote hain. Yeh reports generate karne ke liye bhot powerful tool hain.",
     keyPoints: [
-      "UNION: Combining results, automatically filters duplicate rows.",
-      "INTERSECT: Retains only common rows between two table queries (Comparison).",
-      "EXCEPT (MINUS): Returns records of Table A that do not exist in Table B (Subtraction).",
-      "Schema Constraint: Result set ke columns aur types matching hone chahiye (Union Compatibility)."
+      "UNION: Do queries ke results ko combine karta hai aur automatic duplicates remove kar deta hai.",
+      "INTERSECT: Sirf wahi records dikhata hai jo dono queries (Tables) mein common hain.",
+      "EXCEPT (MINUS): Table A ke woh records jo Table B mein nahi hain (Subtraction).",
+      "Constraint: Dono queries ke columns aur data types compatible (same sequence mein) hone chahiye."
     ],
-    realLifeExample: "Ek company ki 'Employee' table aur 'Client' table se woh names nikalna jo Employee bhi hain aur Client bhi (INTERSECT).",
+    sqlSyntax: "(SELECT query) UNION (SELECT query);\n(SELECT query) INTERSECT (SELECT query);\n(SELECT query) EXCEPT (SELECT query);",
+    sqlExample: "-- Alumni aur Students ke names ki combined list\n(SELECT Name FROM Students) \nUNION \n(SELECT Name FROM Alumni);\n\n-- Woh students jo Course A aur B dono mein hain\n(SELECT SID FROM CourseA) \nINTERSECT \n(SELECT SID FROM CourseB);",
+    realLifeExample: "Jaise aapke 'Phone Contacts' aur 'WhatsApp Contacts' ka UNION dekhna—ek integrated list jisme duplicates na hon.",
     diagramUrl: "true"
   },
   {
@@ -1655,40 +1668,62 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "Relationship Algebra",
-    explanation: "Relational Algebra ek procedural query language hai jo batati hai ki data 'Kaise' (How) nikalna hai operations use karke.",
+    subjectCode: "BCA-401",
+    explanation: "Relational Algebra ek procedural query language hai jo batati hai ki data 'Kaise' (How) nikalna hai mathematical operations use karke. Yeh SQL ka mathematical foundation hai.",
     keyPoints: [
-      "Operations: Selection (σ), Projection (π), Union (∪), Set Difference (-), Cartesian Product (X).",
-      "Selection: Rows select karna based on condition.",
-      "Projection: Specific columns select karna.",
-      "Join: Do tables ko aapas mein combine karna common column ke base pe."
+      "Selection (σ): Rows filter karna (Horizontal partitioning).",
+      "Projection (π): Columns select karna (Vertical partitioning).",
+      "Union (∪): Do tables ke results ko combine karna.",
+      "Set Difference (-): Table A mein ho par B mein na ho.",
+      "Cartesian Product (X): Do tables ki har row ka combination."
     ],
+    sqlSyntax: "-- Selection: SELECT * FROM Table WHERE condition;\n-- Projection: SELECT col1, col2 FROM Table;\n-- Join: SELECT * FROM T1 JOIN T2 ON condition;",
+    sqlExample: "-- Example: Un students ko select karna jo Delhi se hain (Selection)\nSELECT * FROM Students WHERE City = 'Delhi';\n\n-- Example: Students ke sirf Roll No aur Name dikhana (Projection)\nSELECT RollNo, Name FROM Students;",
     realLifeExample: "Jaise filter lagana—pehle 'City' filter kiya (Selection) phir sirf 'Name' dikhaya (Projection).",
     diagramHint: "Table transformation diagram: Input Table -> [Operator Symbol] -> Output Table.",
     diagramUrl: "true"
   },
   {
-    topic: "Relation Calculus",
-    explanation: "Relational Calculus ek non-procedural language hai jo batati hai ki 'Kya' (What) data chahiye, bina ye bataye ki kaise nikalna hai.",
+    topic: "Joins in SQL",
+    subjectCode: "BCA-401",
+    explanation: "Joins multiple tables ko combine karne ke liye use hote hain jab data bikhra hua ho par unke beech koi common link (Foreign Key) ho.",
     keyPoints: [
-      "Types: Tuple Relational Calculus (TRC) aur Domain Relational Calculus (DRC).",
-      "Logic: Yeh mathematical logic aur predicates pe base hota hai.",
-      "Declarative: Isme hum sirf condition batate hain (e.g., {t | Student(t) AND t.Age > 20}).",
-      "Power: Iski expressive power Relational Algebra ke barabar hi hoti hai."
+      "Inner Join: Sirf wahi records dikhana jo dono tables mein match karte hon.",
+      "Left Join: Left table ke saare records aur Right table ke sirf matching records.",
+      "Right Join: Right table ke saare records aur Left table ke sirf matching records.",
+      "Full Join: Dono tables ke saare records (Matching + Non-matching).",
+      "Self Join: Ek hi table ko khud se join karna hierarchy ya comparison ke liye."
     ],
-    realLifeExample: "Jaise Google search—aap sirf likhte ho 'Best Pizza', aap ye nahi batate ki database mein kahan dhoondna hai.",
+    sqlSyntax: "SELECT * FROM T1 INNER JOIN T2 ON T1.key = T2.key;\nSELECT * FROM T1 LEFT JOIN T2 ON T1.key = T2.key;\nSELECT * FROM T1 RIGHT JOIN T2 ON T1.key = T2.key;",
+    sqlExample: "-- Students aur unke Departments ko link karna\nSELECT S.Name, D.DeptName \nFROM Students S \nINNER JOIN Departments D ON S.DeptID = D.ID;",
+    realLifeExample: "Jaise 'Orders' table ko 'Customers' se join karna taaki pata chale kis customer ne kya order kiya hai.",
+    diagramUrl: "true"
+  },
+  {
+    topic: "Relationship Calculus",
+    subjectCode: "BCA-401",
+    explanation: "Relational Calculus ek non-procedural query language hai. Isme hum system ko ye nahi batate ki 'Kaise' dhoondna hai, balki ye batate hain ki 'Kya' (What) dhoondna hai.",
+    keyPoints: [
+      "TRC (Tuple Relational Calculus): Hum 'Tuples' (Rows) filter karte hain variables use karke (e.g. {t | R(t) AND t.marks > 80}).",
+      "DRC (Domain Relational Calculus): Hum individual columns (Domains) ke base pe condition lagate hain.",
+      "Logic Based: Yeh predicate logic aur quantifiers (Exists ∃, For All ∀) use karta hai.",
+      "Non-Procedural: SQL ka 'Declarative' nature isi calculus logic pe base hai."
+    ],
+    realLifeExample: "Jaise aap kisi se kahein 'Mujhe Delhi ke saare students ki list chahiye' (What)—yeh calculus hai. Unhe dhoondne ke liye excel sheet kholna aur filter lagana procedural step (Algebra) hai.",
     diagramHint: "Mathematical logic notation examples box.",
     diagramUrl: "true"
   },
   {
     topic: "Expressive Power of Algebra and Calculus",
-    explanation: "Expressive power ka matlab hai ki ek language (jaise Relational Algebra) kitne complex data queries ko handle kar sakti hai. Algebra aur Calculus dono ki expressive power barabar hoti hai, matlab jo kaam aap algebra se kar sakte hain, wahi calculus se bhi kar sakte hain.",
+    subjectCode: "BCA-401",
+    explanation: "Expressive power ka matlab hai ki ek language kitne different types ki complex queries handle kar sakti hai. Statistics aur logic ke hisab se Algebra aur Calculus dono barabar (Equivalent) hain.",
     keyPoints: [
-      "Equivalence: Relational Algebra aur Safe Relational Calculus expressive power mein equal hain.",
-      "Codd's Theorem: E.F. Codd ne prove kiya tha ki dono languages equivalent hain.",
-      "Completeness: Agar koi language in dono ke barabar power rakhti hai, toh use 'Relationally Complete' kaha jata hai.",
-      "Complexity: Relational Algebra procedural hai (step-by-step), jabki Calculus non-procedural (goal-oriented) hai."
+      "Equivalence: Codd's Theorem batati hai ki koi bhi query jo Relational Algebra mein likhi ja sakti hai, wo Calculus mein bhi likhi ja sakti hai.",
+      "Relational Completeness: Agar ek language Algebra ki saari basic power rakhti hai, toh use 'Relationally Complete' kaha jata hai.",
+      "Formal Logic: Calculus zyada natural lagta hai human logic ke liye, jabki Algebra mathematical implementation ke liye better hai.",
+      "Optimizers: Databases internally Algebra use karte hain optimization ke liye because instructions clear hoti hain."
     ],
-    realLifeExample: "Jaise ek sawal ko solve karne ke do tareeke—ek step-by-step (Algebra) aur ek seedha final result batana (Calculus). Dono se answer same hi aayega.",
+    realLifeExample: "Jaise ek hi maths problem ko logic se solve karna vs formula se solve karna—end result same hi aayega.",
     diagramHint: "Ek cycle diagram dikhaiye jiske center mein 'Data Retrieval' ho aur charo taraf Algebra, Calculus aur SQL jude hon.",
     diagramUrl: "true"
   },
@@ -1720,15 +1755,18 @@ export const hinglishNotes: Note[] = [
   },
   {
     topic: "Aggregate Operators",
-    explanation: "Aggregate operators multiple rows ke data ko calculate karke ek 'Single Value' (Result) dete hain.",
+    subjectCode: "BCA-401",
+    explanation: "Aggregate operators multiple rows ke data ko calculate karke ek 'Single Value' (Summary Result) dete hain. Inka use group information analysis ke liye kiya jata hai.",
     keyPoints: [
-      "SUM(): Total value nikalne ke liye.",
-      "AVG(): Average nikalne ke liye.",
-      "COUNT(): Rows ginne ke liye.",
-      "MIN/MAX(): Sabse choti aur sabse badi value dhoondne ke liye.",
+      "SUM(): Total value nikalne ke liye (e.g. Total Sale).",
+      "AVG(): Average (Mean) nikalne ke liye.",
+      "COUNT(): Rows ginne ke liye (e.g. Total Students).",
+      "MIN/MAX(): Sabse choti (Minimum) aur sabse badi (Maximum) value dhoondne ke liye.",
       "Group By: In operators ka use hum GROUP BY ke sath category-wise results ke liye karte hain."
     ],
-    realLifeExample: "SELECT COUNT(salary) FROM employees; (Poore department ki total salary nikalna).",
+    sqlSyntax: "SELECT COUNT(column) FROM table;\nSELECT SUM(column) FROM table WHERE condition;\nSELECT AVG(column) FROM table GROUP BY category;",
+    sqlExample: "-- Har department ki average salary dhoondna\nSELECT Dept, AVG(Salary) FROM Employees GROUP BY Dept;\n\n-- Total 500 se zyada marks lane wale students count karna\nSELECT COUNT(*) FROM Students WHERE Marks > 500;",
+    realLifeExample: "Jaise match ke baad 'Total Runs' (SUM) check karna, ya class mein highest marks kisne liye (MAX) dhoondna.",
     diagramHint: "Table of numbers being squeezed into a single result bubble.",
     diagramUrl: "true"
   },
@@ -1741,6 +1779,8 @@ export const hinglishNotes: Note[] = [
       "Types: Before Triggers aur After Triggers.",
       "Security: Unauthorized changes ko block karne ke liye bhi use hote hain."
     ],
+    sqlSyntax: "CREATE TRIGGER trigger_name\nAFTER|BEFORE INSERT|UPDATE|DELETE\nON table_name FOR EACH ROW\nEXECUTE procedure_name();",
+    sqlExample: "-- Example: Update hone pe timestamp update karna\nCREATE TRIGGER update_log\nAFTER UPDATE ON Employees\nFOR EACH ROW\nBEGIN\n  INSERT INTO AuditLogs(EmpID, ChangeDate) VALUES (NEW.ID, NOW());\nEND;",
     realLifeExample: "Jaise 'Out of Stock' alert—jab product ki quantity 0 ho jaye (Event), toh system automatically 'Restock' email bhej deta hai (Action).",
     diagramHint: "Logic flow: Update Event -> Trigger Check -> Automatic Action execution.",
     diagramUrl: "true"

@@ -27,6 +27,8 @@ import {
   Sun,
   Moon,
   Palette,
+  Terminal,
+  Code2,
   ExternalLink,
   Youtube,
   LogIn,
@@ -1176,6 +1178,43 @@ export default function App() {
                       {selectedNote.explanation}
                     </p>
                   </motion.div>
+
+                  {/* SQL Syntax & Examples */}
+                  {selectedNote.sqlSyntax && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-4"
+                    >
+                      <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
+                        <div className="p-1.5 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                          <Terminal className="w-4 h-4" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">💻 SQL Syntax</span>
+                      </div>
+                      <div className="bg-slate-900 rounded-2xl p-4 overflow-x-auto border border-slate-800 shadow-xl">
+                        <pre className="text-xs sm:text-sm font-mono text-indigo-300 leading-relaxed whitespace-pre">
+                          {selectedNote.sqlSyntax}
+                        </pre>
+                      </div>
+
+                      {selectedNote.sqlExample && (
+                        <>
+                          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 pt-2">
+                            <div className="p-1.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                              <Code2 className="w-4 h-4" />
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">📝 Query Example</span>
+                          </div>
+                          <div className="bg-slate-900 rounded-2xl p-4 overflow-x-auto border border-slate-800 shadow-xl">
+                            <pre className="text-xs sm:text-sm font-mono text-emerald-300 leading-relaxed whitespace-pre">
+                              {selectedNote.sqlExample}
+                            </pre>
+                          </div>
+                        </>
+                      )}
+                    </motion.div>
+                  )}
 
                   {/* Key Points */}
                   <motion.div 
